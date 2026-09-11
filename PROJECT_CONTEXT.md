@@ -17,7 +17,7 @@ Sebelum memulai task apa pun, setiap agent WAJIB:
 6. Tidak mengubah metode scoring/bobot tanpa dokumentasi eksplisit dan persetujuan.
 7. Tidak menghapus provenance (source_name, source_url, data_year, dll) dari data apa pun.
 8. Tidak mengubah positioning produk dari Decision Support System menjadi engineering design software.
-9. Meng-update dokumen ini apabila ada keputusan resmi baru (lihat §12 Unresolved Decisions — pindahkan item ke bagian "resolved" dengan referensi keputusan).
+9. Meng-update dokumen ini apabila ada keputusan resmi baru (lihat §19 Unresolved Decisions — pindahkan item ke bagian "resolved" dengan referensi keputusan).
 10. Jika ada ketidakpastian material (data, scope, metodologi) — **STOP dan laporkan**, jangan menebak.
 
 ---
@@ -62,7 +62,31 @@ Sistem mempertimbangkan, sejauh data tersedia:
 
 ---
 
-## 3. Positioning
+## 3. Problem Positioning (Batasan Framing Masalah)
+
+> **Ditambahkan sebagai amandemen pasca-audit (lihat `docs/PRODUCT_AUDIT.md`, `docs/PROPOSAL_STRENGTHENING.md`).**
+
+SURYA-SIAGA **TIDAK boleh** diposisikan sebagai solusi semata-mata untuk rendahnya rasio elektrifikasi.
+
+- Rasio elektrifikasi atau akses listrik **boleh digunakan sebagai evidence tambahan** apabila tersedia dan relevan, tetapi **BUKAN syarat utama** dari problem statement produk.
+- **Core problem tetap:** data yang relevan untuk pre-screening pengembangan/penguatan PLTS tersebar pada beberapa sumber dan memiliki dimensi yang berbeda-beda, sementara proses prioritisasi membutuhkan pertimbangan lebih dari sekadar potensi radiasi matahari.
+
+SURYA-SIAGA mengintegrasikan:
+
+- potensi surya;
+- dampak sosial;
+- facility criticality;
+- resilience;
+- existing solar infrastructure;
+- data quality/freshness;
+
+untuk membantu prioritisasi awal secara transparan.
+
+**Larangan eksplisit:** jangan mengubah proyek menjadi aplikasi "elektrifikasi daerah tertinggal". Framing elektrifikasi sebagai problem statement utama mempersempit produk secara keliru dan tidak konsisten dengan core principle di §2.
+
+---
+
+## 4. Positioning
 
 ### SURYA-SIAGA ADALAH:
 
@@ -95,7 +119,45 @@ Dilarang memberikan instruksi teknis final seperti "Bangun PLTS 200 kWp" kecuali
 
 ---
 
-## 4. Wilayah Pilot
+## 5. Primary User, Stakeholder Roles & Partnership Status
+
+> **Ditambahkan sebagai amandemen pasca-audit** untuk menutup gap "primary user belum didefinisikan" pada `docs/PRODUCT_AUDIT.md` §6.
+
+### 5.1 Primary User
+
+**Primary User** SURYA-SIAGA adalah **perencana daerah/analis pemerintah** yang melakukan proses pre-screening dan prioritisasi awal pengembangan infrastruktur energi — misalnya fungsi perencanaan pada **Bappeda**, **bidang energi pemerintah daerah**, atau **unit perencanaan infrastruktur** terkait.
+
+> ⚠️ **Catatan penting:** nama-nama instansi di atas (Bappeda, bidang energi pemda, unit perencanaan infrastruktur) adalah **TARGET PERSONA** — gambaran jenis pengguna yang dituju, **BUKAN** pernyataan bahwa instansi tersebut telah menggunakan produk ini.
+
+### 5.2 Secondary User
+
+- pemerintah desa/BUMDes;
+- pengelola fasilitas publik seperti puskesmas dan sekolah.
+
+### 5.3 Supporting/Evaluator User
+
+- peneliti;
+- evaluator;
+- juri kompetisi.
+
+### 5.4 Partnership Status
+
+Pada tahap kompetisi, **SURYA-SIAGA merupakan prototype independen yang dikembangkan menggunakan data publik.**
+
+**Belum boleh diklaim** adanya, dengan Pemda Kubu Raya, PLN, Dinas ESDM, Bappeda, atau institusi lainnya:
+
+- kerja sama resmi;
+- endorsement;
+- validasi institusional;
+- implementasi resmi;
+
+kecuali bukti nyata diberikan kemudian.
+
+**Semua penyebutan instansi dalam persona (§5.1–§5.3) hanya menunjukkan *potential user*, bukan *existing partner*.** Materi proposal, UI, maupun komunikasi publik tidak boleh menyiratkan sebaliknya.
+
+---
+
+## 6. Wilayah Pilot
 
 Pilot awal: **Kabupaten Kubu Raya**, Kalimantan Barat.
 
@@ -109,7 +171,7 @@ Pilot awal: **Kabupaten Kubu Raya**, Kalimantan Barat.
 
 ---
 
-## 5. Target MVP (Cakupan Data)
+## 7. Target MVP (Cakupan Data)
 
 - Gunakan sekitar **10–15 lokasi nyata**.
 - Komposisi ideal:
@@ -118,11 +180,11 @@ Pilot awal: **Kabupaten Kubu Raya**, Kalimantan Barat.
   - ±5 sekolah/fasilitas publik.
 - Prinsip: **lebih baik 10 lokasi dengan data kuat daripada 500 lokasi dengan data lemah.**
 
-Status saat ini: kandidat fasilitas dan dataset pilot **BELUM final** (lihat §11 Status Proyek).
+Status saat ini: kandidat fasilitas dan dataset pilot **BELUM final** (lihat §18 Status Proyek).
 
 ---
 
-## 6. Model Data Inti
+## 8. Model Data Inti
 
 Setiap lokasi (facility) sebisa mungkin memiliki field-field berikut. **Field boleh NULL apabila informasi tidak tersedia — NULL lebih baik daripada angka buatan.**
 
@@ -173,7 +235,7 @@ Skema database final **BELUM ditentukan** — model data ini adalah kontrak kons
 
 ---
 
-## 7. Sumber Data
+## 9. Sumber Data
 
 ### Tier 1 (utamakan)
 Lembaga pemerintah, dataset/portal data resmi, dokumen pemerintah, regulator: PLN, BPS, BNPB, InaRISK, Kementerian ESDM, Kementerian Kesehatan, Kemendikdasmen, Pemerintah Daerah.
@@ -193,7 +255,7 @@ Media nasional kredibel — **hanya untuk konteks kejadian**, bukan sumber utama
 
 ---
 
-## 8. Aturan Integritas Data (MUTLAK)
+## 10. Aturan Integritas Data (MUTLAK)
 
 1. Jangan pernah membuat data agar dataset terlihat lengkap.
 2. Jangan menebak nilai numerik.
@@ -210,7 +272,7 @@ Jika fakta tidak dapat diverifikasi: gunakan **`NULL`** atau tandai **`requires_
 
 ---
 
-## 9. Konteks Khusus: PLTS Desa Sumber Agung, Batu Ampar
+## 11. Konteks Khusus: PLTS Desa Sumber Agung, Batu Ampar
 
 Terdapat informasi historis yang **pernah dilaporkan** (belum diverifikasi ulang ke sumber primer) terkait PLTS Desa Sumber Agung, Batu Ampar:
 
@@ -232,7 +294,7 @@ Terdapat informasi historis yang **pernah dilaporkan** (belum diverifikasi ulang
 
 ---
 
-## 10. Decision Model (Konseptual)
+## 12. Decision Model (Konseptual)
 
 Pendekatan: **Multi-Criteria Decision Analysis (MCDA)**.
 
@@ -249,6 +311,33 @@ Sistem secara konseptual memiliki komponen berikut (nama-nama ini adalah termino
 
 > ⚠️ **Data Confidence TIDAK otomatis menjadi bagian dari Priority Score.** Keduanya ditampilkan terpisah kecuali ada keputusan eksplisit yang mengubah ini.
 
+### 12.1 Data Confidence — Core Product Concept (Rubrik Belum Final)
+
+> **Ditambahkan sebagai amandemen pasca-audit** untuk menutup gap yang diidentifikasi di `docs/PROPOSAL_STRENGTHENING.md` §8: Data Confidence sudah menjadi bagian model data (§8) dan komponen konseptual di atas, namun definisi kualitatifnya belum pernah didokumentasikan secara eksplisit sebelum amandemen ini.
+
+**Definisi konseptual:** Data Confidence menunjukkan **tingkat keandalan bukti** yang mendasari informasi/rekomendasi suatu kandidat lokasi — bukan seberapa baik lokasi tersebut secara substantif (itu peran Priority Score).
+
+**Dimensi yang akan dievaluasi nantinya** (daftar konseptual, belum berbobot):
+
+- Source Authority (otoritas/tier sumber data);
+- Data Recency (kebaruan data relatif terhadap `data_year`);
+- Data Completeness (kelengkapan field untuk kandidat tersebut);
+- Verification Status (`verification_status` per §8);
+- Unresolved Source Conflict (ada/tidaknya konflik antar sumber yang belum terselesaikan, sesuai §10 poin 6).
+
+**Kategori konseptual** (label kualitatif, bukan skala numerik):
+
+- `HIGH CONFIDENCE`
+- `MEDIUM CONFIDENCE`
+- `NEEDS VERIFICATION`
+
+> ⚠️ **Larangan tegas pada tahap ini:**
+> - JANGAN membuat bobot numerik untuk dimensi Data Confidence di atas.
+> - JANGAN membuat formula final penghitungan Data Confidence.
+> - JANGAN menggabungkan Data Confidence ke dalam Priority Score secara otomatis (menegaskan kembali aturan di atas).
+
+Rubrik final (termasuk bobot per dimensi, jika ada, dan threshold tiap kategori) **baru akan ditentukan setelah karakteristik dataset pilot nyata diketahui** — lihat §19 Unresolved Decisions.
+
 ### Jenis Rekomendasi (MVP)
 
 - **New Deployment Assessment**
@@ -259,7 +348,7 @@ Dilarang memberikan instruksi engineering final (mis. "Bangun PLTS 200 kWp") kec
 
 ---
 
-## 11. Fitur
+## 13. Fitur
 
 ### Fitur MVP
 
@@ -284,7 +373,7 @@ Dilarang memberikan instruksi engineering final (mis. "Bangun PLTS 200 kWp") kec
 
 ---
 
-## 12. Tech Stack Preferensi
+## 14. Tech Stack Preferensi
 
 | Layer | Pilihan |
 |---|---|
@@ -297,7 +386,7 @@ Dilarang memberikan instruksi engineering final (mis. "Bangun PLTS 200 kWp") kec
 
 ---
 
-## 13. Prinsip Engineering
+## 15. Prinsip Engineering
 
 - TypeScript strict.
 - Reusable components.
@@ -311,7 +400,7 @@ Dilarang memberikan instruksi engineering final (mis. "Bangun PLTS 200 kWp") kec
 
 ---
 
-## 14. Prinsip Utama Produk
+## 16. Prinsip Utama Produk
 
 > **TRANSPARANSI LEBIH PENTING DARIPADA PRESISI PALSU.**
 
@@ -322,7 +411,7 @@ Dilarang memberikan instruksi engineering final (mis. "Bangun PLTS 200 kWp") kec
 
 ---
 
-## 15. Aturan bagi Semua Agent Berikutnya
+## 17. Aturan bagi Semua Agent Berikutnya
 
 Sebelum setiap task:
 
@@ -337,9 +426,21 @@ Sebelum setiap task:
 9. Update dokumentasi ini apabila keputusan resmi berubah.
 10. Jika terdapat ketidakpastian material, **STOP dan laporkan**.
 
+### 17.1 Prioritas Evidence vs. Perubahan Arah Produk
+
+> **Ditambahkan sebagai amandemen pasca-audit.**
+
+Jika penelitian/riset berikutnya menghasilkan fakta yang **bertentangan** dengan asumsi awal di `PROJECT_CONTEXT.md`, **evidence yang lebih kuat harus diprioritaskan** di atas asumsi awal.
+
+Namun, **perubahan product direction yang material** (mis. mengubah problem statement, mengganti primary user, mengubah positioning, mengubah metode scoring inti) **harus**:
+
+1. **didokumentasikan** — alasan dan evidence pendukung dicatat secara eksplisit;
+2. **dilaporkan** — disampaikan secara jelas kepada pemilik proyek/pengguna, bukan diterapkan diam-diam;
+3. **mendapat persetujuan sebelum diterapkan** — agent tidak boleh mengubah arah produk secara sepihak hanya karena menemukan evidence baru, sekuat apa pun evidence tersebut.
+
 ---
 
-## 16. Status Proyek (Saat Ini BELUM Final)
+## 18. Status Proyek (Saat Ini BELUM Final)
 
 Item-item berikut **belum final** — jangan berasumsi sudah ditentukan:
 
@@ -352,17 +453,26 @@ Item-item berikut **belum final** — jangan berasumsi sudah ditentukan:
 
 ---
 
-## 17. Unresolved Decisions (Log)
+## 19. Unresolved Decisions (Log)
 
 Daftar keputusan yang masih terbuka. Ketika sebuah keputusan dibuat secara resmi, pindahkan entrinya ke bagian "Resolved" dengan tanggal dan referensi (commit/PR/diskusi), dan update bagian terkait di dokumen ini.
 
+> **Catatan pasca-audit:** seluruh item di bawah ini memang belum final secara sengaja dan akan diselesaikan pada **tahap research/methodology** berikutnya — bukan pada tahap dokumentasi ini. Jangan mencoba menyelesaikannya di luar tahap yang ditentukan.
+
 ### Open
 
+- [ ] Evidence untuk pemilihan Kubu Raya sebagai wilayah pilot (data karhutla/elektrifikasi/GHI yang menjustifikasi lokasi — lihat `docs/PROPOSAL_STRENGTHENING.md` §4).
+- [ ] Dataset kandidat pilot final (10–15 lokasi nyata beserta sumber data per field).
+- [ ] Factual comparison dengan existing tools (Global Solar Atlas, InaRISK, dashboard PLTS umum, solar calculator) — verifikasi langsung terhadap fitur real tool tersebut, bukan hanya analisis konseptual (lihat `docs/PRODUCT_AUDIT.md` §4).
+- [ ] Final criteria — daftar akhir kriteria yang masuk ke Solar Suitability Score dan Resilience Need Score.
+- [ ] Normalization — metode normalisasi nilai kriteria yang heterogen (kuantitatif/kualitatif, satuan berbeda) sebelum digabung menjadi skor.
 - [ ] Metode MCDA final: apakah benar AHP + Weighted Scoring, atau metode lain?
-- [ ] Bobot final untuk Solar Suitability Score, Resilience Need Score, dan Priority Score.
+- [ ] Bobot final (AHP/MCDA weights) untuk Solar Suitability Score, Resilience Need Score, dan Priority Score.
 - [ ] Formula matematis Priority Score (apakah linear weighted sum, atau non-linear?).
+- [ ] **Data Confidence rubric final** — formula/kombinasi dimensi (§12.1) menjadi kategori HIGH/MEDIUM/NEEDS VERIFICATION.
+- [ ] **Threshold setiap Data Confidence level** — batas kuantitatif/kualitatif yang memisahkan HIGH, MEDIUM, dan NEEDS VERIFICATION.
+- [ ] **Perlakuan terhadap conflicting sources** dalam perhitungan Data Confidence (bagaimana "Unresolved Source Conflict" memengaruhi kategori akhir).
 - [ ] Apakah dan bagaimana Data Confidence ditampilkan di UI relatif terhadap Priority Score.
-- [ ] Daftar final 10–15 lokasi pilot beserta sumber data untuk masing-masing field.
 - [ ] Skema database final (tabel, relasi, constraint) di Supabase PostgreSQL.
 - [ ] Apakah PostGIS benar-benar diperlukan untuk MVP atau cukup lat/long sederhana.
 - [ ] Status verifikasi data historis PLTS Desa Sumber Agung, Batu Ampar (belum diverifikasi ke sumber primer).
@@ -371,17 +481,21 @@ Daftar keputusan yang masih terbuka. Ketika sebuah keputusan dibuat secara resmi
 
 ### Resolved
 
-_(belum ada — akan diisi seiring keputusan resmi dibuat)_
+- [x] **Primary user** — perencana daerah/analis pemerintah (persona: Bappeda/bidang energi pemda/unit perencanaan infrastruktur), dengan secondary user (pemerintah desa/BUMDes, pengelola fasilitas publik) dan supporting/evaluator user (peneliti, evaluator, juri kompetisi). Lihat §5. *(Amandemen PROMPT 1.5 — instansi yang disebut adalah target persona, bukan existing partner.)*
+- [x] **Partnership status** — SURYA-SIAGA adalah prototype independen berbasis data publik pada tahap kompetisi; tidak ada klaim kerja sama/endorsement/validasi institusional/implementasi resmi dengan pihak mana pun kecuali bukti nyata diberikan kemudian. Lihat §5.4. *(Amandemen PROMPT 1.5.)*
+- [x] **Problem positioning** — core problem adalah fragmentasi data multi-dimensi untuk pre-screening PLTS, bukan semata-mata rasio elektrifikasi; rasio elektrifikasi hanya evidence tambahan opsional. Lihat §3. *(Amandemen PROMPT 1.5.)*
+- [x] **Status konseptual Data Confidence sebagai core product concept** — didefinisikan secara kualitatif (dimensi + kategori), rubrik kuantitatif tetap open decision. Lihat §12.1. *(Amandemen PROMPT 1.5.)*
 
 ---
 
-## 18. Asumsi yang Masih Perlu Diverifikasi
+## 20. Asumsi yang Masih Perlu Diverifikasi
 
 - Ketersediaan dan aksesibilitas data GHI untuk Kubu Raya dari Global Solar Atlas atau NASA POWER.
 - Ketersediaan data fasilitas kesehatan (puskesmas) dan pendidikan (sekolah) di Kubu Raya dengan koordinat yang dapat diverifikasi (sumber: Kemenkes, Kemendikdasmen, atau Pemda Kubu Raya).
 - Ketersediaan data risiko bencana (kebakaran hutan/lahan, kekeringan) tingkat kecamatan/desa untuk Kubu Raya dari BNPB/InaRISK.
-- Kebenaran dan status terkini seluruh angka historis PLTS Desa Sumber Agung, Batu Ampar (lihat §9) — harus ditelusuri ke sumber primer sebelum digunakan.
+- Kebenaran dan status terkini seluruh angka historis PLTS Desa Sumber Agung, Batu Ampar (lihat §11) — harus ditelusuri ke sumber primer sebelum digunakan.
 - Apakah PLN memiliki data PLTS eksisting/kapasitas yang dapat diakses publik untuk wilayah pilot.
+- Apakah terdapat komunikasi/keterlibatan nyata dengan Pemda Kubu Raya, PLN, Dinas ESDM, atau Bappeda — **tidak boleh diasumsikan ada** kecuali dikonfirmasi eksplisit (lihat §5.4 Partnership Status).
 
 ---
 
