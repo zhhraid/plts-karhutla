@@ -86,15 +86,24 @@ Centroid hanya boleh dipakai untuk **visualisasi agregat** dan **wajib diberi la
 | `coordinate_quality` | Enum §A — **wajib diisi** |
 | `coordinate_source_name` | Nama sumber koordinat |
 | `coordinate_source_url` | URL persis halaman/dataset asal koordinat |
-| `coordinate_source_type` | `official_portal` / `official_dataset` / `geocoding_service` / `map_service` / `manual_digitization` |
-| `coordinate_method` | Cara perolehan, mis. "ditampilkan di halaman profil satuan pendidikan", "geocoding alamat resmi via <layanan>", "digitasi manual dari citra" |
-| `coordinate_retrieved_at` | Tanggal koordinat diperoleh |
+| `coordinate_source_type` | `official_portal` / `official_dataset` / `geocoding_service` / `map_service` / `manual_digitization` — **plus sinonim yang diterima** (lihat catatan di bawah): `government_portal` ≡ `official_portal`, `government_dataset` ≡ `official_dataset` |
+| `coordinate_method` | Cara perolehan. Nilai terkontrol yang sudah dipakai: `official_profile_point` (ditampilkan di halaman profil resmi), `official_dataset_point` (dari dataset geospasial resmi). Bebas-teks untuk metode lain, mis. "geocoding alamat resmi via &lt;layanan&gt;", "digitasi manual dari citra" |
+| **`coordinate_source_data_year`** | **Tahun data dari dataset asal koordinat.** ⚠️ **WAJIB dibedakan dari `coordinate_retrieved_at`.** Koordinat dari dataset 2021 yang diakses pada 2026 memiliki `coordinate_source_data_year = 2021` dan `coordinate_retrieved_at = 2026-09-12`. **Koordinat historis tidak boleh dipresentasikan sebagai "koordinat diperbarui 2026".** |
+| `coordinate_retrieved_at` | Tanggal koordinat diperoleh/diakses |
 | `coordinate_vstatus` | `verified_primary` / `verified_secondary` / `requires_verification` / `not_available` / (kosong = belum diperiksa) |
 | `coordinate_notes` | Catatan ambiguitas, kecocokan target, keraguan |
 | `official_identity_source` | *(untuk derived)* sumber resmi identitas fasilitas |
 | `official_address_source` | *(untuk derived)* sumber resmi alamat |
 | `secondary_coordinate_source` | *(untuk derived)* sumber kedua untuk pencocokan silang |
 | `cross_validation_status` | *(untuk derived)* `matched` / `partial_match` / `no_match` / `not_attempted` |
+
+## Catatan sinonim `coordinate_source_type` (ditambahkan Prompt 3A.2)
+
+External verification package 2026-09-12 menggunakan kosakata `government_portal` / `government_dataset`, sedangkan skema ini semula hanya mendefinisikan `official_portal` / `official_dataset`. **Ketidakcocokan ini dilaporkan, bukan diperbaiki diam-diam pada data sumber.** Nilai asli dipertahankan apa adanya di `data/raw/` maupun di interim; skema diperluas untuk menerima kedua kosakata sebagai ekuivalen. Semantiknya identik — keduanya berarti koordinat berasal langsung dari sumber pemerintah dan memenuhi `official_exact`.
+
+## Catatan `coordinate_source_data_year` vs umur koordinat
+
+Koordinat resmi yang berasal dari dataset lama **tetap** `official_exact` — umur data tidak mengubah asal-usulnya. Yang berubah adalah **risiko keterkinian**, dan itu direkam di `coordinate_source_data_year`, bukan dengan menurunkan `coordinate_quality`. Risiko residual yang harus disadari: fasilitas dapat pindah, dibangun ulang, atau berganti lokasi sejak tahun dataset. Ini dicatat, bukan disembunyikan dan bukan pula dijadikan alasan menolak data.
 
 ---
 
