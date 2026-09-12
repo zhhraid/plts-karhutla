@@ -1,9 +1,9 @@
 # MANUAL_ACQUISITION_REQUESTS.md — Permintaan Akuisisi Manual
 
-**Dibuat:** Prompt 3A (Acquisition: Facility Inventory), 2026-09-12.
-**Alasan:** environment agent terkena `EGRESS_BLOCKED` untuk seluruh domain sumber fasilitas. Sesuai §G Prompt 3A, agent **tidak membuat data** dan sebagai gantinya menyusun permintaan akuisisi yang dapat dieksekusi manusia.
+**Dibuat:** Prompt 3A. **Direstrukturisasi:** Prompt 3A.1, 2026-09-12.
+**Alasan:** environment agent terkena `EGRESS_BLOCKED` untuk seluruh domain sumber fasilitas. Agent **tidak membuat data** dan menyusun permintaan yang dapat dieksekusi manusia/environment lain.
 
-## Hasil uji akses (2026-09-12)
+## Hasil uji akses agent (2026-09-12)
 
 | Domain | Hasil |
 |---|---|
@@ -11,195 +11,200 @@
 | `puskesmas.kuburayakab.go.id` | ❌ EGRESS_BLOCKED |
 | `kalbarsehat.kalbarprov.go.id` | ❌ EGRESS_BLOCKED |
 
-Sumber-sumber ini **sudah terverifikasi keberadaannya** melalui `external_manual_verification` (EV-G, EV-H) — jadi hambatannya murni akses jaringan agent, bukan ketiadaan sumber.
+Keberadaan sumber-sumber ini **sudah terverifikasi** via `external_manual_verification` (EV-G, EV-H, EV-I, EV-J) — hambatannya murni akses jaringan agent.
 
-> ⚠️ **Batasan yang berlaku untuk siapa pun yang mengeksekusi permintaan ini:** jangan melanggar Terms of Service situs sumber. Ambil data secara wajar (manual/ekspor yang disediakan situs), bukan scraping masif yang membebani server.
+> ⚠️ **Berlaku untuk semua request:** patuhi Terms of Service situs sumber. Ambil data secara wajar (manual / ekspor yang disediakan situs), bukan scraping masif.
+
+> ⚠️ **Aturan koordinat mengikat semua request** — lihat `data/interim/SCHEMA.md` §A–§B. Ringkas: **dilarang** mengisi koordinat fasilitas dari centroid desa/kecamatan; koordinat turunan wajib memenuhi tujuh syarat `derived_confirmed` dan ditandai eksplisit.
 
 ---
 
-# REQ-01 — Inventaris Sekolah (Kemendikdasmen / Dapodik)
+# REQ-EDU-01 — Official School Facility Records
 
-**Prioritas:** TINGGI — ini satu-satunya sumber dengan **jalur koordinat terverifikasi** (EV-G).
+**Prioritas:** TINGGI — ini satu-satunya sumber dengan jalur koordinat resmi terverifikasi (EV-G, EV-I).
 
-### URL
+### Exact data needed
 
+Per sekolah di Kabupaten Kubu Raya: `npsn`, `facility_name`, `education_level`, `school_status`, `address`, `village`, `district`, `latitude`, `longitude`, `last_update`, dan bila tersedia `electricity_source` (sumber listrik) serta jumlah peserta didik.
+
+### Preferred official source
+```
+https://referensi.data.kemendikdasmen.go.id/
+```
 Daftar per kabupaten (Kubu Raya, kode wilayah **131300**):
 ```
 https://referensi.data.kemendikdasmen.go.id/pendidikan/dikdas/131300/2/jf/5/all
 ```
-Telusuri juga per kecamatan dari halaman tersebut (9 kecamatan, lihat daftar di bawah), dan halaman detail per satuan pendidikan untuk koordinat.
+Telusuri per kecamatan, lalu buka **halaman profil per satuan pendidikan** — di situlah koordinat muncul.
 
-### Yang perlu diambil
+### Acceptable fallback
+- Tidak ada untuk **identitas**: NPSN dan nama sekolah **harus** dari Kemendikdasmen.
+- Untuk **koordinat** saja: geocoding dari alamat resmi → hanya boleh bila memenuhi tujuh syarat `derived_confirmed`, dan wajib mengisi `coordinate_method`, `secondary_coordinate_source`, `cross_validation_status`.
 
-Untuk setiap sekolah di Kabupaten Kubu Raya:
+### Unacceptable fallback
+- ⛔ Centroid desa/kecamatan sebagai koordinat sekolah.
+- ⛔ Koordinat dari layanan peta pihak ketiga **ketika portal resmi menyediakannya**.
+- ⛔ Mengisi koordinat untuk sekolah yang halaman profilnya tidak menampilkannya.
+- ⛔ Mengasumsikan seluruh sekolah memiliki koordinat/jumlah siswa.
 
-| Field | Catatan |
-|---|---|
-| `npsn` | **Wajib** — identifier resmi, dipakai untuk deduplikasi |
-| `facility_name` | Nama sekolah sesuai portal |
-| `education_level` | SD / SMP / SMA / SMK / dll |
-| `school_status` | Negeri / Swasta |
-| `address` | Alamat sesuai portal |
-| `village` | Desa/kelurahan |
-| `district` | Kecamatan |
-| `latitude`, `longitude` | **Hanya jika benar-benar ditampilkan portal.** Jika tidak ada → kosongkan |
-| `last_update` | Tanggal pembaruan bila ditampilkan |
-| jumlah peserta didik | Bila tersedia di halaman informasi pendidikan (opsional pada tahap ini) |
+### Expected format
+Ekspor CSV/Excel dari portal bila ada (simpan apa adanya); atau salinan HTML halaman; atau CSV transkripsi manual dengan kolom persis seperti daftar di atas + `source_url` dan `retrieved_at` per baris.
 
-### ⚠️ Aturan wajib
-
-- **Jangan mengisi koordinat yang tidak ditampilkan portal.** Kosongkan, jangan tebak, jangan pakai titik tengah desa.
-- **Jangan mengasumsikan semua sekolah punya koordinat** — EV-G hanya membuktikan sebagian halaman memuatnya.
-- Catat **tanggal pengambilan** (`retrieved_at`) dan **URL persis halaman** tempat tiap record diambil.
-
-### Format & lokasi file
-
-Simpan **mentah, tanpa diedit**, ke:
+### Destination folder
 ```
 data/raw/facilities/education/
 ```
-Format yang diterima (pilih salah satu, urut preferensi):
-1. Ekspor CSV/Excel dari portal, bila tersedia — simpan apa adanya.
-2. Salinan HTML halaman (`Save Page As`) — satu file per halaman, nama file mengandung kode wilayah/kecamatan.
-3. CSV hasil transkripsi manual, **dengan kolom persis seperti tabel di atas** + kolom `source_url` dan `retrieved_at` per baris.
+Sertakan `_MANIFEST.txt`: daftar file, URL asal, tanggal pengambilan.
 
-Sertakan satu file `data/raw/facilities/education/_MANIFEST.txt` berisi: daftar file, URL asalnya, dan tanggal pengambilan.
+### ⚠️ Peringatan interpretasi `electricity_source`
+Nilai "PLN" pada profil sekolah **hanya** berarti sumber listrik yang dilaporkan. **JANGAN** diartikan sebagai listrik andal, tidak pernah padam, tidak membutuhkan resilience, atau tidak membutuhkan PLTS. Ini **bukan** indikator keandalan pasokan.
 
 ---
 
-# REQ-02 — Inventaris Fasilitas Kesehatan (Portal Puskesmas Kubu Raya)
+# REQ-HEALTH-01 — Official Health Facility Identities & Addresses
 
 **Prioritas:** TINGGI
 
-### URL
-```
-https://puskesmas.kuburayakab.go.id/
-```
-Telusuri halaman per-puskesmas (pola yang teramati pada riset sebelumnya: `/<nama-puskesmas>/`, dengan sub-halaman seperti `read/9/sarana-dan-prasarana`).
+### Exact data needed
 
-### Yang perlu diambil
+Per puskesmas: `facility_source_id` (kode fasyankes/puskesmas resmi), `facility_name`, `facility_type`, `official_status` (rawat inap / non), `address`, `village`, `district`.
 
-| Field | Catatan |
-|---|---|
-| `facility_source_id` | Kode puskesmas resmi bila ditampilkan (mis. format `P6112xxxxxx`) — dipakai untuk deduplikasi |
-| `facility_name` | Nama resmi |
-| `facility_type` | Puskesmas / Puskesmas Rawat Inap / Pustu / dll |
-| `official_status` | Status rawat inap / non-rawat inap bila dinyatakan |
-| `address` | Alamat sesuai portal |
-| `village`, `district` | Desa/kelurahan dan kecamatan |
-| `latitude`, `longitude` | **Hanya jika ditampilkan.** Ketersediaan koordinat puskesmas BELUM terkonfirmasi — bila memang tidak ada, catat sebagai `not_available` |
+**Titik awal sudah tersedia:** 20 puskesmas sudah tercatat sebagai identity-only record di `data/interim/health_facilities.csv` (HF-001 … HF-020), bersumber dari daftar portal perangkat daerah Diskominfo Kubu Raya 2024 (EV-J). Request ini melengkapi field yang masih kosong — **dan memverifikasi apakah 20 itu daftar lengkap.**
 
-### ⚠️ Catatan khusus
+### Preferred official source
+1. `https://puskesmas.kuburayakab.go.id/` — portal per-puskesmas (pola teramati: `/<nama-puskesmas>/`, sub-halaman `read/9/sarana-dan-prasarana`).
+2. `https://kalbarsehat.kalbarprov.go.id/` — daftar fasyankes Kalbar, filter Kubu Raya (validasi silang + menangkap fasilitas yang tak ada di portal kabupaten).
+3. Open Data Kabupaten Kubu Raya, organisasi **Dinas Kesehatan** — dataset fasilitas/prasarana kesehatan.
 
-Riset sebelumnya menemukan indikasi bahwa sebagian halaman "sarana dan prasarana" bertuliskan **"masih dalam proses pengumpulan data"** — artinya kelengkapan antar-puskesmas kemungkinan tidak seragam. **Catat apa adanya**, jangan diisi dari sumber lain tanpa menandai.
+### Acceptable fallback
+- Dokumen resmi Dinkes/Pemkab (profil kesehatan kabupaten) untuk alamat.
+- Data agregat BPS **hanya** untuk mengecek kelengkapan jumlah per kecamatan.
 
-### Format & lokasi file
-```
-data/raw/facilities/health/
-```
-Aturan format sama seperti REQ-01, plus `_MANIFEST.txt`.
+### Unacceptable fallback
+- ⛔ Menebak `district` dari nama puskesmas (mis. "Puskesmas Batu Ampar" → district Batu Ampar). Kemiripan nama adalah petunjuk penelusuran, **bukan data**.
+- ⛔ Dataset agregat kecamatan dipakai sebagai data per-fasilitas.
+- ⛔ Sumber non-pemerintah untuk identitas fasilitas.
 
----
+### Expected format
+CSV/HTML/ekspor portal; bila transkripsi manual, gunakan kolom `data/interim/health_facilities.csv`. Gunakan prefiks file berbeda per sumber: `puskesmas-kkr_*` vs `kalbarsehat_*` vs `opendata-dinkes_*` — **jangan digabung** di tahap mentah.
 
-# REQ-03 — Fasilitas Kesehatan (Kalbar Sehat) — sumber pelengkap/silang
-
-**Prioritas:** SEDANG — berguna untuk validasi silang REQ-02 dan menangkap fasilitas yang tidak ada di portal kabupaten.
-
-### URL
-```
-https://kalbarsehat.kalbarprov.go.id/
-```
-Cari daftar fasyankes, filter Kabupaten Kubu Raya.
-
-### Yang perlu diambil
-Field sama dengan REQ-02, **plus identifier fasyankes** bila platform ini memakai penomoran berbeda dari portal kabupaten.
-
-### ⚠️ Aturan wajib
-- **Jangan menggabungkan record dari REQ-02 dan REQ-03 secara otomatis** berdasarkan kemiripan nama. Simpan terpisah; agent akan menandai `potential_duplicate` dan menyerahkan keputusan merge ke manusia.
-- Catat `source_name` berbeda untuk tiap portal agar asal tiap record tetap dapat ditelusuri.
-
-### Format & lokasi file
+### Destination folder
 ```
 data/raw/facilities/health/
 ```
-Gunakan prefiks nama file yang membedakan sumber, mis. `kalbarsehat_*` vs `puskesmas-kkr_*`.
 
 ---
 
-# REQ-04 — Validasi Jumlah (BPS) — opsional, untuk pengecekan kelengkapan
+# REQ-HEALTH-02 — Health Facility Coordinate Acquisition
 
-**Prioritas:** RENDAH (tapi murah)
+**Prioritas:** TINGGI — **ini penentu apakah puskesmas bisa masuk scoring sama sekali.**
 
-### Sumber
-Kabupaten Kubu Raya Dalam Angka **2026** (EV-B, `verified_primary`):
+Dipisahkan dari REQ-HEALTH-01 karena ketersediaan koordinat puskesmas **belum pernah terkonfirmasi sumber mana pun**, sementara identitas sudah. Ini pertanyaan terbuka terbesar yang tersisa.
+
+### Exact data needed
+Per puskesmas: `latitude`, `longitude`, `coordinate_quality`, `coordinate_source_name`, `coordinate_source_url`, `coordinate_source_type`, `coordinate_method`, `coordinate_retrieved_at`, `coordinate_notes`.
+
+### Preferred official source (urut prioritas)
+1. Koordinat yang ditampilkan langsung di portal puskesmas/Kalbar Sehat → `coordinate_quality = official_exact`.
+2. Dataset geospasial resmi Dinkes/Pemkab/Kemenkes yang memuat titik fasyankes → `official_exact`.
+
+### Acceptable fallback
+Geocoding dari **alamat resmi** hasil REQ-HEALTH-01 → `derived_confirmed`, **hanya** bila ketujuh syarat di `SCHEMA.md` §A terpenuhi, termasuk pencocokan silang dengan sumber kedua dan konfirmasi bahwa titik mengarah ke fasilitas yang benar.
+
+### Unacceptable fallback
+- ⛔ Centroid desa/kecamatan.
+- ⛔ Geocode yang hanya menemukan jalan atau desa → itu `approximate`, **map display only**, dilarang untuk GHI/hazard/scoring.
+- ⛔ Titik dengan beberapa kemungkinan fasilitas tanpa penyelesaian ambiguitas.
+- ⛔ Menandai koordinat turunan sebagai "koordinat resmi pemerintah".
+
+### Expected format
+CSV dengan kolom provenance koordinat lengkap (lihat `SCHEMA.md` §C). Satu baris per puskesmas, dapat dicocokkan ke `record_id` HF-001…HF-020.
+
+### Destination folder
 ```
-https://kuburayakab.bps.go.id/id/publication/2026/02/27/c93f971b4b29eaf6005aa0e3/kubu-raya-regency-in-figures-2026.html
+data/raw/facilities/health/coordinates/
 ```
 
-### Yang perlu diambil
-Tabel **jumlah** fasilitas kesehatan dan sekolah **per kecamatan**.
-
-### Kegunaan
-Hanya untuk menjawab: *"apakah inventaris yang terkumpul sudah mendekati lengkap?"* — mis. bila BPS menyebut 20 puskesmas tapi REQ-02 hanya menghasilkan 12, ada 8 yang terlewat.
-
-### ⚠️ Aturan wajib
-- Ini **angka agregat per kecamatan**, **BUKAN** data per fasilitas. Jangan dipakai untuk mengisi field fasilitas mana pun.
-- Catat `data_reference_year` tabelnya (umumnya 2025) **terpisah** dari `publication_year` (2026).
-
-### Format & lokasi file
-```
-data/raw/facilities/_validation/
-```
-(buat folder ini bila diperlukan)
+### Bila koordinat resmi ternyata tidak ada
+Laporkan apa adanya — **jangan diisi paksa**. Konsekuensinya keputusan produk (§H Prompt 3A.1): puskesmas tanpa `official_exact`/`derived_confirmed` tidak masuk site-level scoring, tetapi **produk tidak dipersempit** hanya karena itu; komposisi kandidat bergeser ke kategori yang datanya lebih kuat.
 
 ---
 
-# REQ-05 — Geometri Batas Administratif Kubu Raya
+# REQ-GEO-01 — Official Administrative Geometry
 
-**Prioritas:** SEDANG — dibutuhkan untuk validasi geospasial yang benar.
+**Prioritas:** SEDANG — dibutuhkan untuk validasi geospasial yang sahih (menggantikan bounding box heuristik).
 
-### Kebutuhan
-File geometri batas administratif Kabupaten Kubu Raya (dan idealnya batas 9 kecamatannya), format GeoJSON/Shapefile, dari sumber resmi (mis. Badan Informasi Geospasial / portal geospasial pemerintah).
+### Exact data needed
+Geometri batas administratif **Kabupaten Kubu Raya**, idealnya sampai level **kecamatan** (dan desa bila tersedia). Wajib didokumentasikan sebelum dipakai: `source`, `year`, `geometry level`, `CRS`, `license/access`.
 
-### Kegunaan
-Mengganti bounding box sementara berstatus `snippet_only` (lihat `data/interim/SCHEMA.md`) dengan uji **point-in-polygon** yang sahih untuk menandai `coordinate_outlier`.
+### Preferred official source
+1. Satu Data Kabupaten Kubu Raya — group **Geografi**.
+2. Tanah Air Indonesia / BIG — layer batas administrasi **Kalimantan Barat**.
 
-### Format & lokasi file
+### Acceptable fallback
+Dataset batas administratif dari lembaga pemerintah lain, **asalkan** tahun, level, dan CRS-nya terdokumentasi.
+
+### Unacceptable fallback
+- ⛔ Bounding box heuristik sebagai validasi produksi (hanya boleh sebagai sanity check awal).
+- ⛔ Geometri dari sumber tanpa provenance/tahun yang jelas.
+
+### Expected format
+GeoJSON (preferensi) atau Shapefile, beserta file metadata/lisensi.
+
+### Destination folder
 ```
 data/raw/facilities/_boundary/
 ```
 
 ---
 
-## Daftar 9 kecamatan Kubu Raya (untuk kelengkapan penelusuran)
+# REQ-VAL-01 *(opsional, murah)* — Validasi Kelengkapan via BPS
+
+Tabel **jumlah** fasilitas kesehatan & sekolah per kecamatan dari Kabupaten Kubu Raya Dalam Angka **2026** (EV-B):
+```
+https://kuburayakab.bps.go.id/id/publication/2026/02/27/c93f971b4b29eaf6005aa0e3/kubu-raya-regency-in-figures-2026.html
+```
+**Kegunaan tunggal:** menjawab "apakah inventaris sudah mendekati lengkap?" — mis. bila BPS menyebut 22 puskesmas sedangkan daftar Diskominfo memuat 20, ada 2 yang terlewat.
+**⛔ Dilarang** dipakai mengisi field fasilitas mana pun. Catat `data_reference_year` (umumnya 2025) terpisah dari `publication_year` (2026).
+**Destination:** `data/raw/facilities/_validation/`
+
+---
+
+## Informasi yang masih kurang dari handoff sebelumnya
+
+| Item | Status |
+|---|---|
+| **URL persis dataset "Portal Website Perangkat Daerah Tahun 2024"** (Satu Data/Diskominfo Kubu Raya) | ⚠️ **Belum diberikan.** Nama dataset dan daftar 20 puskesmas sudah diterima, tetapi URL-nya belum — sehingga `source_url` pada HF-001…HF-020 sengaja dikosongkan, bukan dikarang. **Mohon dilengkapi.** |
+| URL persis dataset Open Data Dinkes Kubu Raya | ⚠️ Belum diberikan — dicatat sebagai pathway, URL menyusul |
+| URL persis Satu Data Kubu Raya group Geografi | ⚠️ Belum diberikan |
+
+---
+
+## Daftar 9 kecamatan Kubu Raya (checklist penelusuran)
 
 Batu Ampar · Kuala Mandor B · Kubu · Rasau Jaya · Sungai Ambawang · Sungai Kakap · Sungai Raya · Teluk Pakedai · Terentang
 
-> ⚠️ Daftar ini berstatus `snippet_only` dan **hanya dipakai sebagai checklist penelusuran**, bukan sebagai data proyek. Satu hasil pencarian menyebut adanya kecamatan baru dalam proses pemekaran — **konfirmasi daftar resmi** saat mengerjakan REQ-04. Jumlah desa juga belum dikonfirmasi.
+> ⚠️ `snippet_only`, **checklist penelusuran saja, bukan data proyek.** Satu hasil pencarian menyebut ada kecamatan baru dalam proses pemekaran — konfirmasi daftar resmi via REQ-VAL-01.
 
 ---
 
 ## Cara agent memproses file setelah diserahkan
 
-Begitu file tersedia di `data/raw/facilities/...`, agent akan:
+1. **Baca file mentah tanpa mengubahnya** — `data/raw/` bersifat immutable.
+2. **Petakan kolom sumber → skema** `data/interim/SCHEMA.md`; untuk kesehatan, cocokkan ke `record_id` HF-001…HF-020 yang sudah ada (jangan buat duplikat).
+3. **Isi `*_vstatus` per field** — ada di portal resmi → `verified_primary`; kosong di sumber → `not_available`; belum dicek → biarkan kosong.
+4. **Tetapkan `coordinate_quality`** sesuai §A `SCHEMA.md`, lengkap dengan seluruh kolom provenance koordinat. Bila `derived_confirmed`, verifikasi ketujuh syaratnya satu per satu.
+5. **Validasi geospasial** — sanity check rentang, lalu point-in-polygon terhadap geometri REQ-GEO-01 bila sudah ada. Outlier **di-flag, tidak dihapus**.
+6. **Pemeriksaan duplikat** — identifier resmi lebih dulu; kemiripan nama hanya memicu `potential_duplicate`, **tanpa merge otomatis**.
+7. **Catat provenance per record.**
+8. **Perbarui** `research/FACILITY_ACQUISITION_REPORT.md` dengan hitungan sebenarnya, termasuk distribusi `coordinate_quality`.
+9. **Tidak** menghitung skor/bobot/Data Confidence.
 
-1. **Membaca file mentah tanpa mengubahnya.** File di `data/raw/` bersifat immutable.
-2. **Memetakan kolom sumber → skema** `data/interim/SCHEMA.md`, satu baris per fasilitas, dengan `record_id` yang dibuat agent (mis. `HF-001`, `EF-001`).
-3. **Mengisi `*_vstatus` per field**, bukan per record:
-   - field yang benar-benar ada di portal resmi → `verified_primary`;
-   - field yang kosong di sumber → dibiarkan kosong + `not_available`;
-   - field yang belum dicek → dibiarkan kosong + `*_vstatus` kosong.
-4. **Mengisi `coordinate_source`** sesuai asal koordinat; koordinat non-portal ditandai eksplisit.
-5. **Menjalankan validasi geospasial**: cek rentang lat/lon, lalu uji wilayah. Titik di luar wilayah **di-flag `coordinate_outlier = true`, tidak dihapus**.
-6. **Menjalankan pemeriksaan duplikat**: pencocokan pada identifier resmi (NPSN / kode fasyankes) lebih dulu; kemiripan nama **hanya** memicu `potential_duplicate = true` + `duplicate_of`, **tanpa merge otomatis**.
-7. **Mencatat provenance per record**: `source_name`, `source_url`, `data_year`, `retrieved_at`.
-8. **Memperbarui** `research/FACILITY_ACQUISITION_REPORT.md` dengan hitungan sebenarnya (record, koordinat valid, per kecamatan, duplikat, outlier, field hilang).
-9. **Tidak** menghitung skor/bobot/Data Confidence — itu tahap berikutnya dan memerlukan audit terlebih dahulu.
+## Definition of done (gate Prompt 3B)
 
-## Definition of done untuk tahap ini
+- [ ] Minimal **8–10 facility record** memiliki: `identity` + `district` + `traceable source` + `coordinate_quality ∈ {official_exact, derived_confirmed}`;
+- [ ] REQ-EDU-01 dan REQ-HEALTH-01 dieksekusi;
+- [ ] REQ-HEALTH-02 dieksekusi **atau** dilaporkan bahwa koordinat resmi puskesmas tidak tersedia (agar keputusan komposisi kandidat dapat diambil);
+- [ ] URL dataset yang masih kurang (tabel di atas) dilengkapi.
 
-Prompt 3B baru layak dijalankan bila:
-
-- [ ] REQ-01 dan REQ-02 (minimal) terpenuhi;
-- [ ] jumlah record fasilitas dengan **koordinat `official_portal`** cukup untuk membentuk kandidat yang bermakna (target MVP §7 `PROJECT_CONTEXT.md`: 10–15 lokasi, sehingga kandidat berkoordinat sebaiknya **melebihi** angka itu agar ada ruang seleksi);
-- [ ] bila koordinat resmi ternyata langka, keputusan manusia diambil lebih dulu mengenai strategi fallback (geocoding/digitasi) beserta konsekuensi akurasinya.
+> Ini **bukan** final 10–15 pilot sites — ini ambang agar tahap akuisisi berikutnya layak dijalankan.

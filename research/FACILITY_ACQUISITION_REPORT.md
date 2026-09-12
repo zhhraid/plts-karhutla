@@ -1,118 +1,125 @@
 # FACILITY_ACQUISITION_REPORT.md — Laporan Akuisisi Inventaris Fasilitas
 
-**Pass:** Prompt 3A — Acquisition: Facility Inventory
+**Pass:** Prompt 3A → **diperbarui Prompt 3A.1** (External Handoff & Coordinate Quality Policy)
 **Tanggal:** 2026-09-12
-**Hasil:** ⛔ **0 record diakuisisi** — seluruh sumber fasilitas diblokir egress. **Tidak ada data yang dibuat/ditebak.**
+**Hasil:** **20 identity-only record** (kesehatan) dari external acquisition · **0 record berkoordinat** · ⛔ **gate Prompt 3B masih tertutup**
 
 ---
 
 ## Ringkasan Eksekutif
 
-Ketiga sumber fasilitas yang ditetapkan READY pada Prompt 2.6 diuji ulang dan **ketiganya ditolak `EGRESS_BLOCKED`** oleh kebijakan egress organisasi. Sesuai §G Prompt 3A ("Jika environment masih EGRESS_BLOCKED: JANGAN berhenti dengan membuat data"), agent tidak mengisi satu pun record dan sebagai gantinya membangun **infrastruktur akuisisi lengkap** agar data yang diserahkan manusia dapat langsung diproses.
+Prompt 3A.1 menghasilkan dua hal: **kebijakan kualitas koordinat yang dikunci** (menentukan data mana yang boleh masuk scoring), dan **20 identitas puskesmas terverifikasi** hasil external acquisition.
 
-**Penting untuk dipahami:** ini **bukan** kemunduran dari Prompt 2.6. Status `READY_FOR_ACQUISITION` pada Prompt 2.6 berarti *"sumbernya terverifikasi ada dan spesifikasinya diketahui"* — bukan *"agent ini dapat menjangkaunya"*. Keterbatasan jaringan environment agent tidak pernah hilang dan memang selalu dicatat.
+Yang **belum** dihasilkan — dan ini yang memblokir gate — adalah **koordinat**. Tidak satu pun dari 20 record memiliki koordinat, sehingga tidak satu pun layak untuk GHI extraction, hazard extraction, maupun spatial scoring.
+
+**Kerangka mental yang tepat:** identitas terverifikasi ≠ lokasi terverifikasi. Kita kini tahu *fasilitas apa saja yang ada*; kita masih belum tahu *di mana persisnya*. Untuk sebuah decision support system geospasial, yang kedua justru yang menentukan.
 
 ---
 
 ## 1. Jumlah Record
 
-| Dataset | Record | File |
-|---|---|---|
-| Fasilitas kesehatan | **0** | `data/interim/health_facilities.csv` (header saja) |
-| Sekolah | **0** | `data/interim/education_facilities.csv` (header saja) |
+| Dataset | Record | Layak scoring | File |
+|---|---|---|---|
+| Fasilitas kesehatan | **20** (identity-only) | **0** | `data/interim/health_facilities.csv` |
+| Sekolah | **0** | **0** | `data/interim/education_facilities.csv` (header saja) |
 
-## 2. Koordinat
+## 2. Distribusi `coordinate_quality`
 
-| Metrik | Kesehatan | Sekolah |
-|---|---|---|
-| Koordinat valid | 0 | 0 |
-| Tanpa koordinat | 0 | 0 |
-| `coordinate_outlier` | 0 | 0 |
-
-*(Nol di sini berarti "tidak ada record sama sekali", bukan "sudah dicek dan hasilnya nol".)*
+| Nilai | Kesehatan | Sekolah | Boleh scoring? |
+|---|---|---|---|
+| `official_exact` | 0 | 0 | ✅ |
+| `derived_confirmed` | 0 | 0 | ✅ (provisional, berlabel) |
+| `approximate` | 0 | 0 | ⛔ map display only |
+| `missing` | **20** | 0 | ⛔ |
 
 ## 3. Jumlah per Kecamatan
 
-Tidak dapat dihitung — belum ada record. Sembilan kecamatan yang harus tercakup saat akuisisi (checklist, `snippet_only`):
+**Tidak dapat dihitung — `district` kosong pada seluruh 20 record.**
 
-Batu Ampar · Kuala Mandor B · Kubu · Rasau Jaya · Sungai Ambawang · Sungai Kakap · Sungai Raya · Teluk Pakedai · Terentang
-
-⚠️ Satu hasil pencarian mengindikasikan adanya kecamatan baru dalam proses pemekaran — daftar resmi wajib dikonfirmasi via REQ-04.
+Ini disengaja. Delapan dari 20 nama puskesmas menyerupai nama kecamatan (Sungai Kakap, Teluk Pakedai, Sungai Ambawang, Kuala Mandor B, Batu Ampar, Rasau Jaya, Terentang, Kubu), tetapi **mengisi `district` dari kemiripan nama adalah inferensi, bukan data** — dan dilarang oleh `SCHEMA.md` §H. Puskesmas dapat berada di kecamatan yang berbeda dari namanya, dan satu kecamatan dapat memiliki lebih dari satu puskesmas.
 
 ## 4. Source Coverage
 
-| Sumber | Status Prompt 2.6 | Hasil uji Prompt 3A | Record diperoleh |
-|---|---|---|---|
-| Kemendikdasmen (Dapodik) | `READY_FOR_ACQUISITION_WITH_FIELD_VALIDATION` (EV-G) | ❌ EGRESS_BLOCKED | 0 |
-| Portal Puskesmas Kubu Raya | `READY_FOR_ACQUISITION_WITH_FIELD_VALIDATION` (EV-H) | ❌ EGRESS_BLOCKED | 0 |
-| Kalbar Sehat | `READY_FOR_ACQUISITION_WITH_FIELD_VALIDATION` (EV-H) | ❌ EGRESS_BLOCKED | 0 |
-| BPS Kubu Raya Dalam Angka 2026 | `READY_FOR_MANUAL_ACQUISITION` (EV-B) | tidak diuji (bukan sumber inventaris per-fasilitas) | 0 |
-
-**Coverage: 0%.**
+| Sumber | Status | Hasil |
+|---|---|---|
+| Diskominfo Kubu Raya — Portal Perangkat Daerah 2024 (EV-J) | ✅ external verified | **20 identitas puskesmas** |
+| Kemendikdasmen / Dapodik (EV-G, EV-I) | ✅ pathway verified, ❌ agent EGRESS_BLOCKED | 0 record |
+| Portal Puskesmas Kubu Raya (EV-H) | ✅ pathway verified, ❌ agent EGRESS_BLOCKED | 0 record |
+| Kalbar Sehat (EV-H) | ✅ pathway verified, ❌ agent EGRESS_BLOCKED | 0 record |
+| Open Data Dinkes Kubu Raya (EV-K) | ✅ pathway verified | 0 record (isi belum dibaca) |
 
 ## 5. Suspected Duplicate
 
-Tidak ada — belum ada record. Aturan deduplikasi sudah ditetapkan di `data/interim/SCHEMA.md`: pencocokan **identifier resmi lebih dulu** (NPSN untuk sekolah, kode fasyankes/puskesmas untuk kesehatan); kemiripan nama **tidak pernah** memicu merge otomatis, hanya flag `potential_duplicate`.
+**0 terdeteksi.** Kedua puluh nama berbeda satu sama lain. Namun deduplikasi **belum benar-benar dapat dilakukan** karena `facility_source_id` (kode fasyankes resmi) masih kosong pada seluruh record — dan kemiripan nama tidak pernah cukup untuk merge. Duplikat lintas-sumber baru dapat diperiksa setelah REQ-HEALTH-01 dan REQ-HEALTH-03 (Kalbar Sehat) masuk.
 
 ## 6. Coordinate Outlier
 
-Tidak ada — belum ada record. Prosedur sudah ditetapkan:
-1. Rentang dasar `lat ∈ [-90,90]`, `lon ∈ [-180,180]`;
-2. Penyaring wilayah sementara (bounding box permisif, `snippet_only`): `lat ∈ [-1,05; +0,80]`, `lon ∈ [108,5; 110,0]`;
-3. Titik di luar wilayah **di-flag, tidak dihapus**.
+**0** — tidak ada koordinat untuk divalidasi.
 
-⚠️ **Temuan yang perlu dicatat:** dua sumber pencarian memberi rentang koordinat batas Kubu Raya yang **berbeda** (satu menyebut lintang 0°13'S–1°00'S / bujur 109°02'–109°58'E; satu lagi 0°44'N–1°01'S / 108°35'–109°58'E). Karena itu bounding box sengaja dibuat permisif agar tidak menyaring record yang sah, dan **wajib diganti** dengan point-in-polygon terhadap geometri batas resmi (REQ-05).
+Kebijakan validasi berubah pada pass ini: bounding box heuristik **turun status** menjadi sanity check awal saja. Validasi produksi menggunakan **point-in-polygon** terhadap geometri batas administratif resmi (REQ-GEO-01, EV-L). Titik yang gagal → `coordinate_outlier = true`, **tidak dihapus**.
 
 ## 7. Missing Critical Fields
 
-Seluruh field hilang karena tidak ada record. Yang paling kritis untuk MVP, berdasarkan status evidence saat ini:
-
-| Field | Risiko | Dasar |
+| Field | Missing | Risiko |
 |---|---|---|
-| `latitude` / `longitude` **puskesmas** | 🔴 **TERTINGGI** — ketersediaan belum pernah terkonfirmasi di sumber mana pun | EV-H hanya memverifikasi *data path*, bukan kelengkapan field |
-| `latitude` / `longitude` **sekolah** | 🟡 SEDANG — jalur terverifikasi ada, tapi **tidak semua** sekolah memilikinya | EV-G |
-| `beneficiary_count` (jumlah terlayani per fasilitas) | 🔴 TINGGI — tidak tersedia publik; hanya agregat kecamatan | NA-02 |
-| Kode fasyankes resmi | 🟡 SEDANG — dibutuhkan untuk deduplikasi lintas portal | belum terkonfirmasi |
+| `latitude` / `longitude` | 20/20 | 🔴 **BLOCKER** — tanpa ini tidak ada spatial analysis sama sekali |
+| `district` | 20/20 | 🔴 TINGGI — dibutuhkan gate; **tidak boleh diinferensi dari nama** |
+| `address` | 20/20 | 🔴 TINGGI — prasyarat jalur `derived_confirmed` |
+| `facility_source_id` | 20/20 | 🟡 SEDANG — dibutuhkan untuk deduplikasi lintas portal |
+| `official_status` (rawat inap/non) | 20/20 | 🟡 SEDANG — relevan untuk facility criticality |
+| `source_url` | 20/20 | 🟡 SEDANG — URL dataset Diskominfo belum diberikan; **dikosongkan, bukan dikarang** |
+| Seluruh field sekolah | 100% | 🔴 TINGGI — REQ-EDU-01 belum dieksekusi |
 
 ## 8. Manual Acquisition Requirement
 
-**Wajib.** Lima permintaan terperinci disusun di `research/MANUAL_ACQUISITION_REQUESTS.md`:
+**Wajib.** Permintaan direstrukturisasi menjadi empat request utama (`research/MANUAL_ACQUISITION_REQUESTS.md`), masing-masing dengan *exact data needed / preferred official source / acceptable fallback / unacceptable fallback / expected format / destination folder*:
 
-| ID | Sumber | Prioritas |
+| ID | Isi | Prioritas |
 |---|---|---|
-| REQ-01 | Kemendikdasmen — inventaris sekolah | TINGGI |
-| REQ-02 | Portal Puskesmas Kubu Raya | TINGGI |
-| REQ-03 | Kalbar Sehat (validasi silang) | SEDANG |
-| REQ-04 | BPS 2026 — validasi kelengkapan jumlah | RENDAH |
-| REQ-05 | Geometri batas administratif | SEDANG |
-
-Masing-masing memuat: URL persis, field yang diambil, aturan wajib (termasuk larangan menebak koordinat), format file, folder tujuan, dan langkah pemrosesan agent setelah file diserahkan.
+| **REQ-EDU-01** | Official school facility records (termasuk koordinat resmi) | TINGGI |
+| **REQ-HEALTH-01** | Official health facility identities & addresses (melengkapi HF-001…HF-020) | TINGGI |
+| **REQ-HEALTH-02** | Health facility coordinate acquisition | **TINGGI — penentu gate** |
+| **REQ-GEO-01** | Official administrative geometry | SEDANG |
+| REQ-VAL-01 | Validasi kelengkapan via BPS 2026 | RENDAH |
 
 ---
 
-## Yang Dibangun pada Pass Ini
+## Kebijakan yang Dikunci pada Pass Ini
 
-Meski 0 record, pass ini menghasilkan infrastruktur yang membuat akuisisi berikutnya langsung dapat diproses:
+### Coordinate quality (`data/interim/SCHEMA.md` §A)
 
-| Artefak | Isi |
-|---|---|
-| `data/raw/facilities/health/`, `data/raw/facilities/education/` | Folder tujuan file mentah (immutable) |
-| `data/interim/health_facilities.csv` | Skema 29 kolom, header saja |
-| `data/interim/education_facilities.csv` | Skema 31 kolom, header saja |
-| `data/interim/SCHEMA.md` | Kontrak data: aturan NULL, enum `*_vstatus` per field, enum `coordinate_source`, aturan deduplikasi, prosedur validasi geospasial |
-| `research/MANUAL_ACQUISITION_REQUESTS.md` | 5 permintaan akuisisi siap eksekusi + definition of done |
+Empat tingkat, masing-masing dengan kelayakan penggunaan yang berbeda:
 
-Desain skema mengikuti instruksi **verifikasi per-field**: setiap field penting punya kolom `*_vstatus` sendiri, sehingga satu fasilitas dapat memiliki `facility_name = verified_primary` bersamaan dengan `latitude = not_available` — tanpa membuang seluruh record.
+| Tingkat | Peta | GHI/hazard | Scoring | Site recommendation |
+|---|---|---|---|---|
+| `official_exact` | ✅ | ✅ | ✅ | ✅ |
+| `derived_confirmed` (7 syarat wajib) | ✅ | ✅ provisional | ✅ provisional | ✅ provisional |
+| `approximate` | ✅ berlabel | ⛔ | ⛔ | ⛔ |
+| `missing` | ⛔ | ⛔ | ⛔ | ⛔ |
+
+`derived_confirmed` **tidak boleh** ditampilkan sebagai "koordinat resmi pemerintah".
+
+### Larangan centroid (permanen, §B)
+
+Village/district/administrative centroid dan bounding-box center **dilarang** merepresentasikan lokasi fasilitas untuk scoring. Alasannya bukan sekadar akurasi: titik tengah desa **bukan lokasi fasilitas dengan presisi rendah** — itu lokasi desa, dan nilai GHI/hazard yang diekstrak darinya menggambarkan tempat lain.
+
+### Komposisi kandidat (§I Prompt 3A.1)
+
+Kuota "5 sekolah + 5 puskesmas + 3 PLTS" **tidak lagi dipaksakan**. Komposisi ditentukan setelah acquisition quality audit — **kualitas data diprioritaskan di atas kuota kategori**. Bila koordinat sekolah lebih lengkap, kandidat boleh didominasi sekolah, dan sebaliknya.
 
 ---
 
 ## Status Gate untuk Prompt 3B
 
-⛔ **BELUM SIAP.**
+⛔ **MASIH TERTUTUP.**
 
-Syarat minimum yang belum terpenuhi:
-1. REQ-01 dan REQ-02 belum dieksekusi → 0 kandidat fasilitas;
-2. Belum diketahui **berapa** fasilitas yang benar-benar memiliki koordinat resmi — ini pertanyaan terbuka terpenting, karena menentukan apakah pendekatan berbasis peta layak sama sekali;
-3. Bila koordinat resmi ternyata langka, dibutuhkan **keputusan manusia** mengenai strategi fallback (geocoding dari alamat / digitasi manual) beserta konsekuensi akurasinya terhadap kredibilitas produk.
+| Syarat gate | Status |
+|---|---|
+| ≥ 8–10 record dengan identity + district + traceable source + `coordinate_quality ∈ {official_exact, derived_confirmed}` | ❌ **0 record** memenuhi |
+| REQ-EDU-01 dieksekusi | ❌ belum |
+| REQ-HEALTH-01 dieksekusi | ⚠️ sebagian — identitas ada, alamat & district belum |
+| REQ-HEALTH-02 dieksekusi atau dilaporkan nihil | ❌ belum |
 
-**Prompt 3B (solar/hazard) tidak dijalankan** — tanpa titik fasilitas berkoordinat, tidak ada apa pun untuk di-overlay dengan data surya maupun bencana.
+**Kemajuan yang nyata:** dari 0 → 20 identitas terverifikasi, dan kebijakan yang menentukan kelayakan data kini terkunci. **Yang tersisa adalah satu hal: koordinat.**
+
+**Pertanyaan terbuka terpenting** (belum terjawab sejak Prompt 2.6): apakah portal puskesmas/Kalbar Sehat benar-benar menampilkan koordinat? Bila ya, gate terbuka cepat lewat REQ-HEALTH-02 jalur `official_exact`. Bila tidak, jalur `derived_confirmed` lewat geocoding alamat resmi memerlukan REQ-HEALTH-01 terlebih dulu — dan konsekuensinya: seluruh puskesmas akan berkoordinat turunan yang **wajib berlabel**, bukan koordinat resmi.

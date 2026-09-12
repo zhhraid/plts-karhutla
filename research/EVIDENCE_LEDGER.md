@@ -121,6 +121,56 @@ Kategori: `policy`, `solar`, `disaster`, `social`, `facility`, `electricity`, `e
 
 ---
 
+---
+
+## Tambahan Prompt 3A.1 (EV-I – EV-L)
+
+> ℹ️ Sama seperti EV-A – EV-H: **diverifikasi di luar environment agent ini**, `verification_method: external_manual_verification`. Agent tidak membuka URL-nya.
+
+**EV-I — Kapabilitas Portal Referensi Pendidikan (profil satuan pendidikan)**
+- claim: Pada profil sekolah tertentu, portal resmi Kemendikdasmen dapat menampilkan: **NPSN, nama, alamat, desa, kecamatan, kabupaten, status, jenjang, latitude, longitude**, serta beberapa informasi sarana termasuk **sumber listrik**.
+- category: `facility`
+- publisher: Kemendikdasmen
+- source_url: https://referensi.data.kemendikdasmen.go.id/
+- source_authority: **A** | verification_status: **`verified_primary`** | verification_method: **`external_manual_verification`**
+- proposal_usage_status: `SAFE_TO_USE` (untuk menyatakan kapabilitas sumber)
+- notes: ⚠️ Yang terverifikasi adalah **kapabilitas sumber**, bukan kelengkapan tiap sekolah. **Tidak semua sekolah otomatis memiliki semua field** — record aktual tetap harus diakuisisi per sekolah dan divalidasi per field.
+- ⚠️ **Peringatan interpretasi `Sumber Listrik = PLN`:** nilai ini **hanya** berarti sumber listrik yang dilaporkan pada profil pendidikan. **JANGAN** diartikan sebagai listrik andal, tidak pernah padam, tidak membutuhkan resilience, atau tidak membutuhkan PLTS. Menggunakan field ini sebagai indikator keandalan pasokan adalah kesalahan interpretasi yang akan merusak logika Resilience Need Score.
+- **Dampak:** memperkuat EV-G. Jalur `coordinate_quality = official_exact` untuk sekolah kini terverifikasi ada.
+
+**EV-J — Daftar Identitas Puskesmas Kubu Raya (Diskominfo 2024)**
+- claim: Sumber resmi Kabupaten Kubu Raya tahun 2024 mencantumkan portal/subdomain sejumlah Puskesmas di wilayah Kubu Raya. Nama yang muncul antara lain: Sungai Durian, Sungai Raya Dalam, Korpri, Sungai Asam, Sungai Kakap, Punggur, Sungai Rengas, Teluk Pakedai, Sungai Ambawang, Lingga, Parit Timur, Kuala Mandor B, Batu Ampar, Padang Tikar, Sungai Kerawang, Rasau Jaya, Terentang, Sungai Radak, Kubu, Air Putih **(20 nama)**.
+- category: `facility`
+- source_title: "Portal Website Perangkat Daerah Tahun 2024"
+- publisher: Satu Data / Diskominfo Kabupaten Kubu Raya
+- source_url: ⚠️ **belum diberikan dalam handoff** — dicatat sebagai gap, tidak dikarang (lihat `MANUAL_ACQUISITION_REQUESTS.md`)
+- data_year: 2024
+- source_authority: **A** | verification_status: **`verified_primary`** | verification_method: **`external_manual_verification`**
+- proposal_usage_status: `SAFE_WITH_HISTORICAL_LABEL` (daftar per 2024)
+- notes: ⚠️ **Memverifikasi identity/data pathway SAJA.** **TIDAK** memverifikasi: koordinat, alamat, status operasional terkini, jumlah pasien, atau wilayah pelayanan. Seluruh field tersebut tetap harus diverifikasi masing-masing.
+- ⚠️ **Larangan inferensi:** nama puskesmas yang menyerupai nama kecamatan (mis. "Puskesmas Batu Ampar") **tidak boleh** dipakai untuk mengisi `district`. Itu petunjuk penelusuran, bukan data.
+- **Dampak:** dimasukkan ke `data/interim/health_facilities.csv` sebagai **20 identity-only record** (HF-001 … HF-020), seluruhnya `coordinate_quality = missing` dan **tidak layak scoring**.
+- **Observasi yang perlu ditindaklanjuti (belum terverifikasi):** terdapat "Puskesmas Sungai Kerawang" dan "Puskesmas Batu Ampar" — nama yang berhimpitan dengan desa/kecamatan penerima hibah PLTS 2021 (EV-F). Bila keterkaitan lokasi terkonfirmasi, ini kandidat bernilai tinggi (fasilitas kritis + PLTS eksisting di wilayah yang sama). **Keterkaitan ini belum diverifikasi dan tidak boleh diasumsikan.**
+
+**EV-K — Open Data Kesehatan Kabupaten Kubu Raya**
+- claim: Open Data Kabupaten Kubu Raya, organisasi **Dinas Kesehatan**, menyediakan dataset kesehatan termasuk dataset tahun 2025 seperti: jumlah rumah sakit/puskesmas menurut kecamatan, fasilitas kesehatan, prasarana fasilitas kesehatan, dan dataset relevan lainnya.
+- category: `facility`
+- publisher: Open Data Kabupaten Kubu Raya — Dinas Kesehatan
+- source_url: ⚠️ **belum diberikan dalam handoff**
+- data_year: 2025 (sebagian dataset)
+- source_authority: **A** | verification_status: **`verified_primary`** (pathway) | verification_method: **`external_manual_verification`**
+- proposal_usage_status: `NEEDS_MANUAL_VERIFICATION` (isi dataset belum dibaca)
+- notes: ⚠️ **Dataset agregat per kecamatan BUKAN site-level data** — dilarang dipakai mengisi field fasilitas individual. Gunakan hanya dataset yang benar-benar diperlukan; perannya terutama validasi kelengkapan.
+
+**EV-L — Jalur Geometri Batas Administratif**
+- claim: Terdapat jalur sumber untuk geometri batas administratif: (a) Satu Data Kabupaten Kubu Raya, group **Geografi**; dan/atau (b) Tanah Air Indonesia / BIG, layer batas administrasi **Kalimantan Barat**.
+- category: `facility` / geospatial QA
+- source_authority: **A** | verification_status: **`verified_primary`** (pathway) | verification_method: **`external_manual_verification`**
+- proposal_usage_status: `NEEDS_MANUAL_VERIFICATION`
+- notes: Sebelum dipakai wajib didokumentasikan: `source`, `year`, `geometry level`, `CRS`, `license/access`. **Dampak:** menggantikan bounding box heuristik `snippet_only` sebagai validasi produksi; bounding box turun statusnya menjadi sanity check awal saja.
+
+---
+
 ## Peta Dampak: Entri Lama yang Diperbarui EV-A – EV-H
 
 | Entri lama | Status setelah Prompt 2.6 |

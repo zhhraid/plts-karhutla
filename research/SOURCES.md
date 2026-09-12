@@ -39,6 +39,18 @@ Sejumlah sumber kritis telah diverifikasi **di luar environment agent ini**, men
 | Kemendikdasmen — referensi satuan pendidikan | EV-G | A | `verified_primary` | `external_manual_verification` |
 | Portal Puskesmas Kubu Raya + Kalbar Sehat | EV-H | A | `verified_primary` (data path) | `external_manual_verification` |
 
+**Sumber baru yang masuk registry pada Prompt 3A.1** (seluruhnya `external_manual_verification`):
+
+| ID | Nama Sumber | Penerbit | URL | Tier | Evidence |
+|---|---|---|---|---|---|
+| A-24 | "Portal Website Perangkat Daerah Tahun 2024" — daftar portal puskesmas | Satu Data / Diskominfo Kabupaten Kubu Raya | ⚠️ **URL belum diberikan dalam handoff** — tidak dikarang | A | EV-J |
+| A-25 | Open Data Kabupaten Kubu Raya — organisasi Dinas Kesehatan | Pemkab Kubu Raya | ⚠️ URL belum diberikan | A | EV-K |
+| A-26 | Satu Data Kabupaten Kubu Raya — group Geografi (batas administratif) | Pemkab Kubu Raya | ⚠️ URL belum diberikan | A | EV-L |
+| A-27 | Tanah Air Indonesia / BIG — layer batas administrasi Kalimantan Barat | Badan Informasi Geospasial | ⚠️ URL belum diberikan | A | EV-L |
+| A-28 | Referensi Data Pendidikan — profil satuan pendidikan (kapabilitas koordinat &amp; sumber listrik) | Kemendikdasmen | referensi.data.kemendikdasmen.go.id | A | EV-I |
+
+> ⚠️ **Gap yang perlu dilengkapi:** empat sumber di atas diterima sebagai *nama dataset/pathway* tanpa URL persis. URL sengaja **dikosongkan, bukan dikarang** — ini menjaga aturan provenance §10 `PROJECT_CONTEXT.md`. Lihat tabel "Informasi yang masih kurang" di `MANUAL_ACQUISITION_REQUESTS.md`.
+
 **Sumber baru yang masuk registry pada Prompt 2.6:**
 
 | ID | Nama Sumber | Penerbit | URL | Tier |
