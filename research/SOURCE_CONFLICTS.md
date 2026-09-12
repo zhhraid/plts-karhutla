@@ -5,7 +5,9 @@
 
 Sesuai `PROJECT_CONTEXT.md` §10 poin 6: **"Jangan memilih angka ketika dua sumber bertentangan tanpa mencatat konflik."** Tidak satu pun konflik di bawah diselesaikan secara sepihak.
 
-> ⚠️ **Status verifikasi pass Prompt 2.5:** WebFetch tetap diblokir oleh kebijakan egress organisasi untuk seluruh domain yang diuji (7/7 gagal, termasuk `kalbar.bpk.go.id`, `inarisk.bnpb.go.id`, `power.larc.nasa.gov`). **Tidak satu pun konflik di bawah dapat diselesaikan dengan membuka sumber asli.** Semua tetap terbuka.
+> ⚠️ **Status verifikasi pass Prompt 2.5:** WebFetch tetap diblokir oleh kebijakan egress organisasi untuk seluruh domain yang diuji (7/7 gagal, termasuk `kalbar.bpk.go.id`, `inarisk.bnpb.go.id`, `power.larc.nasa.gov`). **Tidak satu pun konflik dapat diselesaikan oleh environment agent ini.** Catatan keterbatasan ini sengaja dipertahankan.
+>
+> ✅ **Pembaruan Prompt 2.6 (external verification):** sebagian sumber telah diverifikasi **di luar environment agent ini** (`verification_method: external_manual_verification`). Dampaknya terhadap konflik: **CF-002 dikonfirmasi** sebagai `DIFFERENT_METRIC` oleh BNPB sendiri; **CF-004 sebagian terselesaikan**; **CF-006 baru ditemukan**. CF-001, CF-003, dan CF-005 **tetap terbuka**.
 
 ---
 
@@ -54,8 +56,11 @@ Sesuai `PROJECT_CONTEXT.md` §10 poin 6: **"Jangan memilih angka ketika dua sumb
 
 | Field | Isi |
 |---|---|
-| **Klasifikasi (Prompt 2.5)** | **`DIFFERENT_METRIC`** (primer) + `METHODOLOGY_DIFFERENCE` + `DIFFERENT_YEAR` (sekunder) |
-| **Klasifikasi sebelumnya (Prompt 2)** | "conflicting" — **klasifikasi ini KELIRU dan diperbaiki di sini** |
+| **Klasifikasi final (Prompt 2.6)** | ✅ **`DIFFERENT_METRIC — NOT DIRECTLY COMPARABLE`** — dikonfirmasi external verification |
+| **Klasifikasi (Prompt 2.5)** | `DIFFERENT_METRIC` (primer) + `METHODOLOGY_DIFFERENCE` + `DIFFERENT_YEAR` (sekunder) |
+| **Klasifikasi sebelumnya (Prompt 2)** | "conflicting" — **klasifikasi ini KELIRU dan diperbaiki** |
+
+> ✅ **Konfirmasi eksternal (EV-C, `external_manual_verification`):** InaRISK/BNPB **secara eksplisit membedakan Bahaya, Kerentanan, Kapasitas, dan Risiko** pada platformnya sendiri. Reklasifikasi Prompt 2.5 — yang saat itu hanya berupa inferensi analitis — kini **didukung oleh pernyataan lembaga sumbernya**. Aturan yang berlaku: **HAZARD ≠ RISK**; jangan membandingkan atau menggabungkan angka bahaya dan risiko seolah metrik yang sama. Ini **bukan** `TRUE_CONFLICT`.
 
 - **source_A:** Wijaya, Akbar &amp; Romiyanto — jurnal GEOGRAPHY (UMMAT) → **BAHAYA (hazard)**: Rendah 5,64%, Sedang 52,25%, Tinggi 42,11% (unit analisis: Kesatuan Hidrologis Gambut/KHG)
 - **source_B:** Muharrama &amp; Widjonarko (2023), Jurnal Teknik PWK UNDIP → **RISIKO (risk)**: didominasi kelas Rendah 44,60% (data kejadian 2015–2019)
@@ -137,14 +142,43 @@ Dugaan (belum terverifikasi): IRBI adalah **indeks komposit multi-bahaya pada le
 
 ---
 
+## CF-006 — Tahun operasi (2018) vs tahun penyerahan aset (2021), PLTS Batu Ampar
+
+**(Konflik baru, ditemukan Prompt 2.6)**
+
+| Field | Isi |
+|---|---|
+| **Klasifikasi** | `DIFFERENT_METRIC` (dugaan kuat: dua peristiwa berbeda) → **`UNRESOLVED`** |
+
+- **source_A:** EV-F, BPK Perwakilan Kalbar, terbit **30 Desember 2021** — `verified_primary` via `external_manual_verification`. Memverifikasi **penyerahan hibah aset PLTS** kepada tiga desa pada **2021**.
+- **source_B:** EV-038/039, `snippet_only` — menyebut program PLTS Komunal "sejak **2018**".
+
+**Analisis:** kedua tahun ini kemungkinan besar **tidak bertentangan** melainkan menandai **dua peristiwa berbeda** dalam siklus hidup aset yang sama: pembangunan/operasi (2018) dan serah terima aset ke pemerintah desa/BUMDes (2021). Pola ini lazim dalam proyek infrastruktur pemerintah. Namun kemungkinan lain belum tertutup — misalnya angka 2018 dari snippet memang keliru, atau kedua sumber merujuk program yang berbeda.
+
+**Konsekuensi untuk model data:**
+- `asset_handover_year = 2021` → **`verified_primary`**, boleh dipakai dengan label historis.
+- `commissioning_year` → **tetap `unverified`**, tidak boleh diisi 2018 tanpa verifikasi terpisah. Field ini **`NULL`** sampai ada sumber primer yang menyatakan tahun mulai operasi.
+- **Jangan** menyajikan 2021 sebagai tahun operasi, dan **jangan** menyajikan 2018 sebagai fakta.
+
+**recommended_action:** cari dokumen pengadaan/serah terima atau laporan program ESDM/Pemkab yang menyatakan tahun operasi secara eksplisit.
+
+**status:** **UNRESOLVED**
+
+---
+
 ## Ringkasan Reklasifikasi
 
-| ID | Klasifikasi Prompt 2 | Klasifikasi Prompt 2.5 | Terselesaikan? |
+| ID | Klasifikasi Prompt 2 | Klasifikasi Prompt 2.5 | **Status Prompt 2.6** |
 |---|---|---|---|
-| CF-001 | "conflicting" | `POSSIBLE_SEARCH_SUMMARY_ARTIFACT` + kandidat `DIFFERENT_SCOPE` | Tidak — capacity tetap NULL |
-| CF-002 | "conflicting" | **`DIFFERENT_METRIC`** (koreksi klasifikasi) | Sebagian — terbukti bukan konflik numerik |
-| CF-003 | "requires_verification" | `DIFFERENT_METRIC` (dugaan) | Tidak — IRBI dilarang jadi input skoring situs |
-| CF-004 | "requires_verification" | `POSSIBLE_SEARCH_SUMMARY_ARTIFACT` | Tidak — dampak berkurang (peran NASA POWER direklasifikasi) |
-| CF-005 | "NOT_FOUND/ambiguous" | `UNRESOLVED` (ambiguitas identifikasi) | Tidak |
+| CF-001 | "conflicting" | `POSSIBLE_SEARCH_SUMMARY_ARTIFACT` + kandidat `DIFFERENT_SCOPE` | ❌ **UNRESOLVED** — `capacity_kwp` tetap **NULL**. Diperkuat: EV-F memverifikasi artikel BPK **tanpa** memuat angka 150/250, memperkuat dugaan artefak ringkasan |
+| CF-002 | "conflicting" | `DIFFERENT_METRIC` (koreksi) | ✅ **DIFFERENT_METRIC — NOT DIRECTLY COMPARABLE**, dikonfirmasi EV-C |
+| CF-003 | "requires_verification" | `DIFFERENT_METRIC` (dugaan) | ❌ **UNRESOLVED** — IRBI tetap **dilarang** sebagai site-level scoring input pada MVP |
+| CF-004 | "requires_verification" | `POSSIBLE_SEARCH_SUMMARY_ARTIFACT` | ⚠️ **SEBAGIAN** — resolusi terkoreksi (EV-E: parameter surya ~1°×1°, parameter meteorologis berbeda; angka lama 0,5°×0,625° adalah grid meteorologis). **Satuan masih terbuka** |
+| CF-005 | "NOT_FOUND/ambiguous" | `UNRESOLVED` (ambiguitas identifikasi) | ❌ **UNRESOLVED** |
+| **CF-006** | — | — | ❌ **UNRESOLVED (baru)** — `commissioning_year` (2018?) vs `asset_handover_year` (2021, terverifikasi) |
 
-**Temuan penting dari pass ini:** hanya **satu** dari lima entri (CF-002) yang benar-benar dapat "diselesaikan" — dan penyelesaiannya adalah menemukan bahwa **itu bukan konflik sama sekali**, melainkan kesalahan klasifikasi pada Prompt 2 yang membandingkan dua metrik berbeda. **Nol konflik numerik nyata (`TRUE_CONFLICT`) yang terkonfirmasi** sejauh ini — karena tidak satu pun sumber asli dapat dibuka untuk membuktikan bahwa konflik itu benar-benar ada di sumbernya.
+### Temuan lintas-pass
+
+1. **Nol `TRUE_CONFLICT` terkonfirmasi.** Setelah dua pass audit, tidak satu pun "konflik" terbukti sebagai dua sumber kredibel yang benar-benar bertentangan pada metrik, scope, dan tahun yang sama. Yang ada: perbedaan metrik (CF-002, CF-004, CF-006), perbedaan scope, dan artefak ringkasan pencarian.
+2. **External verification mengurangi konflik, bukan menambah.** CF-002 dikonfirmasi bukan konflik; CF-004 sebagian terselesaikan. Satu konflik baru (CF-006) muncul justru karena verifikasi eksternal memberi **tanggal yang lebih presisi** (30 Desember 2021) — ini pertanda kualitas riset naik, bukan turun.
+3. **Yang masih benar-benar terbuka dan material: CF-001** (kapasitas) **dan CF-006** (tahun operasi). Keduanya menyangkut PLTS eksisting, dan keduanya berakibat sama: **field tersebut `NULL` sampai terverifikasi.**

@@ -109,14 +109,31 @@ Poin penting untuk penilaian jujur: keterbatasan #2, #3, dan #7 adalah **karakte
 
 ## 9. Kesimpulan
 
-> ## VIABLE PILOT WITH LIMITATIONS
-> **(status PROVISIONAL — tidak boleh dikutip dalam proposal sampai verifikasi Level-1 selesai)**
+> ## ✅ VIABLE PILOT WITH STRONG DATA PATHWAYS
+> **(diperbarui Prompt 2.6 berdasarkan `external_manual_verification`)**
+>
+> Tidak mengklaim Kubu Raya sebagai lokasi PLTS terbaik. Yang dinyatakan: **jalur sumber data untuk seluruh komponen utama MVP kini terverifikasi tersedia.**
 
-**Status tidak berubah dari Prompt 2, tetapi dasarnya berubah secara material.** Pada Prompt 2 status ini diberikan karena banyaknya sumber yang ditemukan. Pada Prompt 2.5, penilaian jumlah sumber dibuang dan diganti penilaian kualitas — hasilnya: **4 dari 7 dimensi berkekuatan LEMAH**, dan dimensi terkuat justru tidak memiliki daya pembeda antar-situs. Status yang sama kini berdiri di atas argumen yang jauh lebih sempit.
+### Dasar perubahan status (Prompt 2.5 → 2.6)
 
-**Mengapa bukan `STRONG PILOT CANDIDATE`:** tidak ada satu pun evidence terverifikasi; dua kategori data yang dibutuhkan MVP berstatus `NOT_AVAILABLE`; seluruh angka kuantitatif tentang PLTS eksisting `DO_NOT_USE`.
+Enam dari tujuh dimensi kini memiliki **jalur sumber terverifikasi** — diverifikasi di environment lain (`external_manual_verification`), bukan oleh environment agent ini:
 
-**Mengapa bukan `WEAK PILOT — RECONSIDER`:** tidak satu pun temuan mengindikasikan Kubu Raya adalah pilihan buruk. Kabupaten ini memiliki PLTS komunal eksisting terdokumentasi di tiga desa (langka dan berharga untuk menguji jalur Expansion Assessment), disebut eksplisit oleh BNPB dalam klasifikasi risiko kekeringan, dan ditetapkan sebagai kabupaten prioritas dalam inisiatif pemetaan karhutla nasional terbaru. Keterbatasan yang ditemukan bersifat **struktural terhadap data publik Indonesia** dan tidak akan hilang dengan berpindah wilayah.
+| Dimensi | Prompt 2.5 | **Prompt 2.6** | Evidence |
+|---|---|---|---|
+| Solar resource | LEMAH | ✅ **KUAT** — GSA ditetapkan primary spatial screening source (9 arcsec ≈250 m, EPSG:4326, GeoTIFF) | EV-D, EV-E |
+| Existing PLTS | SEDANG (keberadaan) / SANGAT LEMAH (atribut) | ✅ **KUAT untuk keberadaan** (`verified_primary`, ketiga desa disebut eksplisit oleh BPK) / **tetap SANGAT LEMAH untuk atribut** | EV-F |
+| Public facility | LEMAH | ✅ **SEDANG-KUAT** — portal pendidikan terverifikasi termasuk **jalur koordinat**; portal kesehatan terverifikasi sebagai data path | EV-G, EV-H |
+| Social/demographic | KUAT (ketersediaan) / LEMAH (granularitas) | ✅ **KUAT untuk ketersediaan** — edisi 2026 terverifikasi terbit / **granularitas tetap kecamatan** | EV-B |
+| Disaster/resilience | PALING KUAT (konteks) | ✅ **KUAT** — layer karhutla &amp; kekeringan terverifikasi ada; pembedaan hazard/risk dikonfirmasi BNPB | EV-C |
+| Traceable data | KUAT (struktur) / LEMAH (isi) | ✅ **KUAT** — kini ada isi terverifikasi pada ujung rantai provenance, bukan hanya struktur | EV-A – EV-H |
+
+**Yang TIDAK berubah, dan ini penting:** seluruh **angka** tentang Kubu Raya tetap tidak boleh dipakai. Yang naik adalah **keberadaan sumber dan jalur datanya**, bukan isi angkanya. `capacity_kwp` tetap NULL (CF-001), `commissioning_year` tetap NULL (CF-006), skor IRBI tetap dilarang sebagai input skoring situs (CF-003), dan `beneficiary_count` per fasilitas tetap tidak tersedia.
+
+**Temuan struktural dari Prompt 2.5 sebagian terjawab:** kekhawatiran "evidence kuat hanya di level kabupaten, kosong di level situs" kini berkurang — EV-G memberi jalur **koordinat per sekolah** dan EV-D memberi raster **250 m** yang secara teknis dapat membedakan titik. Namun daya pembeda riil GHI antar-titik di kabupaten dataran rendah masih harus dibuktikan secara empiris saat akuisisi, dan koordinat puskesmas belum punya jalur terverifikasi.
+
+**Mengapa masih ada kualifikasi "with limitations" pada substansinya:** seluruh angka kuantitatif tentang PLTS eksisting tetap `DO_NOT_USE`; `beneficiary_count` per fasilitas tetap tidak tersedia; koordinat puskesmas belum terverifikasi; dan **kelayakan FINAL dataset kandidat belum terbukti sampai Prompt 3–4 selesai.** Status ini menyatakan bahwa **jalur datanya kuat**, bukan bahwa datanya sudah ada di tangan.
+
+**Mengapa bukan `WEAK PILOT — RECONSIDER`:** tidak satu pun temuan mengindikasikan Kubu Raya adalah pilihan buruk. Kabupaten ini memiliki PLTS eksisting yang kini **terverifikasi secara primer** di tiga desa (langka dan berharga untuk menguji jalur Expansion Assessment), memiliki layer bencana resmi yang relevan, dan ekosistem data publiknya (BPS 2026, Dapodik, portal kesehatan) terverifikasi aktif.
 
 ### Kondisi yang akan MENURUNKAN status ini menjadi WEAK PILOT — RECONSIDER
 

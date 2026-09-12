@@ -4,6 +4,29 @@
 
 ---
 
+## ✅ ADENDUM PROMPT 2.6 — EXTERNAL EVIDENCE HANDOFF (BERLAKU DI ATAS SEMUANYA)
+
+Delapan sumber kritis telah diverifikasi **di environment lain** (`verification_method: external_manual_verification`) — **bukan oleh environment agent ini**, yang tetap terkena `EGRESS_BLOCKED`. Keterbatasan itu sengaja tidak dihapus dari dokumen mana pun.
+
+**Dampak terhadap kesimpulan sebelumnya:**
+
+| Kesimpulan Prompt 2.5 | Status setelah Prompt 2.6 |
+|---|---|
+| "Nol dataset READY" | ✅ **6 dataset READY** (1 automated, 3 manual, 2 with field validation) |
+| "NOT READY FOR PROMPT 3" | ✅ **READY FOR PROMPT 3 — CONDITIONAL DATA ACQUISITION** |
+| "Koordinat fasilitas NOT_AVAILABLE" | ⚠️ **Sebagian terselesaikan** — jalur koordinat sekolah terverifikasi (EV-G); koordinat puskesmas **masih belum** |
+| "Evidence kuat di level kabupaten, kosong di level situs" | ⚠️ **Sebagian terjawab** — EV-G (koordinat sekolah) + EV-D (raster 250 m) memberi jalur pembeda antar-situs; daya pembeda riil masih harus dibuktikan empiris |
+| NASA POWER terlalu kasar untuk intra-kabupaten | ✅ **Dikonfirmasi dan diperkuat** — resolusi surya ~1°×1° (≈111 km), lebih kasar dari angka snippet sebelumnya |
+| CF-002 = `DIFFERENT_METRIC` | ✅ **Dikonfirmasi BNPB sendiri** (EV-C) |
+| Klaim novelty berbasis ketiadaan fitur runtuh | ❌ **Tidak berubah** — audit competitor matrix tidak tersentuh external verification |
+| Seluruh angka Kubu Raya `DO_NOT_USE` | ❌ **Tidak berubah** — yang naik adalah jalur sumber, bukan isi angka |
+
+**Konflik baru:** CF-006 — `commissioning_year` (2018, snippet) vs `asset_handover_year` (2021, terverifikasi). Keduanya kemungkinan peristiwa berbeda; `commissioning_year` tetap `NULL`.
+
+**Status pilot:** **VIABLE PILOT WITH STRONG DATA PATHWAYS** (naik dari "VIABLE PILOT WITH LIMITATIONS — PROVISIONAL"). Kelayakan FINAL dataset kandidat belum terbukti sampai Prompt 3–4 selesai.
+
+---
+
 ## ⚠️ ADENDUM PROMPT 2.5 — BACA SEBELUM BAGIAN LAIN
 
 Verification pass Prompt 2.5 menguji WebFetch terhadap 7 domain prioritas; **ketujuhnya ditolak `EGRESS_BLOCKED`**. **Nol evidence dinaikkan ke `verified_primary`.** Seluruh temuan di bawah tetap berstatus `unverified`.

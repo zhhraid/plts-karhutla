@@ -20,17 +20,28 @@
 
 ---
 
+> ✅ **PEMBARUAN PROMPT 2.6:** sebagian sumber kini terverifikasi melalui `external_manual_verification` (bukan oleh environment agent ini — lihat EV-A s.d. EV-H di `EVIDENCE_LEDGER.md`). Karena syarat "evidence dasarnya terverifikasi" kini terpenuhi untuk sumber-sumber tersebut, status READY dapat diberikan. **Keterbatasan `EGRESS_BLOCKED` pada environment agent tetap berlaku** dan tidak dihapus — artinya akuisisi tetap memerlukan environment/manusia dengan akses jaringan.
+
 ## READY_FOR_AUTOMATED_ACQUISITION
 
-**(kosong)**
-
-Tidak satu pun dataset memenuhi syarat. Kandidat terdekat (NASA POWER API) tidak dapat ditandai READY karena satuan parameternya masih `UNRESOLVED` (CF-004) dan dokumentasinya belum pernah dibuka.
+| ID | Dataset | Evidence | Cara akuisisi | Batasan wajib |
+|---|---|---|---|---|
+| RA-01 | **NASA POWER API** — `ALLSKY_SFC_SW_DWN` | EV-E (`verified_secondary`) | REST API publik | **Peran terbatas: supporting historical/time-series solar source.** BUKAN pembeda spasial antar fasilitas (resolusi ~1°×1° ≈ 111 km — seluruh Kubu Raya jatuh pada sel yang sama). ⚠️ Satuan belum terverifikasi (CF-004) — **catat satuan verbatim dari respons API saat akuisisi**, jangan diasumsikan |
 
 ## READY_FOR_MANUAL_ACQUISITION
 
-**(kosong)**
+| ID | Dataset | Evidence | Cara akuisisi | Batasan wajib |
+|---|---|---|---|---|
+| RM-01 | **Global Solar Atlas** — GHI/DNI/DIF/GTI | EV-D (`verified_secondary`) | Unduh **GeoTIFF** atau **AAIGRID**, CRS **EPSG:4326**, resolusi **9 arcsec ≈ 250 m** | **PRIMARY SOLAR SPATIAL SCREENING SOURCE untuk MVP.** ⚠️ **Lisensi belum terverifikasi** — konfirmasi ketentuan penggunaan **sebelum** data diredistribusi/ditampilkan publik |
+| RM-02 | **BPS — Kubu Raya Dalam Angka 2026** | EV-B (`verified_primary`) | Unduh publikasi, ekstrak tabel yang dibutuhkan | **Prioritaskan edisi 2026** di atas 2025. **Catat `data_reference_year` per tabel** (umumnya 2025) — jangan samakan dengan `publication_year` 2026 |
+| RM-03 | **InaRISK** — layer Karhutla &amp; Kekeringan | EV-C (`verified_primary` untuk keberadaan layer &amp; pembedaan metrik) | WebGIS / layanan geospasial BNPB | ⚠️ **HAZARD ≠ RISK — tentukan dan catat metrik mana yang diambil.** Mekanisme unduh, format, tahun data, dan batas kelas **belum terverifikasi** → catat verbatim saat akuisisi |
 
-Kandidat terdekat (Global Solar Atlas GeoTIFF) tidak dapat ditandai READY karena resolusi, CRS, format, dan lisensinya belum dikonfirmasi dari dokumentasi resmi. **Satu langkah manusia** (membuka halaman download GSA) akan langsung memindahkannya ke kategori ini.
+## READY_FOR_ACQUISITION_WITH_FIELD_VALIDATION
+
+| ID | Dataset | Evidence | Batasan wajib |
+|---|---|---|---|
+| RF-01 | **Kemendikdasmen** — satuan pendidikan Kubu Raya | EV-G (`verified_primary`) | Field yang **dapat** muncul: NPSN, nama, alamat, desa/kelurahan, kecamatan, status; sebagian halaman memuat **latitude/longitude**; sebagian memuat jumlah peserta didik + tanggal pembaruan. ⚠️ **Verifikasi PER SITUS.** Jangan mengasumsikan semua sekolah punya koordinat/jumlah siswa. Field kosong → **`NULL`**, bukan diisi perkiraan |
+| RF-02 | **Portal Puskesmas Kubu Raya** + **Kalbar Sehat** | EV-H (`verified_primary` untuk data path saja) | Yang terverifikasi hanya **ketersediaan sumber**, bukan kelengkapan field. Seluruh field per-fasilitas — termasuk **koordinat, yang belum terkonfirmasi tersedia untuk puskesmas** — `requires_verification` sampai diambil |
 
 ---
 
@@ -80,7 +91,8 @@ Tidak ada sumber yang terbukti membatasi akses dari sisi sumbernya sendiri. Stat
 
 | ID | Data | Catatan |
 |---|---|---|
-| NA-01 | **Koordinat geografis fasilitas individual** (puskesmas/sekolah) | Tidak ditemukan di sumber publik mana pun. **Blocker struktural** — model data §8 `PROJECT_CONTEXT.md` mensyaratkan `latitude`/`longitude` per fasilitas, dan seluruh fitur peta bergantung padanya. Jika verifikasi manual juga gagal, diperlukan geocoding manual/permintaan data primer ke dinas. |
+| ~~NA-01~~ | ~~Koordinat fasilitas individual~~ | ✅ **SEBAGIAN TERSELESAIKAN (Prompt 2.6).** **Sekolah:** jalur koordinat terverifikasi ada pada sebagian halaman satuan pendidikan (EV-G) → pindah ke RF-01, dengan validasi per situs. **Puskesmas:** ketersediaan koordinat **masih belum terkonfirmasi** (EV-H hanya memverifikasi data path) → tetap risiko terbuka, lihat NA-01b. |
+| NA-01b | **Koordinat puskesmas** | Belum terkonfirmasi tersedia. Jika akuisisi RF-02 menunjukkan koordinat tidak ada, diperlukan alternatif: permintaan data resmi ke Dinkes Kubu Raya, geocoding dari alamat, atau digitasi manual — **semuanya wajib dilabeli sebagai estimasi**, bukan koordinat resmi. |
 | NA-02 | `beneficiary_count` per fasilitas individual | Hanya tersedia agregat kecamatan/kabupaten. Tidak boleh disamakan dengan penerima manfaat satu fasilitas. |
 | NA-03 | Kapasitas/BESS per-desa terpisah (Muara Tiga, Sungai Kerawang) | Hanya angka agregat 3 desa, itu pun conflicting. |
 | NA-04 | Kondisi teknis terkini ketiga PLTS Batu Ampar | Tidak ada sumber yang menjelaskan status 2026. |
@@ -94,7 +106,7 @@ Tidak ada sumber yang terbukti membatasi akses dari sisi sumbernya sendiri. Stat
 
 | ID | Item | Alasan reklasifikasi |
 |---|---|---|
-| NR-01 | **NASA POWER sebagai sumber spasial intra-kabupaten** | Resolusi grid ~0,5°×0,625° (≈55×70 km) melebihi luas kabupaten — seluruh kandidat akan jatuh pada sel grid yang sama dan **nilainya tidak memiliki daya pembeda apa pun** antar-lokasi. **Keputusan §A.5:** peran NASA POWER ditetapkan sebagai **historical/time-series validation**, BUKAN intra-kabupaten high-resolution spatial screening. (Catatan: angka resolusi ini sendiri masih `unverified` — tapi kesimpulan reklasifikasi tetap berlaku karena setiap sumber yang ditemukan menyebut skala puluhan kilometer, dan tidak ada indikasi sebaliknya.) |
+| NR-01 | **NASA POWER sebagai sumber spasial intra-kabupaten** | ✅ **Dikonfirmasi Prompt 2.6.** EV-E (terverifikasi eksternal) menyebut parameter surya pada resolusi **~1°×1° (≈111 km)** — bahkan lebih kasar dari angka snippet sebelumnya (0,5°×0,625°, yang ternyata grid parameter **meteorologis**). Seluruh kandidat di Kubu Raya dipastikan jatuh pada sel grid yang sama → **nol daya pembeda**. Perannya sebagai **supporting historical/time-series solar source** tetap berlaku dan dataset-nya ada di RA-01. |
 | NR-02 | Data hotspot real-time (SIPONGI/NASA FIRMS) sebagai input skoring | Hotspot = kejadian near-real-time, bukan risiko struktural jangka panjang. Keputusan investasi PLTS bersifat jangka panjang. Peran maksimal: validasi/kalibrasi peta risiko struktural, bukan input skoring. |
 | NR-03 | **IRBI sebagai input skoring per-situs** | Dua alasan independen: (a) skala/definisi indeks belum terverifikasi (CF-003); (b) **bahkan bila terverifikasi**, IRBI adalah indeks level kabupaten — nilainya identik untuk semua kandidat dalam Kubu Raya sehingga tidak memiliki daya pembeda. Peran yang tepat: konteks kabupaten. |
 
@@ -102,13 +114,24 @@ Tidak ada sumber yang terbukti membatasi akses dari sisi sumbernya sendiri. Stat
 
 ## Ringkasan Status
 
-| Status | Jumlah |
-|---|---|
-| `READY_FOR_AUTOMATED_ACQUISITION` | **0** |
-| `READY_FOR_MANUAL_ACQUISITION` | **0** |
-| `MANUAL_VERIFICATION_REQUIRED` | 18 (6 di antaranya blocker Prompt 3) |
-| `ACCESS_RESTRICTED` | 0 |
-| `NOT_AVAILABLE` | 7 |
-| `NOT_REQUIRED` | 3 |
+| Status | Prompt 2.5 | **Prompt 2.6** |
+|---|---|---|
+| `READY_FOR_AUTOMATED_ACQUISITION` | 0 | **1** (RA-01) ⬆ |
+| `READY_FOR_MANUAL_ACQUISITION` | 0 | **3** (RM-01…RM-03) ⬆ |
+| `READY_FOR_ACQUISITION_WITH_FIELD_VALIDATION` | — | **2** (RF-01, RF-02) ⬆ |
+| `MANUAL_VERIFICATION_REQUIRED` | 18 | ~12 ⬇ |
+| `ACCESS_RESTRICTED` | 0 | 0 |
+| `NOT_AVAILABLE` | 7 | 6 (NA-01 sebagian terselesaikan) ⬇ |
+| `NOT_REQUIRED` | 3 | 3 |
 
-**Perbandingan dengan Prompt 2:** sebelumnya 2 dataset ditandai "READY_FOR_ACQUISITION" (Global Solar Atlas, NASA POWER). Keduanya **diturunkan** pada pass ini — GSA karena spesifikasinya belum terverifikasi, NASA POWER karena perannya direklasifikasi menjadi `NOT_REQUIRED` untuk screening spasial. Penurunan ini adalah koreksi yang disengaja: Prompt 2 menandai READY berdasarkan *metode akses yang terlihat di hasil pencarian*, bukan berdasarkan spesifikasi yang terverifikasi.
+### Aturan akuisisi yang mengikat (syarat gate CONDITIONAL)
+
+Seluruh akuisisi pada Prompt 3 **wajib** mematuhi lima syarat berikut:
+
+1. **Verifikasi dilakukan per-field**, bukan per-sumber atau per-situs. Sumber yang terverifikasi tidak membuat seluruh field-nya terverifikasi.
+2. **Field yang conflicting tetap `NULL`** — khususnya `capacity_kwp` (CF-001) dan `commissioning_year` (CF-006).
+3. **Field historis wajib diberi tahun** dan label historis (mis. `asset_handover_year = 2021`).
+4. **Status terkini TIDAK boleh disimpulkan dari evidence historis.** Penyerahan aset 2021 bukan bukti operasional 2026.
+5. **Hasil akuisisi diaudit ulang sebelum scoring.** Data boleh dikumpulkan pada Prompt 3, tetapi **belum boleh dipakai untuk scoring** sampai audit Prompt 4–6.
+
+**Perjalanan status dataset lintas-pass:** Prompt 2 menandai 2 dataset READY berdasarkan *metode akses yang terlihat di hasil pencarian*. Prompt 2.5 **menurunkan keduanya ke 0** karena spesifikasinya belum terverifikasi. Prompt 2.6 menaikkan **6 dataset** ke status READY — kali ini berdasarkan **spesifikasi yang benar-benar diverifikasi** (di environment lain), bukan berdasarkan tampilan hasil pencarian. Perbedaan dasar inilah yang membedakan READY pada Prompt 2.6 dari READY pada Prompt 2.

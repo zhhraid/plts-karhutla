@@ -1,8 +1,59 @@
 # VERIFICATION_REPORT.md — Laporan Verifikasi Evidence SURYA-SIAGA
 
-**Pass:** Prompt 2.5 — Evidence Verification & Research Repair
+**Pass terakhir:** Prompt 2.6 — External Evidence Handoff & Research Gate Update
 **Tanggal:** 2026-09-12
-**Status keseluruhan:** ❌ **NOT READY FOR PROMPT 3**
+**Status keseluruhan:** ✅ **READY FOR PROMPT 3 — CONDITIONAL DATA ACQUISITION**
+
+---
+
+# ADENDUM PROMPT 2.6 — EXTERNAL EVIDENCE HANDOFF
+
+> ℹ️ **Sumber verifikasi:** delapan evidence (EV-A s.d. EV-H) diverifikasi **di environment lain yang tidak terkena pembatasan egress**, bukan oleh environment agent ini. Seluruhnya dicatat dengan `verification_method: external_manual_verification`. **Agent ini tidak membuka URL tersebut.** Laporan Prompt 2.5 di bawah adendum ini **tetap dipertahankan utuh** sebagai catatan metodologis keterbatasan environment agent.
+
+## Perubahan Gate
+
+| Komponen | Prompt 2.5 | **Prompt 2.6** | Evidence |
+|---|---|---|---|
+| Pilot identity | ⚠️ Provisional | ✅ **VERIFIED PATHWAYS** | EV-B, EV-C, EV-F |
+| Solar source | ❌ Belum cukup | ✅ **VERIFIED** — GSA primary, NASA POWER supporting | EV-D, EV-E |
+| Disaster source | ❌ Belum cukup | ✅ **VERIFIED** — layer karhutla &amp; kekeringan ada | EV-C |
+| Social source | ❌ Belum cukup | ✅ **VERIFIED** — BPS edisi 2026 | EV-B |
+| Facility source (pendidikan) | ❌ Blocker | ✅ **VERIFIED DATA PATH** — termasuk jalur koordinat | EV-G |
+| Facility source (kesehatan) | ❌ Blocker | ✅ **VERIFIED DATA PATH** | EV-H |
+| Existing PLTS | ❌ Belum cukup | ✅ **VERIFIED HISTORICAL** (penyerahan aset 2021) | EV-F |
+| National policy context | ⚠️ Konteks saja | ✅ **VERIFIED** (tanpa angka turunan) | EV-A |
+
+## ✅ KEPUTUSAN GATE: READY FOR PROMPT 3 — CONDITIONAL DATA ACQUISITION
+
+**"Conditional" berarti:** data **boleh dikumpulkan**, tetapi **belum boleh digunakan untuk scoring** sebelum Prompt 4–6.
+
+### Lima syarat yang mengikat
+
+1. **Verification dilakukan per-field** — sumber terverifikasi tidak membuat seluruh field-nya terverifikasi.
+2. **Conflicting fields tetap `NULL`** — `capacity_kwp` (CF-001), `commissioning_year` (CF-006).
+3. **Historical fields diberi tahun** — mis. `asset_handover_year = 2021` dengan label historis.
+4. **Current status tidak disimpulkan dari historical evidence** — penyerahan aset 2021 ≠ status operasional 2026.
+5. **Acquisition result diaudit ulang sebelum scoring.**
+
+### Yang TIDAK berubah meski gate dibuka
+
+- Seluruh **angka** tentang Kubu Raya tetap `DO_NOT_USE` (kapasitas, KK terlayani, skor IRBI, angka investasi program nasional, nilai GHI).
+- **CF-001, CF-003, CF-005, CF-006 tetap UNRESOLVED.**
+- **IRBI tetap dilarang** sebagai site-level scoring input pada MVP.
+- **Klaim novelty berbasis ketiadaan fitur pesaing tetap terlarang** — audit competitor matrix tidak tersentuh external verification.
+- **Lisensi Global Solar Atlas belum terverifikasi** — wajib dikonfirmasi sebelum redistribusi data.
+- **Koordinat puskesmas belum terverifikasi** — hanya jalur sekolah yang terbukti.
+
+### Interpretasi angka "1 dari 60 verified"
+
+Angka tersebut **tidak lagi menjadi alasan menghentikan proyek**. Angka itu mencerminkan **keterbatasan environment agent** (`EGRESS_BLOCKED`), bukan kegagalan sumber dunia nyata. Setelah handoff eksternal, ukuran yang relevan bukan "berapa persen evidence terverifikasi", melainkan **"apakah setiap komponen utama MVP memiliki jalur sumber yang terverifikasi"** — dan jawabannya kini **ya untuk keenam komponen**.
+
+---
+
+# LAPORAN PROMPT 2.5 (dipertahankan sebagai catatan metodologis)
+
+**Pass:** Prompt 2.5 — Evidence Verification &amp; Research Repair
+**Status pada saat itu:** ❌ NOT READY FOR PROMPT 3
 
 ---
 

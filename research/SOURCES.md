@@ -20,7 +20,34 @@ Tujuh domain prioritas diuji ulang dengan WebFetch pada 2026-09-12. **Ketujuhnya
 
 Diagnostik proxy (`/__agentproxy/status`) menunjukkan proxy sehat (`enabled: true`, `recentRelayFailures: []`) — blokir berasal dari kebijakan egress, dan README proxy melarang mencoba menerobosnya. **WebSearch masih berfungsi**, tetapi sesuai prinsip Prompt 2.5, hasil pencarian bukan bukti verifikasi.
 
-**Konsekuensi:** kolom "Akses Sesi Ini" di bawah tetap berlaku — tidak ada perubahan status akses dari Prompt 2 ke Prompt 2.5. Seluruh sumber tetap memerlukan akses manusia.
+**Konsekuensi:** kolom "Akses Sesi Ini" di bawah tetap berlaku — tidak ada perubahan status akses dari Prompt 2 ke Prompt 2.5. **Keterbatasan ini sengaja dipertahankan sebagai catatan metodologis environment agent.**
+
+---
+
+## ✅ Pembaruan Prompt 2.6 — External Manual Verification
+
+Sejumlah sumber kritis telah diverifikasi **di luar environment agent ini**, menggunakan environment lain yang dapat membuka halaman sumber asli. **Agent ini tidak membuka URL tersebut dan tidak mengklaim telah melakukannya.**
+
+| Sumber | ID Evidence | source_authority | verification_status | verification_method |
+|---|---|---|---|---|
+| ESDM — Program PLTS 100 GWp | EV-A | A | `verified_primary` | `external_manual_verification` |
+| BPS — Kubu Raya Dalam Angka **2026** | EV-B | A | `verified_primary` | `external_manual_verification` |
+| InaRISK (BNPB) — layer &amp; pembedaan metrik | EV-C | A | `verified_primary` | `external_manual_verification` |
+| Global Solar Atlas — FAQ/Data Outputs | EV-D | B | `verified_secondary` | `external_manual_verification` |
+| NASA POWER — API docs | EV-E | B | `verified_secondary` | `external_manual_verification` |
+| BPK Kalbar — hibah PLTS 3 desa (30 Des 2021) | EV-F | A | `verified_primary` | `external_manual_verification` |
+| Kemendikdasmen — referensi satuan pendidikan | EV-G | A | `verified_primary` | `external_manual_verification` |
+| Portal Puskesmas Kubu Raya + Kalbar Sehat | EV-H | A | `verified_primary` (data path) | `external_manual_verification` |
+
+**Sumber baru yang masuk registry pada Prompt 2.6:**
+
+| ID | Nama Sumber | Penerbit | URL | Tier |
+|---|---|---|---|---|
+| A-23 | Kabupaten Kubu Raya Dalam Angka **2026** | BPS Kabupaten Kubu Raya | kuburayakab.bps.go.id/id/publication/2026/02/27/c93f971b4b29eaf6005aa0e3/kubu-raya-regency-in-figures-2026.html | A |
+| B-23 | Global Solar Atlas — FAQ / Data Outputs | World Bank / ESMAP / Solargis | globalsolaratlas.info/support/faq | B |
+| B-24 | NASA POWER — API tutorial/docs | NASA POWER | power.larc.nasa.gov/docs/tutorials/service-data-request/api/ | B |
+
+> ⚠️ **Catatan penting:** external verification **tidak** menghapus keterbatasan egress di atas. Ketiga kategori status berikut harus tetap dibedakan di seluruh dokumen: `agent_verified` (1 sumber), `external_manual_verification` (8 sumber), `snippet_only` (sisanya).
 
 > ⚠️ **Catatan §H — source authority ≠ verification.** Tier A/B/C di bawah menunjukkan **otoritas sumber**, bukan status verifikasi. URL resmi Tier A yang belum berhasil dibuka **tetap `unverified`**. Kedua dimensi ini tidak boleh saling menggantikan.
 

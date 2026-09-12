@@ -17,6 +17,133 @@ Kategori: `policy`, `solar`, `disaster`, `social`, `facility`, `electricity`, `e
 
 **publication_date vs data_year** (ditegaskan Prompt 2.5 §G) — keduanya TIDAK boleh disamakan. Tahun terbit dokumen bukan tahun data yang dikandungnya. Audit khusus ada di bagian akhir dokumen.
 
+**verification_method** (ditambahkan Prompt 2.6) — **wajib** untuk setiap entri terverifikasi, agar jelas SIAPA yang memverifikasi:
+
+| Nilai | Arti |
+|---|---|
+| `agent_verified` | Environment agent ini membuka sendiri halaman sumber. Hanya 1 entri (EV-014, via GitHub). |
+| `external_manual_verification` | Diverifikasi **di luar environment agent ini**, oleh manusia/environment lain yang dapat membuka halaman sumber asli. Agent ini **tidak** membuka URL-nya dan **tidak** mengklaim telah melakukannya. |
+| `snippet_only` | Hanya dari hasil/ringkasan mesin pencari. Halaman asli belum dibuka oleh siapa pun. **Bukan bukti.** |
+
+---
+
+# BAGIAN I — EXTERNALLY VERIFIED EVIDENCE (EV-A – EV-H)
+
+**Ditambahkan:** Prompt 2.6, 2026-09-12.
+
+> ℹ️ **Asal-usul bagian ini:** entri EV-A s.d. EV-H **tidak diverifikasi oleh environment agent ini.** Seluruhnya diverifikasi di environment lain yang tidak terkena pembatasan egress, lalu diserahkan ke registry ini. Keterbatasan `EGRESS_BLOCKED` pada environment agent **tetap berlaku dan tetap dicatat** (lihat Bagian II dan `VERIFICATION_REPORT.md`) — external verification tidak menghapus keterbatasan itu, hanya melengkapinya dari jalur lain.
+
+---
+
+**EV-A — Program PLTS 100 GWp**
+- claim: Pemerintah resmi memulai Program PLTS 100 GWp; peluncuran di Gilimanuk, Bali, 25 Agustus 2026; diposisikan Kementerian ESDM sebagai bagian penguatan kemandirian dan ketahanan energi nasional; peluncuran terhubung dengan beberapa proyek PLTS lain.
+- category: `policy`
+- source_title: "Dari Gilimanuk hingga Pulau Rengit, Program PLTS 100 GWp Dorong Kemandirian Energi Nasional"
+- publisher: Kementerian Energi dan Sumber Daya Mineral Republik Indonesia
+- source_url: https://esdm.go.id/id/media-center/arsip-berita/dari-gilimanuk-hingga-pulau-rengit-program-plts-100-gwp-dorong-kemandirian-energi-nasional
+- publication_date: 25/26 Agustus 2026 | data_year: 2026
+- source_authority: **A** | verification_status: **`verified_primary`** | verification_method: **`external_manual_verification`**
+- proposal_usage_status: **`SAFE_TO_USE`**
+- notes: ⚠️ **Hanya klaim di atas yang terverifikasi.** Angka investasi, tenaga kerja, penghematan, atau target turunan **TIDAK** tercakup dan tetap `DO_NOT_USE` (lihat EV-002, EV-003). Menggantikan EV-001 sebagai entri otoritatif untuk keberadaan program.
+
+**EV-B — BPS Kabupaten Kubu Raya Dalam Angka 2026**
+- claim: Publikasi resmi tahunan tersedia; statistik utama merepresentasikan pelaksanaan pembangunan selama tahun 2025; data bersumber dari berbagai instansi/dinas/lembaga serta pengumpulan/pengolahan BPS.
+- category: `social`
+- source_title: Kabupaten Kubu Raya Dalam Angka 2026 / Kubu Raya Regency in Figures 2026
+- publisher: BPS Kabupaten Kubu Raya
+- source_url: https://kuburayakab.bps.go.id/id/publication/2026/02/27/c93f971b4b29eaf6005aa0e3/kubu-raya-regency-in-figures-2026.html
+- **publication_year: 2026** (rilis 27 Februari 2026) | **data_reference_year: 2025**
+- source_authority: **A** | verification_status: **`verified_primary`** | verification_method: **`external_manual_verification`**
+- proposal_usage_status: **`SAFE_TO_USE`**
+- notes: **Edisi 2026 diprioritaskan** di atas edisi 2025 apabila tabel yang dibutuhkan tersedia. Edisi 2025 (EV-053) turun menjadi historical/reference. ⚠️ `publication_year` ≠ `data_reference_year` — wajib dibedakan per tabel; sebuah tabel dalam edisi 2026 bisa saja merepresentasikan tahun selain 2025, jadi **tahun data dicatat per tabel saat akuisisi**, bukan diasumsikan seragam.
+
+**EV-C — InaRISK (BNPB)**
+- claim: InaRISK menyediakan layer antara lain **Kebakaran Hutan dan Lahan** dan **Kekeringan**; InaRISK secara eksplisit membedakan **Bahaya, Kerentanan, Kapasitas, dan Risiko**.
+- category: `disaster`
+- publisher: BNPB
+- source_url: https://inarisk.bnpb.go.id/
+- source_authority: **A** | verification_status: **`verified_primary`** | verification_method: **`external_manual_verification`**
+- proposal_usage_status: **`SAFE_TO_USE`**
+- notes: ⚠️ **HAZARD ≠ RISK.** Jangan membandingkan atau menggabungkan angka bahaya dan risiko seolah metrik yang sama. Ini mengonfirmasi reklasifikasi CF-002 secara independen — pembedaan tersebut dinyatakan oleh platform BNPB sendiri, bukan hanya inferensi analitis Prompt 2.5.
+- **yang TIDAK tercakup verifikasi ini** (tetap `MANUAL_VERIFICATION_REQUIRED`): mekanisme unduh/format layanan geospasial, tahun data per layer, skala &amp; batas kelas indeks, dan apakah Kubu Raya termasuk wilayah yang dipetakan pada resolusi lebih rinci.
+
+**EV-D — Global Solar Atlas**
+- claim: Parameter sumber daya surya mencakup **GHI, DNI, DIF, GTI**; resolusi spasial sumber daya surya **9 arcsec (nominal ±250 meter)**; spatial reference **EPSG:4326**; format unduhan mencakup **GeoTIFF** dan **AAIGRID/Esri ASCII Grid**; GHI = Global Horizontal Irradiation.
+- category: `solar`
+- source_title: Global Solar Atlas — FAQ / Data Outputs
+- publisher: Global Solar Atlas / World Bank / ESMAP / Solargis
+- source_url: https://www.globalsolaratlas.info/support/faq
+- source_authority: **B** | verification_status: **`verified_secondary`** (authoritative technical) | verification_method: **`external_manual_verification`**
+- proposal_usage_status: **`SAFE_TO_USE`**
+- **KEPUTUSAN:** Global Solar Atlas ditetapkan sebagai **PRIMARY SOLAR SPATIAL SCREENING SOURCE** untuk MVP, sepanjang penggunaan datanya mematuhi ketentuan/lisensi yang berlaku.
+- notes: ⚠️ **Lisensi belum termasuk dalam paket verifikasi eksternal.** Klaim CC BY 4.0 pada EV-021 masih `snippet_only`. **Ketentuan lisensi wajib dikonfirmasi sebelum data diredistribusi atau ditampilkan publik** dalam aplikasi/proposal. Ini terbuka sebagai item verifikasi tersisa.
+
+**EV-E — NASA POWER**
+- claim: NASA POWER menyediakan API; parameter `ALLSKY_SFC_SW_DWN` digunakan untuk radiasi surya; dokumentasi menyebut parameter surya tersedia pada resolusi **sekitar 1° × 1°**; parameter meteorologis memiliki resolusi berbeda.
+- category: `solar`
+- publisher: NASA POWER
+- source_url: https://power.larc.nasa.gov/docs/tutorials/service-data-request/api/
+- source_authority: **B** | verification_status: **`verified_secondary`** | verification_method: **`external_manual_verification`**
+- proposal_usage_status: **`SAFE_TO_USE`**
+- **KEPUTUSAN:** NASA POWER **BUKAN** primary spatial differentiator antar fasilitas berdekatan dalam satu kabupaten. Peran yang disetujui: **supporting historical/time-series solar source.**
+- notes: Verifikasi ini **mengoreksi** angka resolusi pada EV-026 (`snippet_only`: 0,5° × 0,625°). Angka lama itu adalah grid parameter **meteorologis** (MERRA-2), bukan parameter surya — dokumentasi resmi menyebut keduanya memang berbeda. Koreksi ini **memperkuat**, bukan melemahkan, keputusan reklasifikasi peran: 1° ≈ 111 km, bahkan lebih kasar dari angka sebelumnya, sehingga seluruh kandidat di Kubu Raya dipastikan jatuh pada sel grid yang sama. ⚠️ **Satuan `ALLSKY_SFC_SW_DWN` tetap belum terverifikasi** (CF-004 masih terbuka) — dampaknya kecil karena perannya kini terbatas pada time-series.
+
+**EV-F — Existing PLTS Kubu Raya (hibah aset 2021)**
+- claim: Pada 2021 terdapat **penyerahan hibah aset PLTS** kepada tiga desa di Kecamatan Batu Ampar: **Desa Sumber Agung, Desa Sungai Kerawang, Desa Muara Tiga**. Aset direncanakan/disebut akan dikelola oleh BUMDes. Sumber menggambarkan ketiga desa sebagai desa jauh/terpencil dengan persoalan kebutuhan sarana dasar, khususnya listrik/penerangan **pada konteks saat itu**.
+- category: `existing_plts`
+- source_title: "Tiga Desa Terjauh di Kubu Raya Terima Hibah PLTS"
+- publisher: BPK Perwakilan Provinsi Kalimantan Barat
+- source_url: https://kalbar.bpk.go.id/tiga-desa-terjauh-di-kubu-raya-terima-hibah-plts/
+- **publication_date: 30 Desember 2021** | **data_year: 2021** (peristiwa penyerahan aset)
+- source_authority: **A** | verification_status: **`verified_primary`** | verification_method: **`external_manual_verification`**
+- proposal_usage_status: **`SAFE_WITH_HISTORICAL_LABEL`**
+- notes: ⚠️ **CRITICAL — evidence ini HANYA memverifikasi keberadaan historis PLTS dan penyerahan aset pada 2021.** Field berikut **TIDAK** ikut terverifikasi dan tetap mengikuti evidence masing-masing: `capacity_kwp`, `battery_capacity`, `served_households`, `2026_operational_status`, `2026_grid_status`.
+- ⚠️ **Temuan baru:** tanggal terverifikasi adalah **2021 (penyerahan aset)**, sedangkan sumber `snippet_only` sebelumnya menyebut program "sejak 2018". Keduanya bisa konsisten (operasi 2018, serah terima aset 2021) atau salah satunya keliru — **`commissioning_year` tetap `unverified`.** Dicatat sebagai CF-006.
+
+**EV-G — Data Pendidikan (Kemendikdasmen)**
+- claim: Portal menyediakan daftar satuan pendidikan untuk Kabupaten Kubu Raya dan kecamatan. Field yang dapat muncul: **NPSN, nama sekolah, alamat, desa/kelurahan, kecamatan, status sekolah**. Pada halaman satuan pendidikan tertentu juga tersedia **latitude dan longitude**. Pada halaman informasi pendidikan tertentu tersedia **jumlah peserta didik dan tanggal pembaruan**.
+- category: `facility`
+- publisher: Kemendikdasmen
+- source_url: https://referensi.data.kemendikdasmen.go.id/
+- source_authority: **A** | verification_status: **`verified_primary`** | verification_method: **`external_manual_verification`**
+- **Acquisition decision:** `READY_FOR_ACQUISITION` **dengan PER-SITE FIELD VALIDATION.**
+- notes: ⚠️ Contoh yang diverifikasi hanya membuktikan **kapabilitas portal**, BUKAN bahwa semua sekolah memiliki semua field. **Jangan mengasumsikan semua sekolah punya koordinat atau jumlah siswa lengkap** — validasi per situs, dan field yang kosong tetap `NULL`.
+- **Dampak:** ini sebagian menyelesaikan blocker NA-01 (koordinat fasilitas) — **untuk sekolah**. Koordinat puskesmas belum memiliki jalur terverifikasi (lihat EV-H).
+
+**EV-H — Jalur Data Fasilitas Kesehatan**
+- claim: Portal Puskesmas Kabupaten Kubu Raya tersedia; Kalbar Sehat menyediakan daftar fasilitas layanan kesehatan Provinsi Kalimantan Barat; fasilitas di Kabupaten Kubu Raya dapat muncul dalam portal.
+- category: `facility`
+- publisher: Pemkab Kubu Raya; Dinas Kesehatan Prov. Kalbar
+- source_url: https://puskesmas.kuburayakab.go.id/ ; https://kalbarsehat.kalbarprov.go.id/
+- source_authority: **A** | verification_status: **`verified_primary` untuk keberadaan portal/source pathway** | verification_method: **`external_manual_verification`**
+- **Acquisition status:** `READY_FOR_ACQUISITION_WITH_FIELD_VALIDATION`
+- notes: ⚠️ **Yang diverifikasi adalah DATA PATH / ketersediaan sumber, BUKAN kelengkapan field.** Seluruh field per-fasilitas (termasuk **koordinat**, yang belum terkonfirmasi tersedia untuk puskesmas) berstatus `requires_verification` sampai benar-benar diambil.
+
+---
+
+## Peta Dampak: Entri Lama yang Diperbarui EV-A – EV-H
+
+| Entri lama | Status setelah Prompt 2.6 |
+|---|---|
+| EV-001 (program PLTS 100 GWp) | **Digantikan EV-A** — kini `verified_primary` untuk keberadaan/peluncuran/positioning |
+| EV-002, EV-003 (angka investasi &amp; kapasitas) | **Tidak berubah — tetap `DO_NOT_USE`.** Tidak tercakup verifikasi eksternal |
+| EV-020, EV-021, EV-023 (spesifikasi GSA) | **Sebagian digantikan EV-D.** Resolusi/CRS/format kini terverifikasi; **lisensi (EV-021) tetap `snippet_only`** |
+| EV-024–EV-027 (NASA POWER) | **Sebagian digantikan EV-E.** Resolusi surya dikoreksi ke ~1°×1°; **satuan tetap belum terverifikasi** |
+| EV-028 (metodologi InaRISK) | **Dikuatkan EV-C** untuk pembedaan bahaya/kerentanan/kapasitas/risiko; sisanya tetap belum terverifikasi |
+| EV-029–EV-031 (skala, kelas, akses InaRISK) | **Tidak berubah** — tetap `MANUAL_VERIFICATION_REQUIRED` |
+| EV-032 (skor IRBI Kubu Raya) | **Tidak berubah.** CF-003 tetap terbuka; IRBI tetap dilarang sebagai input skoring situs |
+| EV-038 (hibah PLTS 3 desa) | **Digantikan EV-F** — kini `verified_primary` untuk keberadaan &amp; penyerahan aset 2021 |
+| EV-039 (kapasitas &amp; KK) | **Tidak berubah — tetap `DO_NOT_USE`.** CF-001 tetap terbuka, `capacity_kwp = NULL` |
+| EV-051 (data sekolah) | **Digantikan EV-G** — kini `verified_primary`, termasuk adanya jalur koordinat |
+| EV-048, EV-049 (portal kesehatan) | **Digantikan EV-H** — data path `verified_primary`, field per-fasilitas belum |
+| EV-053 (BPS Dalam Angka 2025) | **Diturunkan menjadi historical/reference** — digantikan EV-B (edisi 2026) |
+
+---
+
+# BAGIAN II — EVIDENCE HASIL RISET AGENT (EV-001 – EV-060)
+
+> ⚠️ **Seluruh entri di Bagian II berstatus `snippet_only` kecuali EV-014**, dan **tidak** diverifikasi oleh environment agent ini maupun secara eksternal — kecuali yang ditandai dalam peta dampak di atas. Keterbatasan `EGRESS_BLOCKED` yang mendasarinya tetap berlaku dan sengaja tidak dihapus dari dokumen ini sebagai catatan metodologis.
+
 ---
 
 ## Kategori: POLICY
@@ -670,18 +797,21 @@ Bagian di bawah ini ditambahkan pada verification pass Prompt 2.5. Isi entri EV-
 
 Sesuai instruksi §F Prompt 2.5: verifikasi tidak lagi diberikan pada level sumber atau level situs, melainkan **per field**, supaya satu field bermasalah tidak membuat seluruh situs tidak terpakai.
 
+> **Diperbarui Prompt 2.6:** baris yang terdampak EV-F (external_manual_verification) ditandai ✅. Field yang **tidak** tercakup EV-F sengaja dibiarkan pada status lamanya — EV-F hanya memverifikasi keberadaan historis dan penyerahan aset 2021.
+
 #### Situs 1 — PLTS Desa Sumber Agung, Kec. Batu Ampar
 
 | Field | verification_status | source_authority | proposal_usage_status | Catatan |
 |---|---|---|---|---|
-| `location_existence` (desa ada, di Batu Ampar) | `unverified` (dikorroborasi ≥3 sumber independen) | A (BPK) + C | `SAFE_AS_CONTEXT_ONLY` | Paling kuat di antara semua field, tapi **tetap bukan `verified_primary`** karena tidak satu pun halaman dibuka |
-| `existing_plts` (ada PLTS komunal) | `unverified` | A (BPK Kalbar) | `SAFE_AS_CONTEXT_ONLY` | Program hibah 2018, 3 desa |
+| ✅ `location_existence` (desa ada, di Batu Ampar) | **`verified_primary`** (`external_manual_verification`, EV-F) | A (BPK) | `SAFE_TO_USE` | Dinaikkan Prompt 2.6 |
+| ✅ `existing_plts` (ada PLTS, hibah aset) | **`verified_primary`** (`external_manual_verification`, EV-F) | A (BPK Kalbar) | `SAFE_WITH_HISTORICAL_LABEL` | Penyerahan aset **2021**; label tahun wajib |
+| ✅ `asset_handover_year` = 2021 | **`verified_primary`** (EV-F) | A | `SAFE_WITH_HISTORICAL_LABEL` | Baru — dipisahkan dari `commissioning_year` |
 | `existing_plts_capacity_kwp` | `conflicting` → **NULL** | A + C | **`DO_NOT_USE`** | CF-001 unresolved; satuan pun tidak diketahui |
-| `commissioning_year` (2018) | `unverified` | A | `SAFE_WITH_HISTORICAL_LABEL` | Konsisten lintas sumber, tapi belum dibuka |
+| ⚠️ `commissioning_year` (2018?) | `unverified` — **CF-006** | A/C | **`NEEDS_MANUAL_VERIFICATION`** | EV-F memverifikasi serah terima **2021**, bukan tahun operasi. "2018" tetap `snippet_only` |
 | `historical_served_households` (312? 329?) | `conflicting` + `historical` | A + C | **`DO_NOT_USE`** | Angka PROJECT_CONTEXT (329) ≠ angka riset (312); scope tak jelas |
 | `historical_total_households` (402?) | `unverified` + `historical` | C | `NEEDS_MANUAL_VERIFICATION` | Hanya muncul di PROJECT_CONTEXT, tidak muncul di riset Prompt 2 |
 | `reported_energy_constraint` (isu baterai/kapasitas) | `unverified` | C | `NEEDS_MANUAL_VERIFICATION` | Riset Prompt 2 **tidak menemukan** laporan spesifik kondisi teknis |
-| `asset_handover` / pengelola (BUMDes) | `unverified` | A | `SAFE_AS_CONTEXT_ONLY` | Disebut dalam sumber BPK |
+| ✅ pengelola (BUMDes) | **`verified_primary`** (EV-F) | A | `SAFE_WITH_HISTORICAL_LABEL` | Sumber menyebut aset "direncanakan/akan dikelola" BUMDes — **rencana per 2021, bukan status operasional 2026** |
 | `current_status` (kondisi 2026) | `unverified` | — | **`NEEDS_MANUAL_VERIFICATION`** | **Tidak ada sumber apa pun** yang menjelaskan kondisi terkini |
 | `current_grid_status` (PLN masuk?) | `unverified` | A/C | **`NEEDS_MANUAL_VERIFICATION`** | EV-042 mengindikasikan kelistrikan Batu Ampar masih isu terbuka 2025, tapi ini inferensi |
 | `latitude` / `longitude` | **tidak tersedia** | — | **`DO_NOT_USE`** | Tidak ditemukan koordinat di sumber mana pun |
@@ -690,8 +820,8 @@ Sesuai instruksi §F Prompt 2.5: verifikasi tidak lagi diberikan pada level sumb
 
 | Field | verification_status | source_authority | proposal_usage_status | Catatan |
 |---|---|---|---|---|
-| `location_existence` | `unverified` (dikorroborasi kode pos + halaman kecamatan) | A + C | `SAFE_AS_CONTEXT_ONLY` | Kecamatan Batu Ampar terkonfirmasi silang |
-| `existing_plts` | `unverified` | A (BPK Kalbar) | `SAFE_AS_CONTEXT_ONLY` | Bagian program hibah 2018 yang sama |
+| ✅ `location_existence` | **`verified_primary`** (`external_manual_verification`, EV-F) | A | `SAFE_TO_USE` | Disebut eksplisit dalam sumber BPK |
+| ✅ `existing_plts` | **`verified_primary`** (EV-F) | A (BPK Kalbar) | `SAFE_WITH_HISTORICAL_LABEL` | Bagian penyerahan hibah aset **2021** yang sama |
 | `existing_plts_capacity_kwp` | **tidak tersedia** (hanya angka agregat) | — | **`DO_NOT_USE`** | Tidak ada rincian per-desa (NF-03) |
 | `commissioning_year` | `unverified` | A | `SAFE_WITH_HISTORICAL_LABEL` | Diasumsikan sama (2018) — **asumsi, belum dikonfirmasi per desa** |
 | `served_households` | **tidak tersedia** | — | **`DO_NOT_USE`** | Hanya agregat 3 desa |
@@ -702,8 +832,8 @@ Sesuai instruksi §F Prompt 2.5: verifikasi tidak lagi diberikan pada level sumb
 
 | Field | verification_status | source_authority | proposal_usage_status | Catatan |
 |---|---|---|---|---|
-| `location_existence` | `unverified` (dikorroborasi 3 sumber independen) | C | `SAFE_AS_CONTEXT_ONLY` | **Nama desa terkonfirmasi benar**, bukan salah eja "Sungai Kakap" |
-| `existing_plts` | `unverified` | A (BPK Kalbar) | `SAFE_AS_CONTEXT_ONLY` | Bagian program hibah 2018 yang sama |
+| ✅ `location_existence` | **`verified_primary`** (`external_manual_verification`, EV-F) | A | `SAFE_TO_USE` | **Nama desa terkonfirmasi benar** dan disebut eksplisit dalam sumber BPK — bukan salah eja "Sungai Kakap" |
+| ✅ `existing_plts` | **`verified_primary`** (EV-F) | A (BPK Kalbar) | `SAFE_WITH_HISTORICAL_LABEL` | Bagian penyerahan hibah aset **2021** yang sama |
 | `existing_plts_capacity_kwp` | **tidak tersedia** | — | **`DO_NOT_USE`** | Tidak ada rincian per-desa |
 | `commissioning_year` | `unverified` | A | `SAFE_WITH_HISTORICAL_LABEL` | Asumsi sama (2018), belum dikonfirmasi |
 | `served_households` | **tidak tersedia** | — | **`DO_NOT_USE`** | — |
@@ -788,22 +918,38 @@ Instruksi Level-1 meminta memprioritaskan edisi **2026** sebagai sumber statisti
 
 ---
 
-### E. Ringkasan Verifikasi (diperbarui Prompt 2.5)
+### E. Ringkasan Verifikasi (diperbarui Prompt 2.6)
 
-| verification_status | Jumlah | Perubahan dari Prompt 2 |
+**Berdasarkan verification_method:**
+
+| verification_method | Jumlah | Keterangan |
 |---|---|---|
-| `verified_primary` | **0** | tidak berubah (0 → 0) |
-| `verified_secondary` | 1 (EV-014) | tidak berubah |
-| `historical` | 5 | tidak berubah |
-| `conflicting` | **2** (EV-039; EV-034/035 direklasifikasi keluar) | turun dari 3 — EV-034/035 dikoreksi menjadi `DIFFERENT_METRIC` |
-| `unverified` | 56 | tidak berubah |
+| `agent_verified` | **1** | EV-014 saja (GitHub) — satu-satunya domain yang lolos egress |
+| `external_manual_verification` | **8** | EV-A s.d. EV-H — diverifikasi di luar environment agent ini |
+| `snippet_only` | ~52 | Bagian II, dikurangi entri yang digantikan EV-A–EV-H |
 
-| proposal_usage_status | Jumlah perkiraan |
-|---|---|
-| `SAFE_TO_USE` | **1** |
-| `SAFE_WITH_HISTORICAL_LABEL` | 4 |
-| `SAFE_AS_CONTEXT_ONLY` | 13 |
-| `NEEDS_MANUAL_VERIFICATION` | 34 |
-| `DO_NOT_USE` | 8 |
+**Berdasarkan verification_status:**
 
-**Kesimpulan ledger:** dari ~60 evidence, hanya **1 yang aman dipakai tanpa kualifikasi**, dan **8 yang secara aktif dilarang dipakai**. Sisanya memerlukan verifikasi manual atau hanya boleh dipakai sebagai konteks berlabel. Tidak ada satu pun angka numerik tentang Kubu Raya yang saat ini aman dikutip dalam proposal.
+| verification_status | Prompt 2.5 | **Prompt 2.6** | Perubahan |
+|---|---|---|---|
+| `verified_primary` | 0 | **6** | EV-A, EV-B, EV-C, EV-F, EV-G, EV-H ⬆ |
+| `verified_secondary` | 1 | **3** | + EV-D, EV-E ⬆ |
+| `historical` | 5 | 5 | — |
+| `conflicting` | 2 | 2 | CF-001 (EV-039) tetap; CF-006 baru dicatat sebagai `unverified`, bukan conflicting |
+| `unverified` / `snippet_only` | 56 | ~52 | turun seiring penggantian ⬇ |
+
+**Berdasarkan proposal_usage_status:**
+
+| proposal_usage_status | Prompt 2.5 | **Prompt 2.6** |
+|---|---|---|
+| `SAFE_TO_USE` | 1 | **6** ⬆ |
+| `SAFE_WITH_HISTORICAL_LABEL` | 4 | **6** ⬆ |
+| `SAFE_AS_CONTEXT_ONLY` | 13 | 11 |
+| `NEEDS_MANUAL_VERIFICATION` | 34 | ~31 |
+| `DO_NOT_USE` | 8 | **8** (tidak berubah) |
+
+**Kesimpulan ledger setelah Prompt 2.6:**
+
+Fondasi sumber untuk seluruh komponen utama MVP kini memiliki jalur terverifikasi: kebijakan (EV-A), sosial (EV-B), bencana (EV-C), surya (EV-D primary, EV-E supporting), PLTS eksisting historis (EV-F), fasilitas pendidikan (EV-G) dan kesehatan (EV-H).
+
+Namun **daftar `DO_NOT_USE` tidak berkurang sama sekali** — dan ini disengaja. Seluruh **angka numerik** tentang Kubu Raya (kapasitas PLTS, KK terlayani, skor IRBI, angka investasi program nasional, nilai GHI) **tetap tidak boleh dikutip**. Yang dinaikkan oleh Prompt 2.6 adalah **keberadaan sumber dan jalur datanya**, bukan isi angkanya. Pembedaan ini adalah inti dari gate "CONDITIONAL" pada Prompt 3.
