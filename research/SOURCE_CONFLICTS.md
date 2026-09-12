@@ -1,63 +1,150 @@
 # SOURCE_CONFLICTS.md — Konflik Antar-Sumber SURYA-SIAGA
 
-Sesuai `PROJECT_CONTEXT.md` §10 Aturan Integritas Data poin 6: **"Jangan memilih angka ketika dua sumber bertentangan tanpa mencatat konflik."** Dokumen ini mencatat seluruh konflik yang ditemukan selama riset Prompt 2. Tidak satu pun konflik di bawah ini diselesaikan/dipilih secara sepihak — semua menunggu verifikasi lanjutan atau keputusan eksplisit.
+**Revisi:** Prompt 2.5 (Evidence Verification & Research Repair), 2026-09-12.
+**Perubahan utama:** setiap konflik direklasifikasi menggunakan taksonomi baru — konflik nyata dipisahkan dari perbedaan definisi/metrik/scope/tahun dan dari kemungkinan artefak ringkasan pencarian.
+
+Sesuai `PROJECT_CONTEXT.md` §10 poin 6: **"Jangan memilih angka ketika dua sumber bertentangan tanpa mencatat konflik."** Tidak satu pun konflik di bawah diselesaikan secara sepihak.
+
+> ⚠️ **Status verifikasi pass Prompt 2.5:** WebFetch tetap diblokir oleh kebijakan egress organisasi untuk seluruh domain yang diuji (7/7 gagal, termasuk `kalbar.bpk.go.id`, `inarisk.bnpb.go.id`, `power.larc.nasa.gov`). **Tidak satu pun konflik di bawah dapat diselesaikan dengan membuka sumber asli.** Semua tetap terbuka.
 
 ---
 
-**CF-001**
-- topic: Kapasitas PLTS Komunal 2018 di Kecamatan Batu Ampar (Sumber Agung/Muara Tiga/Sungai Kerawang)
-- source_A: sintesis WebSearch mengutip kalbar.antaranews.com/berita/542859 (nilai kapasitas akhir "250")
-- value_A: kapasitas awal 100 → bertambah menjadi 250 (satuan tidak eksplisit, kemungkinan kWp)
-- data_year_A: tidak dipastikan
-- source_B: sintesis WebSearch mengutip ebtke.esdm.go.id/post/2023/06/22/3515 (nilai kapasitas akhir "150")
-- value_B: kapasitas awal 100 → bertambah menjadi 150 (satuan tidak eksplisit)
-- data_year_B: 2023 (tanggal artikel, bukan tentu tahun data)
-- possible_explanation: kemungkinan (a) definisi/cakupan berbeda — salah satu angka mungkin agregat 3 desa, yang lain per-desa; (b) revisi data antar waktu publikasi; (c) kesalahan pengutipan angka oleh salah satu outlet; (d) kedua sumber ini sebenarnya adalah ringkasan WebSearch dari halaman yang sama, sehingga perbedaan bisa jadi artefak proses ringkasan, bukan perbedaan sumber riil — **ini sendiri belum bisa dipastikan tanpa membuka kedua halaman asli**.
-- recommended_action: buka langsung kalbar.bpk.go.id (sumber utama, EV-038) dan kedua URL di atas secara manual; jangan gunakan angka manapun sebagai fakta produksi sampai dikonfirmasi. Juga catat apakah "312 rumah tangga" adalah agregat 3 desa atau 1 desa saja.
-- status: **OPEN — requires_verification**
+## Taksonomi Klasifikasi Konflik
 
-**CF-002**
-- topic: Klasifikasi risiko/bahaya karhutla Kabupaten Kubu Raya
-- source_A: Wijaya, Akbar &amp; Romiyanto — jurnal GEOGRAPHY (UMMAT) (EV-034)
-- value_A: kelas BAHAYA didominasi Sedang (52,25%) dan Tinggi (42,11%); Rendah hanya 5,64%
-- data_year_A: tidak dikonfirmasi
-- source_B: Muharrama &amp; Widjonarko (2023), Jurnal Teknik PWK UNDIP (EV-035)
-- value_B: kelas RISIKO didominasi Rendah (44,60%)
-- data_year_B: berbasis data kejadian 2015–2019, publikasi 2023
-- possible_explanation: **definisi berbeda** — studi A mengukur BAHAYA (hazard: kondisi biofisik semata), studi B mengukur RISIKO (ancaman × kerentanan × kapasitas, sesuai definisi InaRISK di EV-028) — keduanya secara metodologis TIDAK mengukur hal yang sama meski topiknya sama-sama "karhutla Kubu Raya"; kemungkinan juga tahun data &amp; metodologi spasial (unit analisis KHG vs kabupaten) berbeda.
-- recommended_action: JANGAN menggabungkan/merata-ratakan kedua angka ini sebagai "risiko karhutla Kubu Raya" tunggal. Jika kedua dipakai, harus ditampilkan terpisah dengan label jelas (bahaya vs risiko, tahun data masing-masing). Verifikasi metodologi lengkap kedua paper sebelum dipakai sebagai basis kriteria skoring.
-- status: **OPEN — conflicting, bukan requires_verification biasa (definisi memang berbeda, bukan sekadar salah satu salah)**
-
-**CF-003**
-- topic: Skala/satuan skor risiko kekeringan Kubu Raya di IRBI BNPB
-- source_A: Buku IRBI 2023/2024 (EV-032) — skor Kubu Raya 34,21 (2024) / 36,00 (2023)
-- value_A: skor pada skala yang tidak disebutkan secara eksplisit di snippet (tampak seperti skala 0–100)
-- data_year_A: 2023, 2024
-- source_B: halaman metodologi umum InaRISK (EV-030) — kelas risiko dijelaskan pada skala 0–1 (Rendah 0–0,3; Sedang 0,3–0,6; Tinggi 0,6–1,0)
-- value_B: skala 0–1
-- data_year_B: tidak spesifik tahun (metodologi umum)
-- possible_explanation: kemungkinan IRBI (indeks komposit multi-bahaya per kabupaten) memakai skala agregat berbeda dari skala kelas per-bahaya individual yang dijelaskan di dokumen metodologi umum — ATAU salah satu angka salah kutip oleh proses ringkasan WebSearch.
-- recommended_action: buka langsung Buku IRBI 2023/2024 halaman yang dikutip (page306/page308) untuk memastikan skala dan definisi "kelas TINGGI" yang dipakai, sebelum angka 34,21/36,00 dipakai sebagai input skoring apa pun.
-- status: **OPEN — requires_verification**
-
-**CF-004**
-- topic: Satuan parameter NASA POWER ALLSKY_SFC_SW_DWN
-- source_A: sebagian ringkasan WebSearch menyebut Wh/m²
-- source_B: konvensi umum yang sering dipakai untuk API harian NASA POWER adalah kWh/m²/day
-- possible_explanation: kemungkinan sumber A merujuk pada representasi horaria/API tertentu, sumber B pada API harian (temporal daily) — NASA POWER memang punya beberapa temporal API (horaria/harian/bulanan/tahunan) yang bisa memiliki satuan berbeda.
-- recommended_action: buka langsung power.larc.nasa.gov/docs/methodology/ dan parameter dictionary resmi untuk memastikan satuan pasti sebelum dipakai dalam perhitungan apa pun.
-- status: **OPEN — requires_verification**
-
-**CF-005**
-- topic: Lokasi "PLTS Kubu" yang disebut dalam artikel Mongabay 2016
-- source_A: judul artikel Mongabay "PLTS Kubu, Proyek Ambisius yang Kini Tidak Terurus" (EV-046) — mengindikasikan lokasi di area bernama "Kubu"
-- source_B: Kecamatan Kubu adalah kecamatan nyata di Kabupaten Kubu Raya, berbeda dari Kecamatan Batu Ampar (lokasi 3 desa PLTS 2018 hibah, EV-038)
-- possible_explanation: tidak dapat dipastikan apakah "PLTS Kubu" di artikel ini merujuk pada proyek di Kecamatan Kubu, atau proyek berbeda yang kebetulan memakai kata "Kubu" (mis. nama pendek "Kubu Raya"), atau proyek yang sama sekali berbeda dari 3 desa Batu Ampar.
-- recommended_action: buka artikel asli (URL di EV-046) untuk memastikan lokasi persis sebelum dianggap sebagai preseden historis "PLTS terbengkalai" yang relevan dengan Kubu Raya.
-- status: **OPEN — NOT_FOUND/ambiguous, bukan konflik nilai tapi konflik identifikasi lokasi**
+| Klasifikasi | Arti |
+|---|---|
+| `TRUE_CONFLICT` | Dua sumber membahas metrik, scope, dan tahun yang SAMA tapi memberi nilai berbeda. Ini konflik nyata. |
+| `DIFFERENT_METRIC` | Nilai mengukur hal berbeda (mis. bahaya vs risiko). **Tidak directly comparable** — bukan konflik numerik. |
+| `DIFFERENT_SCOPE` | Cakupan geografis/unit berbeda (mis. satu desa vs agregat tiga desa). |
+| `DIFFERENT_YEAR` | Nilai berbeda karena periode berbeda. |
+| `METHODOLOGY_DIFFERENCE` | Metode pengukuran/perhitungan berbeda. |
+| `POSSIBLE_SEARCH_SUMMARY_ARTIFACT` | Perbedaan mungkin berasal dari proses ringkasan mesin pencari, belum tentu ada di sumber asli. Belum boleh dianggap konflik sumber. |
+| `UNRESOLVED` | Belum cukup bukti untuk mengklasifikasi secara definitif. |
 
 ---
 
-## Ringkasan
+## CF-001 — Kapasitas PLTS Komunal 2018, Kecamatan Batu Ampar
 
-5 konflik/ambiguitas ditemukan, seluruhnya berstatus **OPEN** — tidak ada satu pun yang diselesaikan secara sepihak dalam riset ini. CF-001 dan CF-002 paling material karena berkaitan langsung dengan dua kandidat data historis (existing PLTS &amp; karhutla) yang kemungkinan besar dipakai di dataset pilot MVP nanti.
+| Field | Isi |
+|---|---|
+| **Klasifikasi (Prompt 2.5)** | `POSSIBLE_SEARCH_SUMMARY_ARTIFACT` + kandidat `DIFFERENT_SCOPE` → status akhir **`UNRESOLVED`** |
+| **Klasifikasi sebelumnya (Prompt 2)** | "OPEN — requires_verification" (tanpa pembedaan jenis konflik) |
+
+- **topic:** Kapasitas PLTS Komunal 2018 di Sumber Agung / Muara Tiga / Sungai Kerawang
+- **source_A:** ringkasan WebSearch mengutip `kalbar.antaranews.com/berita/542859` → kapasitas awal 100, bertambah menjadi **250**
+- **data_year_A:** tidak diketahui
+- **source_B:** ringkasan WebSearch mengutip `ebtke.esdm.go.id/post/2023/06/22/3515` → kapasitas awal 100, bertambah menjadi **150**
+- **data_year_B:** artikel 2023 (tahun data tidak diketahui)
+- **satuan:** **tidak diketahui pada kedua sumber** — angka muncul tanpa satuan eksplisit di snippet. Dugaan kWp belum terkonfirmasi.
+
+**Analisis reklasifikasi:**
+1. **Mengapa `POSSIBLE_SEARCH_SUMMARY_ARTIFACT` didahulukan:** kedua "sumber" ini tidak pernah dibuka. Keduanya berasal dari ringkasan mesin pencari yang mungkin merangkum halaman yang sama, atau salah membaca angka dari tabel/kalimat yang sama. Menyebut ini "dua sumber kredibel yang bertentangan" saat ini **belum dapat dibuktikan** — belum tentu ada konflik di sumber aslinya.
+2. **Mengapa `DIFFERENT_SCOPE` adalah kandidat kuat:** program ini mencakup **tiga desa**. Angka 150 dan 250 bisa jadi merujuk pada agregat berbeda (mis. 2 desa vs 3 desa), atau satu desa vs total. Angka "312 rumah tangga" juga tidak jelas apakah agregat 3 desa atau satu desa.
+3. **Mengapa BUKAN `TRUE_CONFLICT`:** syarat TRUE_CONFLICT adalah metrik, scope, dan tahun yang sama — **tidak satu pun dari ketiganya diketahui** untuk kedua angka ini.
+
+**Keputusan sesuai instruksi §C Prompt 2.5:**
+> Tidak memilih 150 maupun 250. **`existing_plts_capacity_kwp` tetap `NULL`** dalam acquisition plan dan dalam dataset apa pun sampai sumber asli dibuka dan berhasil menjawab: angka merujuk pada apa, satuannya apa, desa mana, individual atau agregat, tahun berapa, dan apakah itu kapasitas terpasang atau angka lain (mis. nilai hibah, jumlah panel, daya per unit).
+
+- **recommended_action:** buka `kalbar.bpk.go.id/tiga-desa-terjauh-di-kubu-raya-terima-hibah-plts/` (sumber Tier A utama) secara manual, lalu kedua URL di atas. Catat kutipan verbatim beserta satuan dan cakupannya.
+- **status:** **UNRESOLVED** — `proposal_usage_status: DO_NOT_USE` untuk seluruh angka kapasitas.
+
+---
+
+## CF-002 — Klasifikasi karhutla Kabupaten Kubu Raya
+
+| Field | Isi |
+|---|---|
+| **Klasifikasi (Prompt 2.5)** | **`DIFFERENT_METRIC`** (primer) + `METHODOLOGY_DIFFERENCE` + `DIFFERENT_YEAR` (sekunder) |
+| **Klasifikasi sebelumnya (Prompt 2)** | "conflicting" — **klasifikasi ini KELIRU dan diperbaiki di sini** |
+
+- **source_A:** Wijaya, Akbar &amp; Romiyanto — jurnal GEOGRAPHY (UMMAT) → **BAHAYA (hazard)**: Rendah 5,64%, Sedang 52,25%, Tinggi 42,11% (unit analisis: Kesatuan Hidrologis Gambut/KHG)
+- **source_B:** Muharrama &amp; Widjonarko (2023), Jurnal Teknik PWK UNDIP → **RISIKO (risk)**: didominasi kelas Rendah 44,60% (data kejadian 2015–2019)
+
+**Analisis reklasifikasi (sesuai instruksi §D):**
+
+Kedua angka ini **TIDAK mengukur hal yang sama** dan karenanya **tidak directly comparable**:
+
+- **Bahaya (hazard)** = probabilitas/intensitas ancaman berdasarkan kondisi biofisik semata (kedalaman gambut, tutupan lahan, elevasi). Tidak memasukkan manusia atau kapasitas penanggulangan.
+- **Risiko (risk)** = fungsi dari Bahaya × Kerentanan × (1/Kapasitas), sesuai kerangka InaRISK (EV-028). Suatu area bisa **berbahaya tinggi tapi berisiko rendah** apabila kerentanannya rendah (sedikit penduduk/aset terpapar) atau kapasitas penanggulangannya tinggi.
+
+Karena itu, temuan "bahaya tinggi 42%" (A) dan "risiko dominan rendah 44,6%" (B) **dapat sepenuhnya benar secara bersamaan** — tidak ada kontradiksi logis. Menyebut ini "konflik" pada Prompt 2 adalah kesalahan klasifikasi yang diperbaiki di revisi ini.
+
+Faktor sekunder yang juga membedakan: unit analisis berbeda (KHG vs wilayah administratif), periode data berbeda, dan skema kelas berbeda.
+
+- **recommended_action:** JANGAN menggabungkan/merata-ratakan. Jika keduanya dipakai, tampilkan **terpisah dengan label metrik eksplisit** ("bahaya karhutla" vs "risiko karhutla") beserta tahun data dan unit analisisnya. Baca metodologi lengkap kedua paper sebelum salah satunya dipakai sebagai basis kriteria.
+- **implikasi produk:** SURYA-SIAGA harus memutuskan secara eksplisit apakah kriteria `wildfire_risk` di model data §8 `PROJECT_CONTEXT.md` mengacu pada **bahaya** atau **risiko** — keduanya tidak bisa dipertukarkan. Keputusan ini belum diambil dan masuk unresolved decisions.
+- **status:** **DIFFERENT_METRIC — bukan konflik numerik.** Tetap `UNRESOLVED` untuk pemilihan metrik mana yang dipakai produk.
+
+---
+
+## CF-003 — Skala indeks IRBI vs skala layer InaRISK
+
+| Field | Isi |
+|---|---|
+| **Klasifikasi (Prompt 2.5)** | **`DIFFERENT_METRIC`** (dugaan kuat) + `UNRESOLVED` (dokumentasi belum dapat diverifikasi) |
+| **Klasifikasi sebelumnya (Prompt 2)** | "OPEN — requires_verification" |
+
+- **source_A:** Buku IRBI 2023/2024 (BNPB) → skor Kubu Raya **34,21** (2024) / **36,00** (2023), kelas "TINGGI"
+- **source_B:** metodologi umum InaRISK → kelas risiko pada skala **0–1** (Rendah 0–0,3; Sedang 0,3–0,6; Tinggi 0,6–1,0)
+
+**Analisis reklasifikasi (sesuai instruksi §E):**
+
+> ⚠️ **Larangan eksplisit:** JANGAN berasumsi 34,21 = 0,3421 atau bentuk transformasi apa pun. Kesamaan digit antara "34,21" dan rentang 0,3–0,6 adalah kebetulan yang menggoda dan **tidak boleh dijadikan dasar konversi**. Perlu dicatat juga bahwa jika transformasi naif itu dilakukan, 0,3421 justru akan jatuh di kelas **"Sedang"**, bukan "Tinggi" seperti yang dilaporkan IRBI — indikasi tambahan bahwa kedua skala ini memang bukan skala yang sama.
+
+Dugaan (belum terverifikasi): IRBI adalah **indeks komposit multi-bahaya pada level kabupaten/kota** yang dihitung dan dikelaskan dengan skala sendiri, sedangkan layer InaRISK adalah **indeks per-bahaya pada level spasial (piksel/area)** dengan skala 0–1. Keduanya adalah produk berbeda dari lembaga yang sama.
+
+**Hal yang harus diverifikasi manual sebelum IRBI dipakai sama sekali:**
+1. Definisi indeks IRBI dan rumusnya;
+2. Range/skala resmi (0–100? 0–300? lainnya);
+3. Level analisis (kabupaten? kecamatan?);
+4. Batas kategori Rendah/Sedang/Tinggi pada skala tersebut;
+5. Hubungan formal antara IRBI dan layer InaRISK.
+
+**Keputusan sesuai instruksi §E:**
+> Karena kelima poin di atas belum jelas, **IRBI TIDAK BOLEH digunakan sebagai site-level scoring input.**
+
+**Catatan tambahan yang berdiri sendiri dari isu verifikasi:** meskipun nanti terverifikasi penuh, IRBI adalah indeks **level kabupaten**. Seluruh kandidat fasilitas SURYA-SIAGA berada **di dalam satu kabupaten yang sama** (Kubu Raya), sehingga nilai IRBI akan identik untuk semua kandidat dan **secara matematis tidak memiliki daya pembeda apa pun** dalam skoring antar-lokasi. Perannya yang tepat adalah **konteks kabupaten**, bukan input skoring per-situs — ini berlaku terlepas dari hasil verifikasi.
+
+- **status:** **UNRESOLVED** — `proposal_usage_status: SAFE_AS_CONTEXT_ONLY` (setelah verifikasi manual), `DO_NOT_USE` sebagai input skoring per-situs.
+
+---
+
+## CF-004 — Satuan parameter NASA POWER `ALLSKY_SFC_SW_DWN`
+
+| Field | Isi |
+|---|---|
+| **Klasifikasi (Prompt 2.5)** | **`POSSIBLE_SEARCH_SUMMARY_ARTIFACT`** + kandidat `DIFFERENT_METRIC` → **`UNRESOLVED`** |
+
+- **source_A:** sebagian ringkasan pencarian menyebut Wh/m²
+- **source_B:** konvensi umum untuk API harian menyebut kWh/m²/day
+
+**Analisis:** NASA POWER menyediakan beberapa temporal API (hourly/daily/monthly/climatology) yang memang dapat memiliki satuan berbeda untuk parameter yang sama — sehingga ini kemungkinan besar `DIFFERENT_METRIC` (endpoint berbeda), bukan kontradiksi. Namun karena kedua "sumber" berasal dari ringkasan pencarian dan bukan dari parameter dictionary resmi, `POSSIBLE_SEARCH_SUMMARY_ARTIFACT` didahulukan.
+
+- **recommended_action:** buka parameter dictionary resmi NASA POWER dan catat satuan per endpoint temporal.
+- **status:** **UNRESOLVED** — satuan tidak boleh diasumsikan dalam perhitungan apa pun. (Catatan: NASA POWER sudah direklasifikasi sebagai sumber validasi time-series, bukan sumber spasial — lihat `DATA_ACQUISITION_PLAN.md`, sehingga dampak konflik ini berkurang.)
+
+---
+
+## CF-005 — Lokasi "PLTS Kubu" (artikel Mongabay 2016)
+
+| Field | Isi |
+|---|---|
+| **Klasifikasi (Prompt 2.5)** | **`UNRESOLVED`** (ambiguitas identifikasi, bukan konflik nilai) |
+
+- Judul artikel menyebut "PLTS Kubu"; "Kubu" dapat merujuk pada **Kecamatan Kubu** (kecamatan nyata di Kabupaten Kubu Raya, berbeda dari Kecamatan Batu Ampar) atau bentuk pendek "Kubu Raya", atau lokasi lain.
+- Halaman gagal dibuka pada Prompt 2 maupun Prompt 2.5.
+- **status:** **UNRESOLVED** — `proposal_usage_status: DO_NOT_USE` sampai lokasi dipastikan. Jika nanti terkonfirmasi berada di Kubu Raya, ini berpotensi menjadi preseden historis penting ("PLTS terbengkalai") yang justru memperkuat argumen perlunya assessment pra-deployment — tapi tidak boleh dipakai sebelum dipastikan.
+
+---
+
+## Ringkasan Reklasifikasi
+
+| ID | Klasifikasi Prompt 2 | Klasifikasi Prompt 2.5 | Terselesaikan? |
+|---|---|---|---|
+| CF-001 | "conflicting" | `POSSIBLE_SEARCH_SUMMARY_ARTIFACT` + kandidat `DIFFERENT_SCOPE` | Tidak — capacity tetap NULL |
+| CF-002 | "conflicting" | **`DIFFERENT_METRIC`** (koreksi klasifikasi) | Sebagian — terbukti bukan konflik numerik |
+| CF-003 | "requires_verification" | `DIFFERENT_METRIC` (dugaan) | Tidak — IRBI dilarang jadi input skoring situs |
+| CF-004 | "requires_verification" | `POSSIBLE_SEARCH_SUMMARY_ARTIFACT` | Tidak — dampak berkurang (peran NASA POWER direklasifikasi) |
+| CF-005 | "NOT_FOUND/ambiguous" | `UNRESOLVED` (ambiguitas identifikasi) | Tidak |
+
+**Temuan penting dari pass ini:** hanya **satu** dari lima entri (CF-002) yang benar-benar dapat "diselesaikan" — dan penyelesaiannya adalah menemukan bahwa **itu bukan konflik sama sekali**, melainkan kesalahan klasifikasi pada Prompt 2 yang membandingkan dua metrik berbeda. **Nol konflik numerik nyata (`TRUE_CONFLICT`) yang terkonfirmasi** sejauh ini — karena tidak satu pun sumber asli dapat dibuka untuk membuktikan bahwa konflik itu benar-benar ada di sumbernya.

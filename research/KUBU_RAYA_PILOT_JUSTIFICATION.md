@@ -1,76 +1,135 @@
 # KUBU_RAYA_PILOT_JUSTIFICATION.md
 
-> ⚠️ Seluruh evidence di dokumen ini merujuk ke `EVIDENCE_LEDGER.md` dan berstatus `unverified` kecuali dinyatakan lain (WebFetch diblokir total di sesi riset ini). Kesimpulan di §9 dibuat dengan mempertimbangkan keterbatasan ini secara eksplisit — bukan mengabaikannya.
+**Revisi:** Prompt 2.5 (Evidence Verification & Research Repair), 2026-09-12.
+**Metode penilaian:** sesuai §I Prompt 2.5 — dinilai berdasarkan **kualitas evidence**, bukan jumlah sumber. Status pilot TIDAK dinaikkan hanya karena banyak sumber ditemukan.
+
+> ⚠️ **Kondisi verifikasi:** WebFetch ditolak `EGRESS_BLOCKED` untuk seluruh 7 domain prioritas yang diuji. **Nol evidence terverifikasi primer.** Seluruh penilaian di bawah adalah penilaian atas evidence yang belum terverifikasi, dan karenanya **status pilot di §9 bersifat PROVISIONAL.**
 
 ---
 
 ## 1. Tujuan Pilot
 
-Menilai apakah Kabupaten Kubu Raya, Kalimantan Barat cukup relevan dan data-supported untuk digunakan sebagai **proof-of-concept metodologi prioritisasi SURYA-SIAGA** (bukan untuk membuktikan Kubu Raya sebagai "lokasi PLTS terbaik di Indonesia" — sesuai `PROJECT_CONTEXT.md` §6).
+Menilai apakah Kabupaten Kubu Raya, Kalimantan Barat cukup relevan dan data-supported untuk digunakan sebagai **proof-of-concept metodologi prioritisasi SURYA-SIAGA** — bukan untuk membuktikan Kubu Raya sebagai "lokasi PLTS terbaik di Indonesia" (§6 `PROJECT_CONTEXT.md`).
 
 ---
 
-## 2. Solar Evidence
+## Temuan Struktural yang Membingkai Seluruh Penilaian
 
-- Tidak ditemukan data GHI spesifik-Kubu Raya yang sudah diekstrak (task ini memang melarang pengambilan angka GHI kandidat — lihat §I task Prompt 2).
-- Yang terkonfirmasi: **Global Solar Atlas** menyediakan GHI/DNI resolusi ~250m secara global (mencakup Kubu Raya secara otomatis, karena cakupannya global) — resolusi ini secara teknis cukup halus untuk membedakan titik dalam satu kabupaten (EV-020), meski GSA sendiri menyatakan bukan untuk bankable assessment (EV-022).
-- **NASA POWER TIDAK cocok** untuk tujuan ini di Kubu Raya — resolusi grid ~55×70km jauh melebihi luas kabupaten (EV-026).
-- **Kekuatan evidence: SEDANG** — sumber data solar tersedia dan berlaku universal (bukan spesifik-keunggulan Kubu Raya), tapi belum ada satu pun angka GHI Kubu Raya aktual yang diekstrak/diverifikasi dalam riset ini.
-- **Keterbatasan:** variasi GHI riil antar titik dalam kabupaten dataran rendah seperti Kubu Raya kemungkinan kecil secara fisik (didominasi tutupan awan regional, bukan topografi lokal) — catatan analitis dari agent riset, bukan pernyataan resmi GSA.
+Verification pass ini memunculkan satu pola yang tidak terlihat pada Prompt 2, dan pola ini lebih menentukan daripada penilaian per-dimensi mana pun:
+
+> **Evidence terkuat yang dimiliki proyek ini berada pada level KABUPATEN, sedangkan data yang benar-benar dibutuhkan MVP berada pada level SITUS — dan justru level situs itulah yang paling kosong.**
+
+- Evidence kuat (IRBI kekeringan "tinggi", prioritas karhutla nasional, momentum PLTS 100 GWp) semuanya **berlaku identik untuk seluruh kandidat di dalam Kubu Raya**, sehingga **nol daya pembeda** dalam skoring antar-fasilitas. Evidence ini membenarkan *pemilihan wilayah*, bukan *prioritisasi di dalamnya*.
+- Data yang memberi daya pembeda antar-situs — koordinat fasilitas, jumlah penerima manfaat per fasilitas, kapasitas PLTS per lokasi — berstatus `NOT_AVAILABLE` atau `DO_NOT_USE`.
+
+Implikasinya: kekuatan justifikasi wilayah **tidak otomatis menjadi kekuatan dataset pilot**. Keduanya harus dinilai terpisah, dan itulah yang dilakukan di bawah.
+
+---
+
+## 2. Solar Resource Data Availability
+
+| Aspek | Penilaian |
+|---|---|
+| Ketersediaan sumber | Global Solar Atlas mencakup Kubu Raya secara otomatis (cakupan global). NASA POWER juga, tapi sudah direklasifikasi `NOT_REQUIRED` untuk screening spasial. |
+| Kualitas evidence | **LEMAH.** Spesifikasi (satuan, resolusi, CRS, lisensi) seluruhnya `unverified`. **Tidak ada satu pun nilai GHI Kubu Raya aktual** yang pernah diambil atau diverifikasi. |
+| Catatan fisik penting | Bahkan bila terverifikasi, GHI di kabupaten dataran rendah seperti Kubu Raya didorong oleh tutupan awan skala regional, bukan topografi lokal — sehingga **variasi antar-kandidat kemungkinan kecil**. Daya pembeda dimensi ini terhadap prioritisasi antar-situs patut dipertanyakan sejak awal. |
+| Status | `MANUAL_VERIFICATION_REQUIRED` (MA-01) |
+
+**Kekuatan dimensi: LEMAH** — bukan karena data tidak ada, tapi karena belum ada apa pun yang diverifikasi, dan relevansi diskriminatifnya belum terbukti.
 
 ## 3. Existing PLTS Evidence
 
-- **Ditemukan evidence konkret dan spesifik**: hibah PLTS Komunal 2018 untuk **3 desa** di Kecamatan Batu Ampar — Sumber Agung, Muara Tiga, Sungai Kerawang (EV-038, sumber: BPK Perwakilan Kalbar).
-- Ini KONSISTEN dengan `PROJECT_CONTEXT.md` §11 (yang menyebut Sumber Agung), tapi PROJECT_CONTEXT belum mencantumkan 2 desa lainnya.
-- **Namun**: detail kuantitatif (kapasitas, jumlah KK) **konflik antar-sumber** (CF-001) — tidak bisa dipakai sebagai fakta produksi tanpa verifikasi ulang.
-- Ditemukan juga preseden PLTS skala kecil lain di Kubu Raya (Sepok Keladi, Sungai Kakap — EV-045) dan indikasi ambigu proyek "PLTS Kubu" yang bermasalah (EV-046, CF-005) — keduanya memerlukan verifikasi lanjutan.
-- **Kekuatan evidence: KUAT untuk keberadaan, LEMAH untuk detail kuantitatif** — Kubu Raya jelas punya riwayat nyata PLTS komunal multi-lokasi, tapi angka pastinya belum bisa dipakai.
+| Aspek | Penilaian |
+|---|---|
+| Keberadaan (3 desa Batu Ampar) | **SEDANG.** Dikorroborasi sumber Tier A (BPK Kalbar) dan beberapa sumber lain, konsisten lintas pencarian. Ini evidence existing-PLTS terbaik yang dimiliki proyek. |
+| Atribut kuantitatif | **SANGAT LEMAH.** Kapasitas `conflicting` → NULL (CF-001). KK terlayani `conflicting`. Rincian per-desa `NOT_AVAILABLE`. Koordinat `NOT_AVAILABLE`. |
+| Kondisi terkini | **TIDAK ADA.** Tidak satu pun sumber menjelaskan status 2026 — padahal jalur rekomendasi "Expansion Assessment" (§12 `PROJECT_CONTEXT.md`) bergantung pada ini. |
+| Konsistensi dengan PROJECT_CONTEXT | ⚠️ Angka di §11 `PROJECT_CONTEXT.md` (329/402 KK) **tidak cocok** dengan angka riset (312 KK). Belum jelas mana yang benar. |
 
-## 4. Public Facility Evidence
+**Kekuatan dimensi: SEDANG untuk keberadaan, SANGAT LEMAH untuk atribut.** Cukup untuk menyatakan "Kubu Raya punya PLTS eksisting", tidak cukup untuk menilai satu pun dari ketiganya.
 
-- Puskesmas: portal resmi kabupaten (puskesmas.kuburayakab.go.id) dan provinsi (kalbarsehat.kalbarprov.go.id/fasyankes) EKSIS dengan halaman per-fasilitas (EV-048, EV-049) — field dasar (nama, alamat, kecamatan) ada, **koordinat TIDAK terkonfirmasi tersedia**.
-- Sekolah: platform resmi Kemendikdasmen (referensi.data.kemendikdasmen.go.id) EKSIS untuk Kubu Raya hingga level kecamatan (EV-051) — field detail &amp; koordinat belum terkonfirmasi.
-- **Kekuatan evidence: SEDANG** — platform data resmi jelas ada dan aktif, tapi granularitas/kelengkapan field (terutama koordinat) belum bisa dipastikan tanpa membuka langsung.
+## 4. Public Facility Data Availability
 
-## 5. Social Data Evidence
+| Aspek | Penilaian |
+|---|---|
+| Keberadaan platform | **SEDANG.** Portal puskesmas kabupaten, fasyankes provinsi, dan referensi Kemendikdasmen semuanya eksis dan tampak aktif. |
+| Field yang dibutuhkan | **LEMAH.** `latitude`/`longitude` **tidak terkonfirmasi tersedia di mana pun** (NA-01). Kelengkapan antar-fasilitas tidak seragam (sebagian halaman disebut "masih dalam proses pengumpulan data"). |
+| Dampak | Koordinat adalah **prasyarat mutlak** untuk Solar Resilience Map dan seluruh operasi geospasial. Tanpa itu, fitur MVP #1 tidak dapat dibangun. |
 
-- BPS Kubu Raya secara aktif menerbitkan "Kabupaten Dalam Angka" (edisi 2025 terbaru, EV-053) dan "Kecamatan Dalam Angka" (setidaknya 2 dari 9 kecamatan terkonfirmasi, EV-054).
-- **Granularitas maksimum yang terkonfirmasi: KECAMATAN**, bukan desa/kelurahan, apalagi per-fasilitas individual.
-- Ini **membatasi** kemampuan model data §8 `PROJECT_CONTEXT.md` untuk mengisi `beneficiary_count` per fasilitas dari sumber BPS langsung — perlu proxy berlabel eksplisit atau sumber primer tambahan (mis. data internal puskesmas/sekolah).
-- **Kekuatan evidence: KUAT untuk ketersediaan data resmi berkala, LEMAH untuk granularitas yang dibutuhkan produk.**
+**Kekuatan dimensi: LEMAH** — platform ada, tapi field paling kritis belum terbukti tersedia.
 
-## 6. Disaster/Resilience Evidence
+## 5. Social/Demographic Data Availability
 
-- **Kekeringan**: IRBI BNPB 2023 &amp; 2024 secara EKSPLISIT mengklasifikasikan Kubu Raya kelas risiko "TINGGI" (EV-032) — ini evidence resmi paling spesifik dan kuat dalam seluruh riset ini, meski skalanya perlu diverifikasi (CF-003).
-- **Karhutla**: 3 studi akademik independen membahas Kubu Raya secara spesifik dan mendalam (EV-034, EV-035, EV-036), PLUS inisiatif pemerintah 2025-2026 (Kemenhut+BRIN+YKAN) menetapkan Kubu Raya sebagai salah satu dari 3 kabupaten prioritas pemetaan risiko karhutla gambut Kalbar terbaru, menyumbang ~77% luas karhutla Kalbar (EV-033).
-- **Namun**: ketiga studi akademik saling bertentangan hasilnya (CF-002 — beda definisi bahaya vs risiko, beda tahun, beda metodologi) — tidak bisa dipakai sebagai angka tunggal tanpa rekonsiliasi.
-- **Kekuatan evidence: KUAT** — Kubu Raya punya relevansi disaster/resilience yang didukung sumber resmi BNPB DAN inisiatif pemerintah terbaru DAN literatur akademik — ini bukan asumsi kosong, tapi genuinely well-documented sebagai daerah rawan karhutla/kekeringan.
+| Aspek | Penilaian |
+|---|---|
+| Keberadaan | **KUAT.** BPS Kubu Raya menerbitkan secara berkala dan terstruktur (kabupaten + kecamatan), arsip multi-tahun. |
+| Granularitas vs kebutuhan | **LEMAH.** Maksimum kecamatan; `beneficiary_count` per fasilitas `NOT_AVAILABLE` (NA-02). |
+| Risiko metodologis | Menggunakan populasi kecamatan sebagai penerima manfaat satu fasilitas akan melanggar aturan proyek sendiri kecuali dilabeli proxy secara eksplisit. |
+| Keterkinian | Edisi 2026 **tidak terkonfirmasi ada**; edisi terbaru yang diketahui 2025 (data 2024). |
 
-## 7. Data Availability (Ringkasan Lintas-Dimensi)
+**Kekuatan dimensi: KUAT untuk ketersediaan, LEMAH untuk granularitas yang dibutuhkan produk.**
 
-| Dimensi | Ketersediaan sumber resmi | Granularitas terkonfirmasi | Kekuatan |
-|---|---|---|---|
-| Solar | Global (GSA), berlaku otomatis untuk Kubu Raya | Piksel ~250m (GSA) | Sedang |
-| Existing PLTS | Ya, spesifik 3 desa | Desa (tapi angka konflik) | Kuat (eksistensi), Lemah (angka) |
-| Fasilitas publik | Ya, platform kabupaten/provinsi/nasional aktif | Per-fasilitas (field belum lengkap dikonfirmasi) | Sedang |
-| Sosial/demografis | Ya, BPS aktif &amp; berkala | Kecamatan (bukan desa/fasilitas) | Sedang (kuat platformnya, lemah granularitasnya) |
-| Disaster/resilience | Ya, BNPB resmi + akademik + inisiatif pemerintah baru | Kabupaten (kekeringan), sub-kabupaten (karhutla, tapi konflik) | Kuat |
+## 6. Disaster/Resilience Relevance
+
+| Aspek | Penilaian |
+|---|---|
+| Kekeringan (IRBI BNPB) | **SEDANG-KUAT sebagai konteks kabupaten** — disebut eksplisit, konsisten 2 tahun terbitan, dari lembaga resmi. **Tapi `NOT_REQUIRED` sebagai input skoring situs** (NR-03): skala belum terverifikasi DAN nilainya identik untuk semua kandidat. |
+| Karhutla (inisiatif pemerintah 2025–2026) | **SEDANG.** Kubu Raya disebut eksplisit sebagai 1 dari 3 kabupaten prioritas. Namun petanya masih finalisasi — belum tentu tersedia saat MVP dibangun. |
+| Karhutla (3 paper akademik) | **SEDANG.** Ketiganya spesifik Kubu Raya dan sub-kabupaten (ada daya pembeda spasial). Direklasifikasi dari "conflicting" menjadi `DIFFERENT_METRIC` — bukan konflik, tapi **produk harus memutuskan dulu apakah `wildfire_risk` berarti bahaya atau risiko** (keputusan ini belum diambil). |
+
+**Kekuatan dimensi: PALING KUAT di antara keenam dimensi** — ini satu-satunya dimensi dengan evidence spesifik-Kubu Raya dari lembaga resmi. Namun sebagian besar kekuatannya berada di level kabupaten (konteks), bukan level situs (skoring).
+
+## 7. Traceable Data Availability
+
+| Aspek | Penilaian |
+|---|---|
+| Rantai provenance | **KUAT.** Setiap evidence memiliki URL, penerbit, tier otoritas, dan status verifikasi yang tercatat. Fitur MVP #6 (Data Confidence & Traceability) memiliki bahan nyata untuk ditampilkan. |
+| Kualitas isi yang dilacak | **LEMAH.** Traceability yang baik terhadap konten yang belum terverifikasi tetap tidak menghasilkan fakta. Rantai lengkap, ujungnya belum dibuka. |
+| Nilai produk | Secara tak terduga, kondisi ini justru **mendemonstrasikan nilai fitur Data Confidence**: proyek ini sendiri saat ini akan diberi label `NEEDS VERIFICATION` oleh sistemnya sendiri. |
+
+**Kekuatan dimensi: KUAT untuk struktur, LEMAH untuk isi.**
+
+---
 
 ## 8. Limitations
 
-1. **Seluruh evidence di atas berstatus `unverified` (snippet-level)** — sesi riset ini tidak bisa membuka satu pun halaman sumber secara langsung karena WebFetch diblokir total. Ini BUKAN indikasi data salah, tapi berarti belum ada satu pun klaim di dokumen ini yang boleh dianggap fakta produksi.
-2. Dua konflik data material belum terselesaikan (kapasitas PLTS 2018, klasifikasi risiko karhutla) — lihat `SOURCE_CONFLICTS.md`.
-3. Granularitas data sosial/fasilitas maksimum yang terkonfirmasi adalah kecamatan, bukan desa/per-fasilitas — berpotensi memerlukan proxy berlabel eksplisit di banyak field model data §8 `PROJECT_CONTEXT.md`.
-4. Koordinat presisi untuk fasilitas individual (puskesmas/sekolah) tidak terkonfirmasi tersedia di sumber publik manapun yang ditemukan.
-5. Data historis PLTS di `PROJECT_CONTEXT.md` §11 (Sumber Agung: 100 kWp, 329/402 KK) tidak cocok dengan angka yang ditemukan riset ini (312 KK agregat, kapasitas 150/250) — memerlukan rekonsiliasi, bukan penggantian sepihak.
-6. Peta risiko karhutla gambut terbaru Kalbar (yang menyebut Kubu Raya eksplisit sebagai prioritas) masih dalam tahap finalisasi per laporan berita Juli 2026 — belum tentu tersedia publik saat MVP dibangun.
+1. **Nol evidence terverifikasi primer** — seluruh penilaian bersandar pada evidence `unverified`. Ini keterbatasan lingkungan riset (blokir egress), bukan bukti bahwa datanya salah.
+2. **Koordinat fasilitas `NOT_AVAILABLE`** — blocker struktural untuk seluruh fitur geospasial.
+3. **`beneficiary_count` per fasilitas `NOT_AVAILABLE`** — memaksa penggunaan proxy berlabel atau pengumpulan data primer.
+4. **Seluruh angka kuantitatif PLTS eksisting `DO_NOT_USE`** — jalur "Expansion Assessment" saat ini tidak punya dasar data.
+5. **Evidence terkuat tidak memiliki daya pembeda antar-situs** (level kabupaten).
+6. **Ketidaksesuaian angka dengan `PROJECT_CONTEXT.md` §11** belum terselesaikan.
+7. **Keputusan metrik `wildfire_risk` (bahaya vs risiko) belum diambil** — konsekuensi langsung dari reklasifikasi CF-002.
+
+### Mengapa keterbatasan ini TIDAK otomatis berarti pilot yang salah
+
+Poin penting untuk penilaian jujur: keterbatasan #2, #3, dan #7 adalah **karakteristik umum ekosistem data publik Indonesia**, bukan kelemahan khusus Kubu Raya. Berpindah ke kabupaten lain **kemungkinan besar tidak menyelesaikannya** — dan akan mengorbankan satu-satunya keunggulan nyata Kubu Raya (PLTS eksisting terdokumentasi + relevansi bencana yang disebut eksplisit oleh BNPB). Karena itu keterbatasan ini dinilai sebagai **biaya yang harus dikelola**, bukan alasan mengganti pilot.
+
+---
 
 ## 9. Kesimpulan
 
-> **VIABLE PILOT WITH LIMITATIONS**
+> ## VIABLE PILOT WITH LIMITATIONS
+> **(status PROVISIONAL — tidak boleh dikutip dalam proposal sampai verifikasi Level-1 selesai)**
 
-**Alasan berdasarkan evidence:**
+**Status tidak berubah dari Prompt 2, tetapi dasarnya berubah secara material.** Pada Prompt 2 status ini diberikan karena banyaknya sumber yang ditemukan. Pada Prompt 2.5, penilaian jumlah sumber dibuang dan diganti penilaian kualitas — hasilnya: **4 dari 7 dimensi berkekuatan LEMAH**, dan dimensi terkuat justru tidak memiliki daya pembeda antar-situs. Status yang sama kini berdiri di atas argumen yang jauh lebih sempit.
 
-Kubu Raya menunjukkan relevansi yang **genuinely didukung sumber resmi dan spesifik** pada dimensi disaster/resilience (klasifikasi kekeringan "tinggi" oleh BNPB sendiri, prioritas pemerintah dalam pemetaan risiko karhutla gambut terbaru, literatur akademik yang secara khusus membahas kabupaten ini) dan existing-PLTS (program komunal nyata di 3 desa, bukan fiksi/asumsi tim). Ekosistem data resmi (BPS, portal kesehatan/pendidikan, portal data provinsi) juga aktif dan terstruktur, mengindikasikan infrastruktur data publik yang memadai untuk sebuah kabupaten di Indonesia.
+**Mengapa bukan `STRONG PILOT CANDIDATE`:** tidak ada satu pun evidence terverifikasi; dua kategori data yang dibutuhkan MVP berstatus `NOT_AVAILABLE`; seluruh angka kuantitatif tentang PLTS eksisting `DO_NOT_USE`.
 
-Namun, pilot ini **belum bisa disebut STRONG** karena: (a) tidak satu pun evidence dalam riset ini berhasil diverifikasi langsung dari halaman sumber (keterbatasan lingkungan riset, bukan keterbatasan data itu sendiri), (b) ada dua konflik data material yang belum direkonsiliasi, dan (c) granularitas data sosial/fasilitas yang terkonfirmasi (kecamatan) berada di bawah level yang dibutuhkan model data produk (per-fasilitas). Pilot ini juga bukan **WEAK/RECONSIDER** — tidak ada satu pun temuan yang mengindikasikan Kubu Raya adalah pilihan buruk; sebaliknya, kombinasi bukti disaster-relevance + existing-PLTS + ekosistem data resmi yang aktif justru memperkuat kelayakannya, sejauh langkah verifikasi lanjutan dilakukan sebelum dataset pilot final dikunci.
+**Mengapa bukan `WEAK PILOT — RECONSIDER`:** tidak satu pun temuan mengindikasikan Kubu Raya adalah pilihan buruk. Kabupaten ini memiliki PLTS komunal eksisting terdokumentasi di tiga desa (langka dan berharga untuk menguji jalur Expansion Assessment), disebut eksplisit oleh BNPB dalam klasifikasi risiko kekeringan, dan ditetapkan sebagai kabupaten prioritas dalam inisiatif pemetaan karhutla nasional terbaru. Keterbatasan yang ditemukan bersifat **struktural terhadap data publik Indonesia** dan tidak akan hilang dengan berpindah wilayah.
+
+### Kondisi yang akan MENURUNKAN status ini menjadi WEAK PILOT — RECONSIDER
+
+Status ini harus diturunkan apabila verifikasi manual menghasilkan salah satu dari:
+
+1. Keberadaan PLTS komunal di ketiga desa Batu Ampar **tidak terkonfirmasi** oleh sumber primer; **atau**
+2. Koordinat fasilitas publik terbukti **tidak dapat diperoleh** bahkan melalui permintaan langsung ke dinas terkait; **atau**
+3. Klasifikasi risiko kekeringan/karhutla Kubu Raya **tidak terkonfirmasi** di dokumen resmi BNPB; **atau**
+4. Tidak ada sumber mana pun yang dapat memberi data pembeda antar-situs di dalam kabupaten (sehingga prioritisasi menjadi latihan kosong).
+
+### Kondisi yang akan MENAIKKAN status ini menjadi STRONG PILOT CANDIDATE
+
+1. Enam item blocker `MANUAL_VERIFICATION_REQUIRED` prioritas 1 terkonfirmasi; **dan**
+2. Koordinat fasilitas diperoleh untuk minimal 10 kandidat; **dan**
+3. CF-001 terselesaikan sehingga minimal satu situs PLTS eksisting memiliki kapasitas terverifikasi; **dan**
+4. Minimal satu sumber data risiko bencana dengan **daya pembeda sub-kabupaten** terkonfirmasi dapat diunduh.

@@ -1,5 +1,62 @@
 # COMPETITOR_TOOL_MATRIX.md — Product Gap Research SURYA-SIAGA
 
+**Revisi:** Prompt 2.5 (Evidence Verification &amp; Research Repair), 2026-09-12.
+
+---
+
+## ⚠️ AUDIT PROMPT 2.5 — STATUS DI BAGIAN INI MENGGANTIKAN TABEL DI BAWAHNYA
+
+Instruksi §J Prompt 2.5: *"pastikan fitur yang diberi YES atau NO benar-benar didukung dokumentasi. Jika belum dapat diperiksa: gunakan UNKNOWN bukan NO."*
+
+Pada Prompt 2.5, WebFetch diuji terhadap `globalsolaratlas.info` dan `inarisk.bnpb.go.id` — **keduanya ditolak `EGRESS_BLOCKED`**. Tidak satu pun dokumentasi tool dapat dibaca langsung. Karena itu seluruh matriks di bawah diaudit ulang dengan aturan ketat berikut:
+
+**Aturan audit yang diterapkan:**
+1. **YES dipertahankan HANYA jika fitur tersebut adalah tujuan definisional tool itu sendiri** — yaitu hal yang tidak mungkin salah tanpa menyalahpahami identitas tool (mis. Global Solar Atlas menyediakan data potensi surya; InaRISK menyediakan data risiko bencana). Klaim semacam ini tidak kontestabel.
+2. **Seluruh NO diturunkan menjadi UNKNOWN**, kecuali ketiadaan itu bersifat definisional dan tidak kontestabel (mis. InaRISK — platform risiko bencana nasional BNPB — tidak menyediakan data potensi radiasi surya).
+3. **Seluruh PARTIAL yang bersandar pada penafsiran fitur UI diturunkan menjadi UNKNOWN**, karena UI tidak pernah dilihat.
+
+### Ringkasan Penurunan Status
+
+| Tool | Fitur | Status Prompt 2 | **Status Prompt 2.5** | Alasan |
+|---|---|---|---|---|
+| Global Solar Atlas | Public facility context | NO | **UNKNOWN** | Dokumentasi tidak dibaca; ketiadaan tidak terbukti |
+| Global Solar Atlas | Facility criticality | NO | **UNKNOWN** | Idem |
+| Global Solar Atlas | Explainable multi-criteria | NO | **UNKNOWN** | Idem |
+| Global Solar Atlas | Disaster risk data | NO | **UNKNOWN** | Idem — meski kecil kemungkinannya, tidak terbukti |
+| Global Solar Atlas | Data provenance | PARTIAL | **UNKNOWN** | Bersandar penafsiran UI yang tak pernah dilihat |
+| Global Solar Atlas | Data freshness / uncertainty indicator | PARTIAL | **UNKNOWN** | Idem |
+| Global Solar Atlas | Site comparison | YES | **UNKNOWN** | Hanya "ranking negara" — bukan site comparison dalam arti SURYA-SIAGA |
+| Global Solar Atlas | Solar potential data | YES | **YES** (dipertahankan) | Definisional |
+| Global Solar Atlas | New deployment assessment | YES | **PARTIAL** | "Screening/zoning" ≠ assessment rekomendasi; diturunkan |
+| InaRISK | Solar potential data | NO | **NO** (dipertahankan) | Definisional — platform risiko bencana |
+| InaRISK | Existing PLTS context | NO | **UNKNOWN** | Tidak terbukti |
+| InaRISK | New/Expansion deployment assessment | NO | **NO** (dipertahankan) | Definisional — di luar domain platform |
+| InaRISK | Disaster risk data | YES | **YES** (dipertahankan) | Definisional |
+| InaRISK | Explainable multi-criteria prioritization | YES | **PARTIAL–UNKNOWN** | Metodologi berbobot terdokumentasi publik (kuat), tapi "explainable di level UI" tak pernah dilihat |
+| InaRISK | Beneficiary/social impact | YES | **PARTIAL** | Kerentanan sosial = komponen indeks, bukan fitur dampak per-penerima manfaat |
+| InaRISK | Data provenance / freshness / site comparison | PARTIAL | **UNKNOWN** | Bersandar penafsiran UI |
+| ESDM One Map | Semua fitur selain "solar potential data" | UNKNOWN/PARTIAL | **UNKNOWN** | Tidak berubah — sudah konservatif |
+| ESDM One Map | Solar potential data | YES | **YES** (dipertahankan) | Definisional (layer potensi surya EBTKE) |
+| NREL RE Data Explorer | Solar potential data, new deployment, scoring | YES | **YES** (dipertahankan) | Definisional (technical potential tool) |
+| NREL RE Data Explorer | Sisanya | PARTIAL/UNKNOWN | **UNKNOWN** | Bersandar penafsiran dokumentasi tak terbaca |
+
+### Dampak Audit terhadap Klaim Novelty
+
+Ini adalah temuan paling material dari Prompt 2.5 untuk positioning produk:
+
+> **Klaim "tidak ada tool lain yang punya fitur X" saat ini TIDAK dapat didukung sama sekali** — karena setelah audit, hampir seluruh status NO berubah menjadi UNKNOWN. Ketiadaan fitur pada tool pesaing **tidak terbukti**, hanya **tidak terlihat**.
+
+Konsekuensi untuk proposal:
+- Klaim yang **masih boleh** dibuat: *"SURYA-SIAGA mengintegrasikan potensi surya, risiko bencana, criticality fasilitas, dampak sosial, dan konteks PLTS eksisting dalam satu kerangka prioritisasi yang explainable"* — ini deskripsi **desain sendiri**, tidak memerlukan bukti tentang tool lain.
+- Klaim yang **DILARANG**: *"belum ada platform seperti ini"*, *"pertama di Indonesia"*, *"tool lain tidak memiliki X"*, atau tabel perbandingan yang menampilkan kolom "tidak ada" untuk pesaing.
+- Yang **dapat diverifikasi tanpa akses internet**: bahwa keempat tool ini **masing-masing memiliki tujuan definisional yang berbeda dari SURYA-SIAGA** (atlas sumber daya surya; platform risiko bencana; geoportal katalog peta; alat technical potential). Perbedaan **tujuan produk** ini adalah dasar diferensiasi yang jauh lebih aman daripada perbandingan fitur.
+
+**Rekomendasi framing:** posisikan diferensiasi pada **tujuan dan unit analisis** ("tool lain menjawab 'berapa potensi surya di area ini' atau 'seberapa berisiko area ini'; SURYA-SIAGA menjawab 'fasilitas mana yang paling perlu dikaji lebih lanjut'"), bukan pada matriks centang fitur.
+
+---
+
+## (Isi di bawah ini adalah hasil Prompt 2 — dipertahankan sebagai jejak audit. Untuk status yang berlaku, gunakan tabel audit di atas.)
+
 > ⚠️ Seluruh temuan di dokumen ini berstatus `unverified` (search-snippet-level) — WebFetch diblokir total di lingkungan riset ini untuk semua domain yang diuji. Status **UNKNOWN** dipakai secara sengaja dan luas di bawah, sesuai instruksi tugas: "JANGAN menggunakan NO jika sebenarnya hanya belum menemukan fitur tersebut." Status YES/PARTIAL/NO tetap dilaporkan apa adanya, termasuk ketika tool eksisting ternyata memiliki fitur yang mirip dengan SURYA-SIAGA — riset ini tidak memaksakan pencarian perbedaan.
 
 Empat tool diperiksa: **Global Solar Atlas**, **InaRISK (BNPB)**, **ESDM One Map (layer EBTKE)**, **NREL RE Data Explorer / Technical Potential Tool**.

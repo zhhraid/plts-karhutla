@@ -1,9 +1,21 @@
 # EVIDENCE_LEDGER.md — Registry Fakta Berstruktur SURYA-SIAGA
 
-> ⚠️ **CAVEAT WAJIB:** WebFetch diblokir total oleh egress proxy lingkungan ini untuk semua domain eksternal kecuali GitHub. Kecuali dinyatakan lain, **seluruh entri di bawah berstatus `unverified`** (ditemukan via WebSearch/ringkasan, halaman sumber asli belum dibuka untuk konfirmasi independen) — bukan `verified_primary`/`verified_secondary`. Status ini HARUS diperbarui oleh sesi/manusia dengan akses fetch penuh sebelum dipakai sebagai dasar keputusan produk atau proposal. `data_confidence` produk (§12.1 `PROJECT_CONTEXT.md`) untuk kandidat lokasi TIDAK dihitung di sini — ledger ini adalah bukti tingkat riset, bukan skor kandidat.
+**Revisi:** Prompt 2.5 (Evidence Verification &amp; Research Repair), 2026-09-12.
+
+> ⚠️ **HASIL VERIFICATION PASS PROMPT 2.5:** Verifikasi ulang diupayakan dengan menguji WebFetch terhadap 7 domain prioritas (`power.larc.nasa.gov`, `globalsolaratlas.info`, `www.esdm.go.id`, `inarisk.bnpb.go.id`, `kuburayakab.bps.go.id`, `arxiv.org`, `kalbar.bpk.go.id`). **Ketujuhnya ditolak dengan `EGRESS_BLOCKED`** — penolakan kebijakan egress organisasi, bukan masalah situs tujuan. Karena itu **NOL entri berhasil dinaikkan ke `verified_primary`**; seluruh entri `unverified` tetap `unverified` dan ditandai `MANUAL_VERIFICATION_REQUIRED`. Lihat `VERIFICATION_REPORT.md`.
+>
+> `data_confidence` produk (§12.1 `PROJECT_CONTEXT.md`) untuk kandidat lokasi TIDAK dihitung di sini — ledger ini adalah bukti tingkat riset, bukan skor kandidat.
 
 Kategori: `policy`, `solar`, `disaster`, `social`, `facility`, `electricity`, `existing_plts`, `methodology`, `product_gap`.
-verification_status yang diizinkan: `verified_primary`, `verified_secondary`, `historical`, `proxy`, `conflicting`, `unverified`.
+
+**verification_status** yang diizinkan: `verified_primary`, `verified_secondary`, `historical`, `proxy`, `conflicting`, `unverified`.
+
+**source_authority** (ditambahkan Prompt 2.5 §H) — A = primary official; B = authoritative technical/peer-reviewed; C = credible contextual.
+> ⚠️ **Source authority BUKAN pengganti verifikasi.** URL resmi Tier A yang belum berhasil dibuka tetap `unverified`. Kedua dimensi ini independen.
+
+**proposal_usage_status** (ditambahkan Prompt 2.5 §K) — `SAFE_TO_USE` | `SAFE_WITH_HISTORICAL_LABEL` | `SAFE_AS_CONTEXT_ONLY` | `NEEDS_MANUAL_VERIFICATION` | `DO_NOT_USE`. Tabel klasifikasi lengkap per evidence ada di bagian akhir dokumen ini.
+
+**publication_date vs data_year** (ditegaskan Prompt 2.5 §G) — keduanya TIDAK boleh disamakan. Tahun terbit dokumen bukan tahun data yang dikandungnya. Audit khusus ada di bagian akhir dokumen.
 
 ---
 
@@ -648,14 +660,150 @@ verification_status yang diizinkan: `verified_primary`, `verified_secondary`, `h
 
 ---
 
-## Ringkasan Verifikasi
+## LAPISAN VERIFIKASI PROMPT 2.5
 
-| Status | Jumlah entri |
+Bagian di bawah ini ditambahkan pada verification pass Prompt 2.5. Isi entri EV-001 s.d. EV-060 di atas tidak diubah (tidak ada informasi baru yang bisa memperbaruinya, karena tidak satu pun sumber dapat dibuka) — yang ditambahkan adalah **dimensi klasifikasi baru** yang dapat dikerjakan tanpa akses jaringan.
+
+---
+
+### A. Per-Field Verification — Existing PLTS Kubu Raya (§F)
+
+Sesuai instruksi §F Prompt 2.5: verifikasi tidak lagi diberikan pada level sumber atau level situs, melainkan **per field**, supaya satu field bermasalah tidak membuat seluruh situs tidak terpakai.
+
+#### Situs 1 — PLTS Desa Sumber Agung, Kec. Batu Ampar
+
+| Field | verification_status | source_authority | proposal_usage_status | Catatan |
+|---|---|---|---|---|
+| `location_existence` (desa ada, di Batu Ampar) | `unverified` (dikorroborasi ≥3 sumber independen) | A (BPK) + C | `SAFE_AS_CONTEXT_ONLY` | Paling kuat di antara semua field, tapi **tetap bukan `verified_primary`** karena tidak satu pun halaman dibuka |
+| `existing_plts` (ada PLTS komunal) | `unverified` | A (BPK Kalbar) | `SAFE_AS_CONTEXT_ONLY` | Program hibah 2018, 3 desa |
+| `existing_plts_capacity_kwp` | `conflicting` → **NULL** | A + C | **`DO_NOT_USE`** | CF-001 unresolved; satuan pun tidak diketahui |
+| `commissioning_year` (2018) | `unverified` | A | `SAFE_WITH_HISTORICAL_LABEL` | Konsisten lintas sumber, tapi belum dibuka |
+| `historical_served_households` (312? 329?) | `conflicting` + `historical` | A + C | **`DO_NOT_USE`** | Angka PROJECT_CONTEXT (329) ≠ angka riset (312); scope tak jelas |
+| `historical_total_households` (402?) | `unverified` + `historical` | C | `NEEDS_MANUAL_VERIFICATION` | Hanya muncul di PROJECT_CONTEXT, tidak muncul di riset Prompt 2 |
+| `reported_energy_constraint` (isu baterai/kapasitas) | `unverified` | C | `NEEDS_MANUAL_VERIFICATION` | Riset Prompt 2 **tidak menemukan** laporan spesifik kondisi teknis |
+| `asset_handover` / pengelola (BUMDes) | `unverified` | A | `SAFE_AS_CONTEXT_ONLY` | Disebut dalam sumber BPK |
+| `current_status` (kondisi 2026) | `unverified` | — | **`NEEDS_MANUAL_VERIFICATION`** | **Tidak ada sumber apa pun** yang menjelaskan kondisi terkini |
+| `current_grid_status` (PLN masuk?) | `unverified` | A/C | **`NEEDS_MANUAL_VERIFICATION`** | EV-042 mengindikasikan kelistrikan Batu Ampar masih isu terbuka 2025, tapi ini inferensi |
+| `latitude` / `longitude` | **tidak tersedia** | — | **`DO_NOT_USE`** | Tidak ditemukan koordinat di sumber mana pun |
+
+#### Situs 2 — PLTS Desa Muara Tiga, Kec. Batu Ampar
+
+| Field | verification_status | source_authority | proposal_usage_status | Catatan |
+|---|---|---|---|---|
+| `location_existence` | `unverified` (dikorroborasi kode pos + halaman kecamatan) | A + C | `SAFE_AS_CONTEXT_ONLY` | Kecamatan Batu Ampar terkonfirmasi silang |
+| `existing_plts` | `unverified` | A (BPK Kalbar) | `SAFE_AS_CONTEXT_ONLY` | Bagian program hibah 2018 yang sama |
+| `existing_plts_capacity_kwp` | **tidak tersedia** (hanya angka agregat) | — | **`DO_NOT_USE`** | Tidak ada rincian per-desa (NF-03) |
+| `commissioning_year` | `unverified` | A | `SAFE_WITH_HISTORICAL_LABEL` | Diasumsikan sama (2018) — **asumsi, belum dikonfirmasi per desa** |
+| `served_households` | **tidak tersedia** | — | **`DO_NOT_USE`** | Hanya agregat 3 desa |
+| `current_status` | `unverified` | — | **`NEEDS_MANUAL_VERIFICATION`** | Tidak ada sumber |
+| `latitude` / `longitude` | **tidak tersedia** | — | **`DO_NOT_USE`** | — |
+
+#### Situs 3 — PLTS Desa Sungai Kerawang, Kec. Batu Ampar
+
+| Field | verification_status | source_authority | proposal_usage_status | Catatan |
+|---|---|---|---|---|
+| `location_existence` | `unverified` (dikorroborasi 3 sumber independen) | C | `SAFE_AS_CONTEXT_ONLY` | **Nama desa terkonfirmasi benar**, bukan salah eja "Sungai Kakap" |
+| `existing_plts` | `unverified` | A (BPK Kalbar) | `SAFE_AS_CONTEXT_ONLY` | Bagian program hibah 2018 yang sama |
+| `existing_plts_capacity_kwp` | **tidak tersedia** | — | **`DO_NOT_USE`** | Tidak ada rincian per-desa |
+| `commissioning_year` | `unverified` | A | `SAFE_WITH_HISTORICAL_LABEL` | Asumsi sama (2018), belum dikonfirmasi |
+| `served_households` | **tidak tersedia** | — | **`DO_NOT_USE`** | — |
+| `population/KK desa` (dataset 2020) | `unverified` + `historical` | A (Satu Data Kalbar) | `NEEDS_MANUAL_VERIFICATION` | Dataset EV-044 ada tapi isinya belum dibaca |
+| `current_status` | `unverified` | — | **`NEEDS_MANUAL_VERIFICATION`** | — |
+| `latitude` / `longitude` | **tidak tersedia** | — | **`DO_NOT_USE`** | — |
+
+**Kesimpulan per-field:** untuk ketiga situs, field yang **paling mungkin selamat** ke tahap acquisition adalah `location_existence`, `existing_plts` (boolean), `commissioning_year`, dan pengelola — semuanya sebagai konteks berlabel. Seluruh field **numerik** (kapasitas, KK terlayani, koordinat) saat ini **DO_NOT_USE**. Ini konsisten dengan §6 `PROJECT_CONTEXT.md`: "NULL lebih baik daripada angka buatan."
+
+---
+
+### B. Audit publication_date vs data_year (§G)
+
+Prompt 2.5 §G melarang menyamakan tahun terbit dengan tahun data. Audit ulang entri yang berisiko:
+
+| EV | publication_date | data_year | Status audit |
+|---|---|---|---|
+| EV-053 (Kubu Raya Dalam Angka 2025) | 2025-02-28 | **2024** | ✅ Dipisahkan dengan benar. Ringkasan pencarian Prompt 2.5 menyebut edisi ini memuat statistik "during 2024" — konsisten, tapi tetap `unverified`. |
+| EV-054 (Kecamatan Dalam Angka 2025) | 2025-09-26 | ~2024 (asumsi) | ⚠️ data_year masih **asumsi**, belum dikonfirmasi. Ditandai `NEEDS_MANUAL_VERIFICATION`. |
+| EV-032 (IRBI 2023 &amp; 2024) | 2023, 2024 | **tidak diketahui** | ⚠️ **Risiko tinggi.** IRBI edisi 2024 kemungkinan besar memuat data tahun sebelumnya. Tahun data TIDAK boleh diasumsikan sama dengan tahun edisi. |
+| EV-038/039 (PLTS Batu Ampar) | tidak diketahui (perkiraan 2021) | **2018** (mulai operasi) | ⚠️ Publikasi jauh setelah peristiwa — klasik kasus di mana publication_date menyesatkan jika dipakai sebagai data_year. |
+| EV-018 (data ESDM Kalbar) | tidak diketahui | 2019 (PLTS), 2020 (elektrifikasi) | ✅ data_year eksplisit dan berbeda antar-dataset dalam satu portal. |
+| EV-035 (paper karhutla) | 2023 | **2015–2019** | ✅ Selisih 4–8 tahun — bukti kuat mengapa aturan §G penting. |
+| EV-036 (paper zonasi) | 2015 | **s.d. Okt 2013** | ✅ Dipisahkan dengan benar, sudah berlabel `historical`. |
+
+**Temuan:** tidak ada pelanggaran §G yang ditemukan dalam ledger Prompt 2 (pemisahan sudah dilakukan), tapi **tiga entri (EV-054, EV-032, EV-038/039) memiliki data_year yang masih berupa asumsi atau tidak diketahui** dan karenanya tidak boleh dipakai untuk klaim keterkinian apa pun.
+
+---
+
+### C. Kabupaten Kubu Raya Dalam Angka 2026 (§A.2)
+
+Instruksi Level-1 meminta memprioritaskan edisi **2026** sebagai sumber statistik utama. Hasil pencarian Prompt 2.5:
+
+- **Edisi 2026 TIDAK dapat dikonfirmasi keberadaannya.** Hasil pencarian hanya menampilkan edisi hingga **2025** (terbit 2025-02-28, data tahun 2024), plus edisi-edisi lama (2023, dst.).
+- Terdapat satu hasil pencarian berupa unggahan Instagram bertajuk "[RILIS PUBLIKASI: KABUPATEN KUBU RAYA DALAM ...]" yang mungkin mengumumkan edisi lebih baru — **namun media sosial dilarang sebagai sumber fakta teknis** oleh §9 `PROJECT_CONTEXT.md`, sehingga ini TIDAK dihitung sebagai bukti.
+- **Tindakan:** halaman daftar publikasi BPS Kubu Raya (`kuburayakab.bps.go.id/publication`) harus dibuka manual untuk memastikan apakah edisi 2026 sudah terbit. Sampai saat itu, **edisi 2025 tetap menjadi kandidat sumber statistik terbaru yang diketahui**, dengan status `unverified` dan `NEEDS_MANUAL_VERIFICATION`.
+- Sesuai instruksi: bila edisi 2026 ternyata ada, edisi 2025 turun menjadi historical/reference dan tidak lagi otomatis menjadi primary source.
+
+---
+
+### D. Tabel Klasifikasi Lengkap — Authority, Verification, Claim Safety (§H, §K)
+
+| EV | Kategori | source_authority | verification_status | proposal_usage_status |
+|---|---|---|---|---|
+| EV-001 | policy | A | unverified | `SAFE_AS_CONTEXT_ONLY` — hanya keberadaan program, **tanpa angka** |
+| EV-002 | policy | A/C | unverified | **`DO_NOT_USE`** — angka USD 28,9 miliar belum diverifikasi (§A.1 melarang menambah angka investasi) |
+| EV-003 | policy | C | unverified | **`DO_NOT_USE`** — angka kapasitas tahap tertentu, dilarang §A.1 |
+| EV-004 | policy | A (via ringkasan sekunder) | unverified | `NEEDS_MANUAL_VERIFICATION` — dokumen primer belum dibuka |
+| EV-005 | policy | C | unverified | `SAFE_AS_CONTEXT_ONLY` — status regulasi belum final |
+| EV-006 | policy | C | unverified | `SAFE_AS_CONTEXT_ONLY` |
+| EV-007 | policy | B (think-tank) | unverified | `NEEDS_MANUAL_VERIFICATION` |
+| EV-008 | methodology | B | unverified | `NEEDS_MANUAL_VERIFICATION` — **paling penting** (studi kasus Kalbar) |
+| EV-009 – EV-013 | methodology | B | unverified | `NEEDS_MANUAL_VERIFICATION` |
+| EV-014 | methodology | B (sekunder) | **`verified_secondary`** | **`SAFE_TO_USE`** — satu-satunya, dengan label "ringkasan pihak ketiga atas DMBOK2" |
+| EV-015 | methodology | B | unverified | `NEEDS_MANUAL_VERIFICATION` |
+| EV-016 | electricity | A | unverified | `SAFE_AS_CONTEXT_ONLY` — bukan problem statement utama (§3 PROJECT_CONTEXT) |
+| EV-017, EV-018 | electricity | A | unverified | `NEEDS_MANUAL_VERIFICATION` |
+| EV-019 | electricity | A | unverified | **`DO_NOT_USE`** — provinsi lain (Kaltim), bukan Kalbar |
+| EV-020 – EV-023 | solar | B | unverified | `NEEDS_MANUAL_VERIFICATION` — spesifikasi teknis wajib dikonfirmasi sebelum akuisisi |
+| EV-024 – EV-027 | solar | B | unverified | `NEEDS_MANUAL_VERIFICATION` |
+| EV-028 – EV-031 | disaster | A | unverified | `NEEDS_MANUAL_VERIFICATION` |
+| EV-032 | disaster | A | unverified | `SAFE_AS_CONTEXT_ONLY` (konteks kabupaten) / **`DO_NOT_USE`** sebagai input skoring situs (CF-003) |
+| EV-033 | disaster | C (melaporkan inisiatif pemerintah) | unverified | `SAFE_AS_CONTEXT_ONLY` |
+| EV-034, EV-035 | disaster | C (akademik) | `DIFFERENT_METRIC` (bukan conflicting) | `NEEDS_MANUAL_VERIFICATION` — wajib berlabel metrik (bahaya vs risiko) |
+| EV-036 | disaster | C | `historical` | `SAFE_WITH_HISTORICAL_LABEL` (data s.d. 2013) |
+| EV-037 | disaster | B | unverified | `SAFE_AS_CONTEXT_ONLY` — hotspot dilarang jadi input skoring |
+| EV-038 | existing_plts | A | unverified | `SAFE_AS_CONTEXT_ONLY` — keberadaan saja |
+| EV-039 | existing_plts | A/C | `conflicting` | **`DO_NOT_USE`** — seluruh angka kapasitas &amp; KK |
+| EV-040 | existing_plts | C | `historical` | `SAFE_WITH_HISTORICAL_LABEL` |
+| EV-041 | existing_plts | A/C | unverified | **`DO_NOT_USE`** sebagai indikator status PLTS (program ekonomi, bukan kelistrikan) |
+| EV-042 | existing_plts | A | unverified | `SAFE_AS_CONTEXT_ONLY` — jangan disajikan sebagai bukti PLTS gagal (itu inferensi) |
+| EV-043 | existing_plts | C | unverified | `SAFE_AS_CONTEXT_ONLY` — konfirmasi nama desa |
+| EV-044 | existing_plts/social | A | unverified | `NEEDS_MANUAL_VERIFICATION` |
+| EV-045 | existing_plts | C | `historical` | `SAFE_WITH_HISTORICAL_LABEL` — di luar 3 lokasi target |
+| EV-046 | existing_plts | C | unverified | **`DO_NOT_USE`** — lokasi ambigu (CF-005) |
+| EV-047 | facility | A | unverified | `NEEDS_MANUAL_VERIFICATION` |
+| EV-048 – EV-052 | facility | A | unverified | `NEEDS_MANUAL_VERIFICATION` |
+| EV-053 | social | A | unverified | `NEEDS_MANUAL_VERIFICATION` — cek dulu apakah ada edisi 2026 |
+| EV-054 | social | A | unverified | `NEEDS_MANUAL_VERIFICATION` |
+| EV-055 | social | A | unverified | `NEEDS_MANUAL_VERIFICATION` |
+| EV-056 – EV-060 | product_gap | A/B | unverified | `SAFE_AS_CONTEXT_ONLY` untuk fitur definisional; **`DO_NOT_USE`** untuk klaim ketiadaan fitur (lihat audit `COMPETITOR_TOOL_MATRIX.md`) |
+
+---
+
+### E. Ringkasan Verifikasi (diperbarui Prompt 2.5)
+
+| verification_status | Jumlah | Perubahan dari Prompt 2 |
+|---|---|---|
+| `verified_primary` | **0** | tidak berubah (0 → 0) |
+| `verified_secondary` | 1 (EV-014) | tidak berubah |
+| `historical` | 5 | tidak berubah |
+| `conflicting` | **2** (EV-039; EV-034/035 direklasifikasi keluar) | turun dari 3 — EV-034/035 dikoreksi menjadi `DIFFERENT_METRIC` |
+| `unverified` | 56 | tidak berubah |
+
+| proposal_usage_status | Jumlah perkiraan |
 |---|---|
-| verified_secondary | 1 (EV-014) |
-| historical | 5 (EV-036, EV-040, EV-041 sebagian, EV-045, EV-046 sebagian) |
-| conflicting | 3 (EV-034/035 saling bertentangan, EV-039) |
-| unverified | 56 (mayoritas) |
-| verified_primary | 0 |
+| `SAFE_TO_USE` | **1** |
+| `SAFE_WITH_HISTORICAL_LABEL` | 4 |
+| `SAFE_AS_CONTEXT_ONLY` | 13 |
+| `NEEDS_MANUAL_VERIFICATION` | 34 |
+| `DO_NOT_USE` | 8 |
 
-**Tidak ada satu pun entri berstatus `verified_primary`** — konsisten dengan keterbatasan lingkungan (WebFetch diblokir total). Ini WAJIB diperbaiki oleh sesi/manusia dengan akses fetch penuh sebelum data ini dipakai sebagai fakta produksi, sesuai prinsip §Faktualitas Wajib pada task ini.
+**Kesimpulan ledger:** dari ~60 evidence, hanya **1 yang aman dipakai tanpa kualifikasi**, dan **8 yang secara aktif dilarang dipakai**. Sisanya memerlukan verifikasi manual atau hanya boleh dipakai sebagai konteks berlabel. Tidak ada satu pun angka numerik tentang Kubu Raya yang saat ini aman dikutip dalam proposal.

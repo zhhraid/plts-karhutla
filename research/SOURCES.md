@@ -2,6 +2,30 @@
 
 **Sifat dokumen:** Katalog seluruh sumber yang teridentifikasi selama riset Prompt 2. Ini adalah bibliografi/registry, bukan bukti berstruktur (lihat `EVIDENCE_LEDGER.md` untuk klaim per-fakta).
 
+**Revisi:** Prompt 2.5 (Evidence Verification &amp; Research Repair), 2026-09-12.
+
+## Hasil Uji Ulang Akses (Prompt 2.5)
+
+Tujuh domain prioritas diuji ulang dengan WebFetch pada 2026-09-12. **Ketujuhnya ditolak** dengan `EGRESS_BLOCKED` — penolakan kebijakan egress organisasi, bukan kegagalan situs tujuan:
+
+| Domain diuji | Hasil | Sumber terkait |
+|---|---|---|
+| `power.larc.nasa.gov` | ❌ EGRESS_BLOCKED | B-06 s.d. B-09 |
+| `globalsolaratlas.info` | ❌ EGRESS_BLOCKED | B-01 |
+| `www.esdm.go.id` | ❌ EGRESS_BLOCKED | A-01 |
+| `inarisk.bnpb.go.id` | ❌ EGRESS_BLOCKED | A-07 s.d. A-10 |
+| `kuburayakab.bps.go.id` | ❌ EGRESS_BLOCKED | A-14, A-16, A-17 |
+| `arxiv.org` | ❌ EGRESS_BLOCKED | B-12 |
+| `kalbar.bpk.go.id` | ❌ EGRESS_BLOCKED | A-20 |
+
+Diagnostik proxy (`/__agentproxy/status`) menunjukkan proxy sehat (`enabled: true`, `recentRelayFailures: []`) — blokir berasal dari kebijakan egress, dan README proxy melarang mencoba menerobosnya. **WebSearch masih berfungsi**, tetapi sesuai prinsip Prompt 2.5, hasil pencarian bukan bukti verifikasi.
+
+**Konsekuensi:** kolom "Akses Sesi Ini" di bawah tetap berlaku — tidak ada perubahan status akses dari Prompt 2 ke Prompt 2.5. Seluruh sumber tetap memerlukan akses manusia.
+
+> ⚠️ **Catatan §H — source authority ≠ verification.** Tier A/B/C di bawah menunjukkan **otoritas sumber**, bukan status verifikasi. URL resmi Tier A yang belum berhasil dibuka **tetap `unverified`**. Kedua dimensi ini tidak boleh saling menggantikan.
+
+---
+
 > ⚠️ **CAVEAT METODOLOGIS WAJIB DIBACA:** Dalam sesi riset ini, tool WebFetch diblokir oleh egress proxy lingkungan untuk **hampir seluruh domain eksternal** (situs pemerintah `.go.id`, jurnal Elsevier/Springer/Nature, arXiv, ResearchGate, Wikipedia, World Bank, NASA, dll.) — hanya `github.com`/`raw.githubusercontent.com` yang berhasil diakses penuh. Akibatnya, **kolom "Akses" di bawah menunjukkan status akses SESI INI, bukan status akses sumber itu sendiri** — sumber-sumber ini kemungkinan besar bisa diakses normal oleh manusia/sesi lain dengan koneksi internet biasa. Setiap sumber bertanda "snippet-only" WAJIB dibuka langsung sebelum dianggap terverifikasi.
 
 ---

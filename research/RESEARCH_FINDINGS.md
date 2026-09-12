@@ -1,8 +1,32 @@
-# RESEARCH_FINDINGS.md — Ringkasan Riset SURYA-SIAGA (Prompt 2)
+# RESEARCH_FINDINGS.md — Ringkasan Riset SURYA-SIAGA
+
+**Revisi:** Prompt 2.5 (Evidence Verification &amp; Research Repair), 2026-09-12.
 
 ---
 
-## Executive Summary
+## ⚠️ ADENDUM PROMPT 2.5 — BACA SEBELUM BAGIAN LAIN
+
+Verification pass Prompt 2.5 menguji WebFetch terhadap 7 domain prioritas; **ketujuhnya ditolak `EGRESS_BLOCKED`**. **Nol evidence dinaikkan ke `verified_primary`.** Seluruh temuan di bawah tetap berstatus `unverified`.
+
+Pass tersebut juga **mengoreksi beberapa kesimpulan Prompt 2** di bawah ini. Di mana terjadi perbedaan, **adendum ini yang berlaku**:
+
+| Kesimpulan Prompt 2 | Koreksi Prompt 2.5 |
+|---|---|
+| "3 studi akademik karhutla Kubu Raya saling bertentangan" | **Keliru.** Studi mengukur *bahaya* vs *risiko* — metrik berbeda, bukan konflik. Direklasifikasi `DIFFERENT_METRIC`. Konsekuensi baru: produk harus memutuskan apakah `wildfire_risk` = bahaya atau risiko. |
+| "2 dataset READY_FOR_ACQUISITION" | **Diturunkan ke 0.** Prompt 2 menandai READY berdasarkan metode akses yang terlihat, bukan spesifikasi terverifikasi. |
+| "Tidak satu pun tool menggabungkan 5 dimensi → dasar klaim novelty" | **Tidak dapat didukung.** Setelah audit §J, seluruh status NO menjadi UNKNOWN — ketiadaan fitur pada tool pesaing *tidak terbukti*, hanya *tidak terlihat*. Klaim novelty berbasis ketiadaan harus ditinggalkan. |
+| IRBI sebagai evidence disaster terkuat | **Tetap kuat sebagai konteks kabupaten, tetapi dikeluarkan sebagai input skoring situs** — skala belum terverifikasi, DAN nilainya identik untuk semua kandidat di dalam satu kabupaten (nol daya pembeda). |
+| Status pilot "VIABLE PILOT WITH LIMITATIONS" | **Dipertahankan, tetapi PROVISIONAL dan di atas argumen yang jauh lebih sempit** — 4 dari 7 dimensi berkekuatan LEMAH. |
+
+### Temuan struktural baru (tidak terlihat pada Prompt 2)
+
+> **Evidence terkuat proyek ini berada pada level KABUPATEN, sedangkan data yang dibutuhkan MVP berada pada level SITUS — dan level situs itulah yang paling kosong.** Evidence kabupaten (IRBI, prioritas karhutla nasional, momentum PLTS 100 GWp) berlaku identik untuk semua kandidat sehingga tidak memiliki daya pembeda dalam skoring. Sementara data pembeda antar-situs (koordinat, penerima manfaat per fasilitas, kapasitas per lokasi) berstatus `NOT_AVAILABLE` atau `DO_NOT_USE`.
+
+**Status kesiapan:** ❌ **NOT READY FOR PROMPT 3** — 5 dari 6 komponen utama belum memiliki jalur sumber yang cukup. Lihat `VERIFICATION_REPORT.md` §11.
+
+---
+
+## Executive Summary (Prompt 2 — dipertahankan sebagai jejak, baca bersama adendum di atas)
 
 Riset ini dilakukan melalui 4 investigasi paralel berbasis pencarian web (kebijakan nasional &amp; metodologi; data teknis solar/disaster; PLTS eksisting &amp; data fasilitas Kubu Raya; competitor tool matrix), membaca penuh `PROJECT_CONTEXT.md`, `docs/PRODUCT_AUDIT.md`, dan `docs/PROPOSAL_STRENGTHENING.md` terlebih dahulu.
 
