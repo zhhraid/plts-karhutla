@@ -170,6 +170,121 @@ https://kuburayakab.bps.go.id/id/publication/2026/02/27/c93f971b4b29eaf6005aa0e3
 
 ---
 
+# REQ-BEN-EDU-01 — Student Counts untuk 7 NPSN Target
+
+**Ditambahkan:** Prompt 3B, 2026-09-14. **Prioritas:** TINGGI — ini penentu Beneficiary Acquisition Gate.
+
+### Exact field required
+Per sekolah: `student_count_total` (**wajib**); `student_count_male` / `student_count_female` bila ditampilkan; `student_count_reference_date` (tanggal data yang dinyatakan sumber); `student_count_data_year`; tanggal pembaruan yang ditampilkan portal.
+
+### Target (jangan diganti tanpa dokumentasi)
+
+| record_id | NPSN | facility_name | URL profil |
+|---|---|---|---|
+| EDU-001 | 30101104 | SMAN 1 SUNGAI RAYA | `https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/30101104` |
+| EDU-002 | 30101107 | SMAN 1 SUNGAI KAKAP | `.../npsn/30101107` |
+| EDU-003 | 30100908 | SMP NEGERI 1 TERENTANG | `.../npsn/30100908` |
+| EDU-004 | 30101121 | SMAN 1 KUBU | `.../npsn/30101121` |
+| EDU-005 | 30108035 | SD NEGERI 22 BATU AMPAR | `.../npsn/30108035` |
+| EDU-006 | 30101619 | SD NEGERI 07 BATU AMPAR | `.../npsn/30101619` |
+| EDU-007 | 30109720 | SMKN 1 BATU AMPAR | `.../npsn/30109720` |
+
+> ⚠️ **EDU-004:** NPSN 30101121 adalah SMAN 1 Kubu **Kabupaten Kubu Raya**. Ada sekolah bernama sama di Kabupaten Rokan Hilir — pastikan tidak tertukar.
+
+### Preferred official source
+Kemendikdasmen — Referensi Data Pendidikan, halaman profil/informasi pendidikan per NPSN.
+
+### Acceptable fallback
+Dokumen resmi Dinas Pendidikan/Kemendikdasmen lain yang menyebut jumlah peserta didik **per sekolah** (mis. rekap Dapodik resmi), dengan tahun data dinyatakan.
+
+### Unacceptable fallback
+- ⛔ **Populasi desa/kecamatan sebagai pengganti jumlah siswa.** Ini kategori yang sama sekali berbeda.
+- ⛔ Angka dari hasil pencarian/snippet.
+- ⛔ Estimasi berdasarkan jenjang atau ukuran sekolah.
+- ⛔ Mengisi 0 untuk data yang tidak ditemukan — gunakan NULL.
+
+### ⚠️ Aturan tanggal
+`retrieved_at` (tanggal membuka portal) **bukan** `data_reference_date` (tanggal data itu berlaku). Bila portal menampilkan tanggal pembaruan, catat terpisah. **Jangan mengasumsikan seluruh field profil diperbarui pada tanggal yang sama.**
+
+### Expected format
+CSV satu baris per sekolah, kolom sesuai `data/interim/beneficiary_observations.csv`, dapat dicocokkan ke `record_id`.
+
+### Destination path
+```
+data/raw/external_manual/<tanggal>/beneficiary_education_external.csv
+```
+
+---
+
+# REQ-BEN-HEALTH-01 — Official Service / Work-Area Population untuk 3 Puskesmas
+
+**Prioritas:** SEDANG-TINGGI. Gate tetap dapat lolos tanpa ini **bila** alasan pengecualian sementara didokumentasikan.
+
+### Exact field required
+Per puskesmas: populasi wilayah kerja / service population resmi, beserta **daftar desa wilayah kerja** bila tersedia, tahun data, dan sumbernya.
+
+### Target
+
+| record_id | facility_name | district | Portal resmi |
+|---|---|---|---|
+| HLT-001 | Puskesmas Padang Tikar | BATU AMPAR | `https://pkm-padangtikar.kuburayakab.go.id/` |
+| HLT-002 | Puskesmas Sungai Kerawang | BATU AMPAR | `https://pkm-sungaikerawang.kuburayakab.go.id/` |
+| HLT-003 | Puskesmas Kubu | KUBU | `https://pkm-kubu.kuburayakab.go.id/` |
+
+> ⚠️ **Jangan membuat service population berdasarkan nama fasilitas.**
+
+### Preferred official source (urut prioritas)
+1. **LEVEL 1** — Portal resmi puskesmas: populasi wilayah kerja yang secara eksplisit terkait puskesmas tersebut.
+2. **LEVEL 2** — Profil Kesehatan Kabupaten Kubu Raya / dokumen Dinas Kesehatan yang memuat populasi wilayah kerja per puskesmas.
+
+### Acceptable fallback
+**LEVEL 3** — populasi kecamatan sebagai *konteks geografis*, **hanya** bila LEVEL 1 dan 2 tidak ada, dan **wajib** ditandai `is_proxy = true`, `beneficiary_type = district_population_proxy`, `proxy_level = 3`.
+
+### Unacceptable fallback
+- ⛔ Menyatakan "Puskesmas melayani X pasien" dari populasi kecamatan. Gunakan wording *"Potential service population proxy"* atau *"Population context — district level"*.
+- ⛔ Memberikan populasi kecamatan penuh ke beberapa puskesmas di kecamatan yang sama (lihat peringatan di bawah).
+- ⛔ LEVEL 4 diisi angka apa pun — itu NULL.
+
+### 🔴 Peringatan overlap yang sudah terkonfirmasi
+**HLT-001 dan HLT-002 berada di kecamatan yang sama (BATU AMPAR).** Populasi Kecamatan Batu Ampar **tidak boleh** dialokasikan penuh ke keduanya seolah masing-masing melayani seluruhnya — itu akan menghitung ganda penduduk yang sama. Keduanya sudah ditandai `proxy_overlap_risk = true`.
+
+**HLT-003 (Kec. KUBU)** ditandai `proxy_overlap_risk = unknown` karena 20 record identity-only belum memiliki `district`, sehingga keberadaan puskesmas lain di Kecamatan Kubu belum dapat dikesampingkan. Mengisi `district` pada REQ-HEALTH-01 akan menyelesaikan ketidakpastian ini.
+
+### Expected format & destination
+```
+data/raw/external_manual/<tanggal>/beneficiary_health_external.csv
+```
+
+---
+
+# REQ-BEN-BPS-01 — District Population (fallback/context saja)
+
+**Prioritas:** RENDAH — **hanya** dibutuhkan bila REQ-BEN-HEALTH-01 LEVEL 1/2 gagal.
+
+### Exact field required
+**Populasi per kecamatan** untuk (minimal) **Batu Ampar** dan **Kubu**, beserta **reference_year tabel tersebut**.
+
+### Preferred official source
+Kabupaten Kubu Raya Dalam Angka **2026** (EV-B, `verified_primary`):
+```
+https://kuburayakab.bps.go.id/id/publication/2026/02/27/c93f971b4b29eaf6005aa0e3/kubu-raya-regency-in-figures-2026.html
+```
+
+### ⚠️ Aturan tahun
+`publication_year = 2026` **≠** `reference_year`. Catat tahun referensi **tabel populasi itu sendiri** — jangan diasumsikan seluruh isi publikasi adalah data 2026, dan jangan diasumsikan seragam antar-tabel.
+
+### Batasan
+- ⛔ **Jangan mengumpulkan variabel BPS lain** yang tidak dipakai.
+- ⛔ Data ini **tidak boleh** menjadi `beneficiary_value` fasilitas tanpa `is_proxy = true` dan `proxy_level = 3`.
+- ⛔ Tidak berlaku untuk sekolah sama sekali — jumlah siswa tidak boleh diproksi dari populasi.
+
+### Destination path
+```
+data/raw/external_manual/<tanggal>/beneficiary_bps_district_population.csv
+```
+
+---
+
 ## Informasi yang masih kurang dari handoff sebelumnya
 
 | Item | Status |
