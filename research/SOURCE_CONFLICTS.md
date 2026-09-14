@@ -166,6 +166,14 @@ Dugaan (belum terverifikasi): IRBI adalah **indeks komposit multi-bahaya pada le
 
 ---
 
+## Rujukan Silang — Variansi Beneficiary (bukan konflik)
+
+Perbedaan nilai `student_count` antar view resmi Kemendikdasmen **tidak dicatat di file ini**. Perbedaan tersebut terjadi antara view bertanggal snapshot dan view tanpa tanggal pada sistem yang dinamis — sehingga tidak memenuhi syarat `TRUE_CONFLICT` (metrik, scope, dan waktu yang sama dengan nilai berbeda).
+
+Seluruhnya diklasifikasikan `TEMPORAL_OR_VIEW_VARIANCE` dan dicatat di **`research/BENEFICIARY_SOURCE_VARIANCE.md`** (VAR-001 s.d. VAR-004).
+
+---
+
 ## Ringkasan Reklasifikasi
 
 | ID | Klasifikasi Prompt 2 | Klasifikasi Prompt 2.5 | **Status Prompt 2.6** |

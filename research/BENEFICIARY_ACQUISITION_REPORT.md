@@ -1,132 +1,139 @@
 # BENEFICIARY_ACQUISITION_REPORT.md — Laporan Akuisisi Data Beneficiary & Sosial
 
-**Pass:** Prompt 3B — Beneficiary & Social Data Acquisition
+**Pass:** Prompt 3B → **3B.2 (Reconcile & Finalize Canonical Snapshot)**
 **Tanggal:** 2026-09-14
 **Unit analisis:** 10 fasilitas yang lolos Facility Acquisition Gate (EDU-001…007, HLT-001…003)
-**Hasil:** ⛔ **0 nilai beneficiary diakuisisi** — seluruh sumber diblokir egress. **Beneficiary Acquisition Gate: TIDAK PASS.**
+**Hasil:** ✅ **4 canonical dated student_count** · **Gate: PASS WITH DOCUMENTED LIMITATION** · 🔒 **BENEFICIARY ACQUISITION FROZEN FOR MVP**
 
 ---
 
 ## Ringkasan Eksekutif
 
-Ketiga jalur sumber beneficiary diuji dan ketiganya ditolak `EGRESS_BLOCKED`. Sesuai §N, tidak ada workaround scraping, tidak ada nilai yang diisi dari hasil pencarian, dan tidak ada angka dari memori model.
+Paket external 2026-09-14 **tidak dijadikan canonical secara langsung**. Rekonsiliasi menetapkan source policy yang konsisten dan reproducible: nilai canonical hanya diambil dari tabel wilayah Kemendikdasmen **yang memiliki tanggal snapshot eksplisit**; halaman detail satuan pendidikan berperan sebagai cross-check, bukan pengganti.
 
-Sepuluh observasi dicatat di `data/interim/beneficiary_observations.csv` dengan `beneficiary_value = NULL`, `beneficiary_type = unknown`, dan `why_null` terdokumentasi per record — **bukan** diisi 0, sesuai §L.
+Hasilnya **4 sekolah** memiliki `student_count` bertanggal dan terverifikasi, **3 sekolah** tetap NULL karena tidak memiliki reference date yang memadai, dan **3 puskesmas** tetap NULL karena populasi wilayah kerja resmi tidak ditemukan.
 
-Meski nol nilai diperoleh, pass ini menghasilkan satu temuan analitis yang material dan tidak memerlukan data: **proksi populasi kecamatan secara struktural tidak aman untuk Batu Ampar**, karena 2 dari 3 puskesmas target berada di kecamatan yang sama.
+Dua koreksi struktural dilakukan di lapisan interim (raw tidak disentuh): nilai EDU-006 berubah 333 → **330**, dan flag `is_proxy` pada ketiga puskesmas dikoreksi `true` → **`false`** karena tidak ada proxy yang sedang digunakan.
 
-## Uji Akses (2026-09-14)
-
-| Sumber | Domain | Hasil |
-|---|---|---|
-| Profil sekolah (student count) | `referensi.data.kemendikdasmen.go.id` | ❌ EGRESS_BLOCKED |
-| BPS Kubu Raya Dalam Angka 2026 | `kuburayakab.bps.go.id` | ❌ EGRESS_BLOCKED |
-| Portal puskesmas (service population) | `pkm-kubu.kuburayakab.go.id` | ❌ EGRESS_BLOCKED |
+**Satu dugaan sebelumnya dikoreksi:** agent sempat menandai label "Residu Data Induk Pendidikan" sebagai indikasi seluruh nilai belum tervalidasi. Dugaan itu terlalu luas — "Residu NISN/Kependudukan/Kode Wilayah" adalah indikator kualitas pada field terpisah, dan **tidak** mengurangi validitas total peserta didik. `student_count` tidak dikurangi oleh angka residu apa pun.
 
 ---
 
-## 1. Sekolah dengan Actual Student Count
+## 1. Canonical Dated Student Count
 
-**0 dari 7.**
+**4 dari 7 sekolah.**
 
-| record_id | NPSN | Status |
+| record_id | NPSN | Sekolah | `student_count` | `data_reference_date` | Status |
+|---|---|---|---|---|---|
+| EDU-001 | 30101104 | SMAN 1 Sungai Raya | **994** | 2026-09-10 | `verified_primary` |
+| EDU-002 | 30101107 | SMAN 1 Sungai Kakap | **778** | 2026-09-05 | `verified_primary` |
+| EDU-005 | 30108035 | SD Negeri 22 Batu Ampar | **46** | 2026-08-30 | `verified_primary` |
+| EDU-006 | 30101619 | SD Negeri 07 Batu Ampar | **330** | 2026-08-30 | `verified_primary` |
+
+Seluruhnya dari tabel wilayah dengan tanggal snapshot eksplisit → **reproducible**.
+
+## 2. Records yang Tetap NULL
+
+**6 dari 10** (3 sekolah + 3 puskesmas). Tidak satu pun diisi 0.
+
+| record_id | Alasan (`why_null`) | Secondary observation |
 |---|---|---|
-| EDU-001 … EDU-007 | 7 NPSN target | `not_available` — belum diakuisisi |
+| EDU-003 | Tidak ada dated wilayah snapshot; nilai 272 tidak punya reference date terpisah dari `retrieved_at` | `BEN-S-EDU-003` = 272 |
+| EDU-004 | Variasi antar view resmi belum direkonsiliasi; nilai per-view tidak dilaporkan | — |
+| EDU-007 | Hanya detail page tanpa explicit reference date | `BEN-S-EDU-007` = 158 |
+| HLT-001 | Service/work-area population tidak ditemukan | — |
+| HLT-002 | Idem | — |
+| HLT-003 | Idem | — |
 
-## 2. Sekolah Tanpa Student Count
+> Nilai secondary **tidak dipakai untuk scoring**. Konsumsi hilir hanya membaca `observation_role = canonical`.
 
-**7 dari 7.** Seluruhnya `beneficiary_value = NULL`, `beneficiary_type = unknown`, dengan `why_null` yang menyebut domain yang diblokir dan tanggal ujinya.
+## 3. Source / View Variance
 
-Tidak satu pun diisi dengan populasi desa/kecamatan — itu kategori berbeda dan dilarang eksplisit.
+**3 variance terukur + 1 belum terselesaikan.** Detail di `research/BENEFICIARY_SOURCE_VARIANCE.md`.
 
-## 3. Puskesmas dengan Official Service Population
+| ID | record_id | View A (canonical) | View B | Selisih | Klasifikasi |
+|---|---|---|---|---|---|
+| VAR-001 | EDU-001 | 994 @ 2026-09-10 | 997 (detail, tanpa tanggal) | 3 (0,30%) | `TEMPORAL_OR_VIEW_VARIANCE` |
+| VAR-002 | EDU-002 | 778 @ 2026-09-05 | 777 (detail, tanpa tanggal) | 1 (0,13%) | `TEMPORAL_OR_VIEW_VARIANCE` |
+| VAR-003 | EDU-006 | 330 @ 2026-08-30 | 333 (raw, tanpa tanggal) | 3 (0,91%) | `TEMPORAL_OR_VIEW_VARIANCE` |
+| VAR-004 | EDU-004 | — | — | tidak dilaporkan | belum direkonsiliasi → NULL |
 
-**0 dari 3.** Tidak ada LEVEL 1 (service population terkait puskesmas) maupun LEVEL 2 (catchment resmi dari Profil Kesehatan/Dinkes) yang berhasil diakses.
+**Bukan `SOURCE_CONFLICT`.** Data Induk Pendidikan bersifat dinamis; dua view pada waktu berbeda tidak mengklaim nilai yang sama untuk waktu dan definisi yang sama. Selisihnya 0,13%–0,91%, arahnya tidak konsisten (detail lebih tinggi pada EDU-001, lebih rendah pada EDU-002) — pola yang wajar untuk sistem yang terus diperbarui, bukan kesalahan sistematis.
 
-## 4. Puskesmas dengan Geographic Proxy
+## 4. Health Beneficiary Status
 
-**0 dari 3.** LEVEL 3 (proksi populasi kecamatan) **sengaja tidak diterapkan**, karena dua alasan independen:
+**3 dari 3 NULL**, dengan struktur yang kini konsisten:
 
-1. **Data sumbernya sendiri belum diakuisisi** — BPS 2026 diblokir, jadi angka populasi kecamatan pun tidak ada.
-2. **Proksi akan tidak aman meski datanya ada** — lihat §8.
+| record_id | `beneficiary_value` | `is_proxy` | `proxy_level` | `proxy_overlap_risk` |
+|---|---|---|---|---|
+| HLT-001 Padang Tikar | NULL | **false** | NULL | **true** |
+| HLT-002 Sungai Kerawang | NULL | **false** | NULL | **true** |
+| HLT-003 Kubu | NULL | **false** | NULL | **unknown** |
 
-## 5. Beneficiary NULL
+**`is_proxy` ≠ `proxy_overlap_risk`.** Yang pertama menyatakan *apakah proxy sedang dipakai* (tidak). Yang kedua adalah *metadata risiko bila proxy kelak dipakai* — HLT-001 dan HLT-002 berada di kecamatan yang sama (Batu Ampar), sehingga populasi kecamatan tidak boleh dialokasikan penuh ke keduanya. HLT-003 `unknown` karena keberadaan puskesmas lain di Kecamatan Kubu belum dapat dikesampingkan (20 record identity-only belum punya `district`).
 
-**10 dari 10 (100%).**
+Paket raw menandai ketiganya `is_proxy = true` meski nilainya NULL dan tidak ada proxy yang diterapkan. Ini dikoreksi di lapisan interim; raw dibiarkan utuh.
 
-Seluruhnya `beneficiary_value` kosong (bukan 0), `beneficiary_type = unknown`, `verification_status = not_available`, dan `why_null` terisi.
+## 5. Proxy Usage
+
+**Nol.** Tidak ada populasi kecamatan yang dipakai sebagai beneficiary fasilitas.
 
 ## 6. Source Years
 
-**Tidak ada** — tidak ada observasi yang memiliki `data_year` atau `data_reference_date`, karena tidak ada nilai yang diperoleh.
+| Sumber | Reference date |
+|---|---|
+| EDU-001 | 2026-09-10 |
+| EDU-002 | 2026-09-05 |
+| EDU-005, EDU-006 | 2026-08-30 |
 
-Aturan yang sudah disiapkan untuk akuisisi berikutnya: `retrieved_at` (kapan portal dibuka) ≠ `data_reference_date` (kapan data berlaku) ≠ `publication_date` ≠ `data_year`. Keempatnya adalah kolom terpisah dan tidak boleh disamakan.
+Rentang snapshot **11 hari** (30 Agustus – 10 September 2026). Tidak seragam, tetapi seluruhnya dalam satu tahun ajaran dan terdokumentasi per record. `retrieved_at` (2026-09-14) tetap kolom terpisah dari `data_reference_date` pada semua baris.
 
-## 7. Proxy Usage
+## 7. Source Conflicts
 
-**Nol proksi digunakan.** Seluruh record `is_proxy = false` dan `proxy_level` kosong — bukan karena proksi ditolak sebagai metode, melainkan karena tidak ada nilai apa pun yang diperoleh untuk diproksikan.
+**Tidak ada `TRUE_CONFLICT`.** Seluruh perbedaan diklasifikasikan `TEMPORAL_OR_VIEW_VARIANCE` dan dicatat di file terpisah. `research/SOURCE_CONFLICTS.md` diberi rujukan silang agar pembaca tahu variance beneficiary tidak dicatat di sana.
 
-## 8. 🔴 Proxy Overlap Risk — temuan material pass ini
+## 8. Raw Immutability
 
-| record_id | district | `proxy_overlap_risk` | Dasar |
-|---|---|---|---|
-| HLT-001 Padang Tikar | BATU AMPAR | **true** | Satu kecamatan dengan HLT-002 |
-| HLT-002 Sungai Kerawang | BATU AMPAR | **true** | Satu kecamatan dengan HLT-001 |
-| HLT-003 Kubu | KUBU | **unknown** | Tidak dapat dikesampingkan adanya puskesmas lain di Kec. Kubu |
-| EDU-001 … EDU-007 | — | false | `student_count` bersifat facility-level, tidak memerlukan proksi |
-
-**Mengapa ini penting sekarang, bukan nanti:** dua dari tiga puskesmas target berada di Kecamatan Batu Ampar. Bila populasi kecamatan diberikan penuh ke masing-masing, penduduk yang sama dihitung dua kali, dan kedua fasilitas akan tampak melayani seluruh kecamatan. Dalam sistem prioritisasi, kesalahan ini tidak netral — ia **menggelembungkan bobot Batu Ampar** relatif terhadap kecamatan lain, tepat di wilayah yang juga memiliki konsentrasi kandidat tertinggi (5 dari 10 fasilitas) dan ketiga PLTS eksisting.
-
-**Status HLT-003 sengaja `unknown`, bukan `false`.** Kita tahu ada 20 puskesmas di Kubu Raya (EV-J), tetapi `district` seluruhnya masih kosong — sehingga keberadaan puskesmas lain di Kecamatan Kubu belum dapat dikesampingkan. Mengisi `district` pada REQ-HEALTH-01 akan menyelesaikan ini.
-
-**Konsekuensi metodologis (dicatat, belum diputuskan):** bila LEVEL 1/2 tidak pernah tersedia, opsi yang tersisa bukan hanya "pakai proksi kecamatan" vs "NULL". Ada opsi ketiga — mengeluarkan beneficiary dari scoring untuk fasilitas kesehatan dan menyatakannya sebagai keterbatasan eksplisit. §R sendiri mengizinkan jalur ini. Keputusan ada di tahap metodologi, bukan di sini.
-
-## 9. Source Conflicts
-
-**Tidak ada.** Konflik memerlukan minimal dua sumber dengan nilai berbeda; nol nilai diperoleh, sehingga tidak ada yang dapat bertentangan. `research/SOURCE_CONFLICTS.md` tidak diubah pada pass ini.
-
-## 10. Manual Acquisition Requirements
-
-Tiga permintaan ditambahkan ke `research/MANUAL_ACQUISITION_REQUESTS.md`:
-
-| ID | Isi | Prioritas |
-|---|---|---|
-| **REQ-BEN-EDU-01** | `student_count_total` untuk 7 NPSN target + tanggal referensi data | **TINGGI — penentu gate** |
-| **REQ-BEN-HEALTH-01** | Service/work-area population untuk 3 puskesmas (LEVEL 1/2) | SEDANG-TINGGI |
-| **REQ-BEN-BPS-01** | Populasi kecamatan Batu Ampar &amp; Kubu + reference_year tabel | RENDAH (fallback saja) |
-
-Masing-masing memuat record_id, NPSN/identifier, field persis, sumber preferensi, fallback yang boleh dan yang dilarang, format, serta destination path.
+| Item | Status |
+|---|---|
+| `data/raw/external_manual/2026-09-14/beneficiary_observations_external.csv` | ✅ **tidak berubah** — `sha256sum -c` OK pasca-transformasi |
+| Seluruh koreksi | hanya di `data/interim/` |
+| Log transformasi | `data/interim/IMPORT_LOG.md` (raw_value → canonical_value, reason, source, reference_date) |
 
 ---
 
 ## GATE DECISION
 
-### ⛔ BENEFICIARY ACQUISITION GATE: **TIDAK PASS**
+### ✅ BENEFICIARY ACQUISITION GATE: **PASS WITH DOCUMENTED LIMITATION**
 
-| Syarat | Ambang | Hasil |
+| Kriteria | Ambang | Hasil |
 |---|---|---|
-| Sekolah dengan `student_count` aktual terverifikasi | ≥ 5 dari 7 | **0 dari 7** ❌ |
-| Health: contextual population dengan provenance & proxy status jelas **ATAU** alasan terdokumentasi untuk mengeluarkan health beneficiary sementara | salah satu | ⚠️ Alasan terdokumentasi (egress) ada, tetapi syarat ini **tidak dapat menutupi** kegagalan arm sekolah |
+| Sekolah dengan dated verified `student_count` | ≥ 4 | **4** ✅ |
+| Health NULL terdokumentasi | wajib | ✅ `why_null` terisi pada ketiganya |
+| Tidak ada beneficiary palsu | wajib | ✅ nol proxy, nol nilai 0, nol tebakan |
+| Methodology mengizinkan missing beneficiary | wajib | ✅ konsisten dengan §6 `PROJECT_CONTEXT.md` ("NULL lebih baik daripada angka buatan") |
+| Scoring tidak memperlakukan NULL sebagai 0 | wajib | ⚠️ **belum dapat diverifikasi — scoring belum ada.** Menjadi syarat mengikat bagi tahap metodologi |
 
-Gate mensyaratkan **DAN** antara kedua arm. Arm sekolah gagal total, sehingga gate tidak dapat lolos.
+**Bukan `PASS WITH LIMITATIONS`** karena jalur itu mensyaratkan **5+** dated snapshot; yang tersedia 4.
 
-**Penyebabnya tunggal dan bukan kegagalan metodologi:** environment agent tidak dapat menjangkau sumber. Seluruh jalur sumber sudah terverifikasi ada (EV-G, EV-I, EV-B) dan URL per-NPSN sudah pasti — yang hilang hanya aksesnya.
+### 🔒 BENEFICIARY ACQUISITION: **FROZEN FOR MVP**
 
-### Paket akuisisi eksternal yang dibutuhkan untuk membuka gate
+Tidak ada riset beneficiary lanjutan kecuali muncul **critical methodological blocker**. Yang termasuk blocker semacam itu, misalnya: metodologi ternyata tidak dapat menangani NULL tanpa mendistorsi ranking, atau `student_count` terbukti tidak sebanding antar jenjang (SD/SMP/SMA/SMK) sehingga memerlukan normalisasi berbasis data tambahan.
 
-**Minimum untuk PASS:** `student_count_total` untuk **minimal 5 dari 7** NPSN berikut, dengan tanggal referensi data:
+### Batasan yang mengikat tahap berikutnya
 
-`30101104` · `30101107` · `30100908` · `30101121` · `30108035` · `30101619` · `30109720`
+1. **NULL tidak boleh diperlakukan sebagai 0.** Empat dari sepuluh fasilitas punya beneficiary; enam tidak. Menganggap NULL = 0 akan menempatkan keenamnya di dasar peringkat dampak sosial — kesimpulan yang tidak didukung data apa pun.
+2. **Beneficiary bukan dimensi yang lengkap.** Hanya 40% fasilitas terisi; Data Confidence untuk dimensi ini harus tampil rendah apa adanya.
+3. **Perbandingan lintas jenis fasilitas belum tervalidasi.** `student_count` (sekolah) dan populasi wilayah kerja (puskesmas) adalah satuan berbeda; tidak satu pun puskesmas memiliki nilai, jadi perbandingan lintas-tipe belum dapat diuji sama sekali.
+4. **Proxy kecamatan tetap terlarang untuk Batu Ampar** tanpa pembagian wilayah kerja yang jelas.
+5. **`electricity_source` tetap konteks** — tidak dipakai untuk menurunkan beneficiary, energy gap, maupun resilience need.
 
-**Disarankan menyertai:** service/work-area population untuk 3 puskesmas (REQ-BEN-HEALTH-01), atau pernyataan bahwa LEVEL 1/2 tidak tersedia — karena pernyataan itu sendiri sudah cukup untuk memenuhi arm kedua lewat jalur "alasan terdokumentasi".
+---
 
-**Tidak perlu dikirim kecuali health LEVEL 1/2 gagal:** populasi kecamatan BPS (REQ-BEN-BPS-01).
+## STATUS UNTUK TAHAP SOLAR + HAZARD
 
-### Batasan yang dibawa ke tahap berikutnya
+### 🟢 **READY**
 
-1. `electricity_source` (PLN / Diesel / Tidak Ada) **tidak** dipakai untuk menghitung beneficiary apa pun pada pass ini, dan **tidak** boleh menjadi energy-need score tanpa keputusan metodologi eksplisit.
-2. Proksi populasi kecamatan untuk Batu Ampar **tidak aman** tanpa pembagian wilayah kerja yang jelas.
-3. Record identity-only (HF-001…HF-020) **tidak** diperlakukan sebagai kandidat tambahan — hanya dipertahankan untuk provenance/dedup audit.
-4. Nol nilai beneficiary berarti **Data Confidence untuk dimensi ini akan rendah**, dan itu harus tampil apa adanya, bukan ditutup dengan proksi.
+Tahap Solar + Hazard bergantung pada **koordinat**, bukan beneficiary — dan kesepuluh fasilitas memiliki `coordinate_quality = official_exact`. Beneficiary yang tidak lengkap **tidak memblokir** ekstraksi GHI maupun hazard; ia hanya membatasi dimensi dampak sosial pada tahap scoring nanti.
 
-*Catatan administratif: Prompt 3B merujuk `data/interim/IMPORT_LOG.md`; file tersebut sebenarnya berada di `data/raw/external_manual/2026-09-12/IMPORT_LOG.md` (bersama paket mentahnya). Tidak ada file yang hilang — hanya perbedaan path pada instruksi.*
+Yang dibawa sebagai catatan: **point-in-polygon masih `pending`** (REQ-GEO-01 belum terpenuhi), dan tiga koordinat puskesmas berumur **2021** — keduanya relevan untuk akurasi ekstraksi spasial, bukan untuk beneficiary.
