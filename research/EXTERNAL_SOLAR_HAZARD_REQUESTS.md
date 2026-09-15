@@ -1,165 +1,81 @@
-# EXTERNAL_SOLAR_HAZARD_REQUESTS.md — Permintaan Akuisisi Solar &amp; Hazard
+# External solar / hazard package ? permintaan siap isi
 
-**Dibuat:** Prompt 3C, 2026-09-14.
-**Alasan:** environment agent terkena `EGRESS_BLOCKED` untuk seluruh sumber solar dan hazard. Tidak ada data yang dibuat, tidak ada snippet yang dipakai mengisi nilai.
+Tanggal: 2026-09-14. **WAITING_FOR_EXTERNAL_SOLAR_HAZARD_PACKAGE**.
+Paket nilai belum diserahkan. Metadata InaRISK dapat dibaca pada pass ini, tetapi query nilai gagal; riwayat akses ada di [audit akses](PROMPT_3_SOURCE_ACCESS_AUDIT.md). Lisensi GSA telah terverifikasi via handoff manual, sehingga tidak perlu membuka gate lisensi ulang.
 
-## Hasil Uji Akses (2026-09-14)
+## Daftar target dan tujuan
 
-| Domain | Untuk | Hasil |
-|---|---|---|
-| `globalsolaratlas.info` | GHI + lisensi | ❌ EGRESS_BLOCKED |
-| `inarisk.bnpb.go.id` | layer karhutla &amp; kekeringan | ❌ EGRESS_BLOCKED |
-| `gis.bnpb.go.id` | ArcGIS REST services InaRISK | ❌ EGRESS_BLOCKED |
+| record_id | facility_name | latitude | longitude | required_solar_parameter | required_hazard_layer_1 | required_hazard_layer_2 | preferred_metric_type | expected_format | destination_path |
+|---|---|---|---|---|---|---|---|---|---|
+| EDU-001 | SMAN 1 SUNGAI RAYA | -0.0762 | 109.3758 | GHI | karhutla | kekeringan | hazard | CSV UTF-8 (SOL + HAZ) | data/raw/external_manual/<date>/ (nama file di bawah) |
+| EDU-002 | SMAN 1 SUNGAI KAKAP | -0.0565 | 109.2021 | GHI | karhutla | kekeringan | hazard | CSV UTF-8 (SOL + HAZ) | data/raw/external_manual/<date>/ (nama file di bawah) |
+| EDU-003 | SMP NEGERI 1 TERENTANG | -0.3839 | 109.6277 | GHI | karhutla | kekeringan | hazard | CSV UTF-8 (SOL + HAZ) | data/raw/external_manual/<date>/ (nama file di bawah) |
+| EDU-004 | SMAN 1 KUBU | -0.4882 | 109.3812 | GHI | karhutla | kekeringan | hazard | CSV UTF-8 (SOL + HAZ) | data/raw/external_manual/<date>/ (nama file di bawah) |
+| EDU-005 | SD NEGERI 22 BATU AMPAR | -0.7245 | 109.5745 | GHI | karhutla | kekeringan | hazard | CSV UTF-8 (SOL + HAZ) | data/raw/external_manual/<date>/ (nama file di bawah) |
+| EDU-006 | SD NEGERI 07 BATU AMPAR | -0.7516 | 109.5388 | GHI | karhutla | kekeringan | hazard | CSV UTF-8 (SOL + HAZ) | data/raw/external_manual/<date>/ (nama file di bawah) |
+| EDU-007 | SMKN 1 BATU AMPAR | -0.7849 | 109.4548 | GHI | karhutla | kekeringan | hazard | CSV UTF-8 (SOL + HAZ) | data/raw/external_manual/<date>/ (nama file di bawah) |
+| HLT-001 | PUSKESMAS PADANG TIKAR | -0.68395 | 109.27088 | GHI | karhutla | kekeringan | hazard | CSV UTF-8 (SOL + HAZ) | data/raw/external_manual/<date>/ (nama file di bawah) |
+| HLT-002 | PUSKESMAS SUNGAI KERAWANG | -0.84319384 | 109.7554378 | GHI | karhutla | kekeringan | hazard | CSV UTF-8 (SOL + HAZ) | data/raw/external_manual/<date>/ (nama file di bawah) |
+| HLT-003 | PUSKESMAS KUBU | -0.50136262 | 109.3756266 | GHI | karhutla | kekeringan | hazard | CSV UTF-8 (SOL + HAZ) | data/raw/external_manual/<date>/ (nama file di bawah) |
 
----
+Koordinat WGS84 / EPSG:4326, desimal latitude/longitude. Gunakan digit persis CSV fasilitas, bukan centroid atau geocoding. Ketiga HLT memakai koordinat Dinkes 2021; tahun pengambilan bukan tahun koordinat. Point-in-polygon pending tidak menurunkan official_exact.
 
-## 10 Titik Target
+Destination SOL: `data/raw/external_manual/<date>/solar_observations_external.csv`.
+Destination HAZ: `data/raw/external_manual/<date>/hazard_observations_external.csv`.
+`<date>` adalah tanggal penyerahan YYYY-MM-DD. Kedua path berlaku untuk **setiap baris** tabel di atas.
+Sertakan `EXTRACTION_NOTES.md` dan `CHECKSUMS.sha256` di folder paket. Jangan menimpa paket lama. Interim saat ini dapat disalin sebagai template di luar raw; jangan menyerahkan placeholder seolah nilai terverifikasi.
 
-Seluruhnya `coordinate_quality = official_exact`, lolos validasi rentang dan bounding box sanity check.
+## REQ-SOL-01
 
-| record_id | facility_name | latitude | longitude | district |
-|---|---|---|---|---|
-| EDU-001 | SMAN 1 SUNGAI RAYA | -0.0762 | 109.3758 | SUNGAI RAYA |
-| EDU-002 | SMAN 1 SUNGAI KAKAP | -0.0565 | 109.2021 | SUNGAI KAKAP |
-| EDU-003 | SMP NEGERI 1 TERENTANG | -0.3839 | 109.6277 | TERENTANG |
-| EDU-004 | SMAN 1 KUBU | -0.4882 | 109.3812 | KUBU |
-| EDU-005 | SD NEGERI 22 BATU AMPAR | -0.7245 | 109.5745 | BATU AMPAR |
-| EDU-006 | SD NEGERI 07 BATU AMPAR | -0.7516 | 109.5388 | BATU AMPAR |
-| EDU-007 | SMKN 1 BATU AMPAR | -0.7849 | 109.4548 | BATU AMPAR |
-| HLT-001 | PUSKESMAS PADANG TIKAR | -0.68395 | 109.27088 | BATU AMPAR |
-| HLT-002 | PUSKESMAS SUNGAI KERAWANG | -0.84319384 | 109.7554378 | BATU AMPAR |
-| HLT-003 | PUSKESMAS KUBU | -0.50136262 | 109.3756266 | KUBU |
+Global Solar Atlas sebagai primary solar spatial screening source. Ambil satu GHI per site (target 10), `ghi_unit` dari sumber apa adanya, URL persis dataset/laporan titik, nama/version dataset, authority B, resolusi, temporal coverage, data period, metode ekstraksi, tanggal pengambilan, status/method verifikasi. Jangan menyamakan tanggal akses dengan periode data.
 
-> ⚠️ **Koordinat HLT-001/002/003 berasal dari dataset Dinkes tahun 2021** (`coordinate_source_data_year = 2021`). Ekstraksi GHI/hazard pada titik-titik ini merepresentasikan lokasi per 2021. Catat konsekuensinya, jangan disajikan sebagai lokasi terkini.
+`license = Creative Commons Attribution 4.0 International / CC BY 4.0`; `attribution_required = true`; atribusi memuat Global Solar Atlas 2.0, World Bank Group, ESMAP, Solargis. `license_verification_method = external_manual_verification` (EV-P3-GSA). `source_url_role` harus menjadi `acquired_dataset_or_point_report` bila nilai ada.
 
-> ⚠️ **Gunakan koordinat persis di atas.** Jangan membulatkan, jangan memakai centroid desa/kecamatan, jangan memakai titik alternatif dari layanan peta lain.
+Gunakan peta/laporan titik resmi atau ekstraksi titik dari raster resmi di lingkungan pengambil. **Jangan sertakan/commit raster GSA.** Catat dataset ID, CRS, resolusi, resampling (mis. nearest pixel), band GHI, nodata, dan checksum raster di manifest bila memakai raster, tanpa menyimpan raster di repo. Jangan menginterpolasi manual. NASA POWER hanya supporting time-series / rough cross-check, tidak menggantikan GSA.
 
----
+Header lengkap yang diterima (kolom tambahan boleh, tidak membuang provenance):
 
-# REQ-SOL-01 — GHI per Titik Fasilitas (Global Solar Atlas)
-
-**Prioritas:** TINGGI
-
-### Exact data needed
-
-Untuk **setiap** dari 10 titik di atas:
-
-| Field | Catatan |
-|---|---|
-| `ghi_value` | Nilai GHI pada titik tersebut |
-| `ghi_unit` | **Catat apa adanya dari sumber** (mis. kWh/m²/day). Jangan dikonversi |
-| `spatial_resolution` | Resolusi data yang dipakai (diharapkan 9 arcsec / ~250 m) |
-| `temporal_coverage` | Periode agregasi jangka panjang yang dinyatakan sumber |
-| `data_year_or_period` | Periode data, mis. 1994–2024 — catat sebagaimana tertulis |
-| `extraction_method` | Cara pengambilan: titik interaktif di peta, laporan PDF per-titik, atau ekstraksi dari GeoTIFF |
-| `source_url` | URL persis halaman/dataset asal nilai |
-| `retrieved_at` | Tanggal pengambilan |
-
-### Preferred official source
-Global Solar Atlas — `https://globalsolaratlas.info/` (World Bank/ESMAP/Solargis), `coordinate_source_type` setara `government_dataset`/authoritative technical (source_authority **B**).
-
-### ⚠️ Verifikasi lisensi — bagian WAJIB dari request ini
-Buka `https://globalsolaratlas.info/support/faq` dan halaman Terms/License, lalu catat verbatim: nama &amp; URL lisensi, izin penggunaan non-komersial/kompetisi, izin menyimpan **raster**, izin menyimpan **derived point values**, dan teks atribusi yang diwajibkan.
-**Destination:** `data/raw/external_manual/<tanggal>/global_solar_atlas_license.md`
-Sampai ini selesai: **raster tetap tidak boleh di-commit.**
-
-### Acceptable fallback
-- Laporan PDF per-titik dari GSA (menghasilkan nilai titik yang sama).
-- Ekstraksi dari GeoTIFF resmi GSA menggunakan koordinat persis di atas, dengan metode ekstraksi dicatat.
-
-### Unacceptable fallback
-- ⛔ **NASA POWER sebagai pembeda spasial antar-site.** Resolusi parameter suryanya ~1°×1° (≈111 km) — seluruh Kubu Raya jatuh pada sel grid yang sama, sehingga nilainya **nol daya pembeda** antar fasilitas. Boleh dipakai hanya sebagai `supporting_time_series`.
-- ⛔ Nilai GHI dari sumber sekunder/hasil pencarian.
-- ⛔ Interpolasi manual, estimasi, atau nilai "rata-rata kabupaten" yang ditempelkan ke titik.
-- ⛔ Centroid desa/kecamatan.
-
-### Expected format
-CSV satu baris per site, kolom sesuai `data/interim/solar_observations.csv`, dapat dicocokkan ke `record_id` dan `solar_observation_id` (SOL-001…SOL-010).
-
-### Destination file
-```
-data/raw/external_manual/<tanggal>/solar_observations_external.csv
+```csv
+solar_observation_id,record_id,facility_name,latitude,longitude,ghi_value,ghi_unit,source_name,source_url,source_dataset,source_authority,source_role,spatial_resolution,temporal_coverage,data_year_or_period,extraction_method,point_in_polygon_status,retrieved_at,verification_method,verification_status,why_null,notes,license,attribution_required,attribution_text,license_verification_method,license_verification_status,source_url_role,request_created_at
 ```
 
----
+## REQ-HAZ-01
 
-# REQ-HAZ-01 — Layer Karhutla &amp; Kekeringan per Titik (InaRISK/BNPB)
+Target dua observasi per site (20), `hazard_type` = `karhutla` / `kekeringan`, **prioritas metric_type = hazard**.
 
-**Prioritas:** TINGGI
+Hazard candidates (handoff `external_manual_verification`, EV-P3-INA):
+- `INDEKS_BAHAYA_KARHUTLA`
+- `INDEKS_BAHAYA_KEKERINGAN`
+- `layer_bahaya_kebakaran_hutan_dan_lahan`
+- `layer_bahaya_kekeringan`
 
-### Exact data needed
+Risk candidates: `layer_risiko_kebakaran_hutan_dan_lahan`, `layer_risiko_kekeringan`.
+Sumber: https://inarisk.bnpb.go.id/ dan https://gis.bnpb.go.id/server/rest/services/inarisk.
 
-Untuk **setiap** dari 10 titik, **dua observasi** (total 20):
+Pakai risk **hanya bila hazard tidak dapat diekstrak**, dengan alasan kegagalan hazard di EXTRACTION_NOTES dan `metric_type = risk`. Untuk satu hazard_type, utamakan satu dataset/year/metric yang konsisten di semua site. Jangan mengisi sebagian site dengan hazard dan sebagian dengan risk sebagai satu seri pembanding. Bila fallback hanya tersedia sebagian, simpan sebagai seri observasi terpisah dengan ID berbeda dan kelompok metrik eksplisit; tandai seri utama yang belum lengkap. Tidak boleh overwrite/mengganti nama risk menjadi hazard.
 
-| Field | Catatan |
-|---|---|
-| `hazard_type` | `karhutla` atau `kekeringan` |
-| **`metric_type`** | **`hazard`** bila sumber menyediakan **BAHAYA**; **`risk`** bila menyediakan **RISIKO**. **WAJIB diisi.** |
-| `raw_class` | Kelas sebagaimana ditampilkan sumber: Rendah / Sedang / Tinggi. **Simpan apa adanya** |
-| `raw_value` | Nilai numerik bila sumber menampilkannya |
-| `unit_or_scale` | Skala yang dipakai (mis. 0–1), sebagaimana dinyatakan sumber |
-| `dataset_year` | Tahun data layer |
-| `geometry_or_raster_type` | Raster atau poligon |
-| `extraction_method` | Cara pengambilan nilai pada titik |
-| `source_url` | URL persis layer/service |
+`raw_value` hanya angka asli sumber; `raw_class` hanya kelas sumber apa adanya. Salah satu boleh NULL jika sumber hanya menyediakan yang lain. Jangan membuat kelas dari threshold sendiri atau mengubah Rendah/Sedang/Tinggi ke angka. Sertakan unit/skala/legend resmi, tahun/version layer, URL persis service/layer, authority A, CRS raster dan titik, geometri/raster, resolusi, band, metode sampling, nodata serta retrieved_at. Pilih raw pixel/index, bukan warna peta atau nilai hasil rendering yang dianggap indeks. Metadata service yang sempat terbaca belum menyediakan tahun data; pengambil perlu mencari metadata pendamping, bukan memakai 2026 secara otomatis.
 
-### 🔴 Aturan paling penting: HAZARD ≠ RISK
+Dilarang: IRBI kabupaten, hotspot harian, proxy centroid, studi sekunder sebagai pengganti InaRISK. Kejadian asap/karhutla hanya konteks dengan used_for_scoring=false.
 
-Ini bukan formalitas. **Bahaya** = kondisi biofisik ancaman. **Risiko** = bahaya × kerentanan ÷ kapasitas. Suatu area dapat **berbahaya tinggi namun berisiko rendah**, dan sebaliknya.
+Header lengkap:
 
-- Jangan mencampur keduanya dalam satu kolom.
-- Jangan mengambil sebagian titik dari layer bahaya dan sebagian dari layer risiko.
-- Bila kedua layer tersedia, **ambil keduanya sebagai observasi terpisah** dan isi `metric_type` masing-masing.
-- InaRISK sendiri membedakan Bahaya, Kerentanan, Kapasitas, dan Risiko (EV-C, terverifikasi).
-
-### ⛔ Jangan konversi kelas menjadi angka
-Rendah/Sedang/Tinggi disimpan sebagai teks di `raw_class`. Konversi ke skala numerik adalah keputusan **metodologi**, bukan akuisisi, dan belum diambil.
-
-### Preferred official source
-1. InaRISK WebGIS — `https://inarisk.bnpb.go.id/` (layer Kebakaran Hutan dan Lahan; layer Kekeringan).
-2. ArcGIS REST Services — `https://gis.bnpb.go.id/server/rest/services/inarisk` (untuk ekstraksi titik terprogram).
-
-### Acceptable fallback
-Unduhan resmi InaRISK (`inarisk.bnpb.go.id/portal/Unduh`) lalu ekstraksi titik lokal, dengan metode dicatat.
-
-### Unacceptable fallback
-- ⛔ **Skor IRBI kabupaten sebagai nilai per-site.** IRBI adalah indeks level kabupaten — nilainya identik untuk seluruh 10 site sehingga **nol daya pembeda**, dan skalanya belum terverifikasi (CF-003). Boleh dicatat sebagai konteks kabupaten, **tidak boleh** masuk `hazard_observations.csv`.
-- ⛔ **Hotspot harian / titik panas** (SIPONGI, NASA FIRMS) sebagai structural hazard. Itu kejadian near-real-time, bukan risiko struktural jangka panjang. Tempatnya di `contextual_disaster_events.csv`, bukan di dataset scoring.
-- ⛔ Nilai dari studi akademik sebagai pengganti layer resmi (hasilnya berbeda metrik — lihat CF-002).
-- ⛔ Centroid desa/kecamatan.
-
-### Expected format
-CSV satu baris per (site × layer) = 20 baris, kolom sesuai `data/interim/hazard_observations.csv`, dapat dicocokkan ke `hazard_observation_id` (HAZ-001…HAZ-020).
-
-### Destination file
-```
-data/raw/external_manual/<tanggal>/hazard_observations_external.csv
+```csv
+hazard_observation_id,record_id,facility_name,latitude,longitude,hazard_type,metric_type,raw_value,raw_class,unit_or_scale,source_name,source_url,source_authority,dataset_year,geometry_or_raster_type,extraction_method,point_in_polygon_status,retrieved_at,verification_method,verification_status,why_null,notes,source_url_role,request_created_at
 ```
 
----
+## Penerimaan paket dan validasi sebelum import
 
-# REQ-GEO-01 (lanjutan) — Geometri Batas Administratif
+1. Preserve byte raw, catat SHA-256 file asli **sebelum** parsing. Validasi checksum yang diberikan; jangan mengubah line endings atau raw untuk membuat checksum lolos. Catat checksum Git terpisah jika Git melakukan normalisasi.
+2. CSV UTF-8, delimiter koma, desimal titik, tanggal ISO. Empty cell = NULL (bukan 0). Header wajib sesuai minimum SCHEMA; ID observasi unik, record_id hanya 10 target. Nama dan koordinat harus sama dengan target, tanpa penggantian identitas/centroid.
+3. GHI harus finite, bukan NaN/Infinity/nodata. Sanity envelope untuk rerata harian kWh/m?/day: 0 < GHI <= 12; untuk kWh/m?/year: 0 < GHI <= 4392. Ini hanya pemeriksaan kewajaran luas, bukan rentang lokal terverifikasi, normalisasi, atau skor. Nilai di luar/bersatuan lain ditahan untuk penjelasan sumber; simpan unit asli, jangan konversi diam-diam.
+4. Setiap nilai solar harus memiliki sumber, periode, resolusi, extraction method, retrieved_at, license dan attribution. Metadata lisensi boleh merujuk EV-P3-GSA; angka tetap perlu bukti ekstraksi tersendiri.
+5. Hazard_type harus karhutla/kekeringan; metric_type hazard/risk; nilai finite dan sesuai skala sumber, kategori apa adanya. Pisahkan seri hazard/risk. Nodata tetap NULL dengan why_null, bukan nol atau kelas Rendah. Tahun yang tidak tersedia dicatat NULL dan requires_verification; jangan dihitung memenuhi gate penuh sampai provenance minimum teratasi.
+6. Tolak/karantina paket atau baris bermasalah dengan log alasan sebelum import. Paket parsial boleh diimpor hanya untuk baris yang lolos; placeholder target lain tetap NULL. Jangan menyatakan 10/20 terisi hanya karena jumlah baris cukup.
+7. Catat mapping raw?interim, checksum, jumlah accepted/rejected, alasan dan verifikasi per-field di IMPORT_LOG. Audit ulang matriks dan readiness setelah import.
 
-**Prioritas:** SEDANG — masih terbuka sejak Prompt 3A.1.
+## Definition of done
 
-Dibutuhkan untuk mengganti `point_in_polygon_status = pending` dengan validasi sahih. Detail lengkap ada di `research/MANUAL_ACQUISITION_REQUESTS.md` § REQ-GEO-01.
+Target 10 GHI + 20 hazard. **READY_FOR_PROMPT_4** membutuhkan setidaknya **8 site yang sama** memiliki identity, coordinate, beneficiary atau documented NULL, GHI, karhutla, kekeringan, serta source provenance. Jangan menghitung 8 solar dan 8 hazard dari himpunan site berbeda sebagai lolos.
 
-> Catatan: ketiadaan polygon **tidak** menurunkan `coordinate_quality` dan **tidak** memblokir REQ-SOL-01 maupun REQ-HAZ-01.
-
----
-
-# REQ-CTX-01 *(opsional, prioritas RENDAH)* — Contextual Disaster Events
-
-Hanya bila mudah diperoleh dan tidak memakan waktu. Kejadian karhutla/kabut asap/status darurat di Kubu Raya, dengan tanggal kejadian dan sumber.
-
-**Destination:** `data/interim/contextual_disaster_events.csv`
-**⛔ Tidak boleh** masuk structural site scoring dataset dalam kondisi apa pun.
-
----
-
-## Definition of Done
-
-- [ ] REQ-SOL-01: GHI untuk ≥8 dari 10 site + hasil verifikasi lisensi;
-- [ ] REQ-HAZ-01: karhutla **dan** kekeringan untuk ≥8 dari 10 site, dengan `metric_type` terisi pada setiap baris;
-- [ ] Seluruh nilai menyertakan `source_url`, tahun data, dan metode ekstraksi;
-- [ ] Tidak ada nilai yang berasal dari centroid, IRBI kabupaten, hotspot harian, atau NASA POWER sebagai pembeda spasial.
+REQ-GEO-01: batas administratif resmi beserta tahun, CRS, license tetap pending, lihat MANUAL_ACQUISITION_REQUESTS. REQ-CTX-01 opsional dan dilewati untuk fast-track. Tidak ada permintaan student_count baru: beneficiary FROZEN FOR MVP.

@@ -1,6 +1,6 @@
 # SOURCE_CONFLICTS.md — Konflik Antar-Sumber SURYA-SIAGA
 
-**Revisi:** Prompt 2.5 (Evidence Verification & Research Repair), 2026-09-12.
+**Revisi aktif:** Prompt 3 final acquisition audit, 2026-09-15. Riwayat Prompt 2.5/2.6 dipertahankan di bawah.
 **Perubahan utama:** setiap konflik direklasifikasi menggunakan taksonomi baru — konflik nyata dipisahkan dari perbedaan definisi/metrik/scope/tahun dan dari kemungkinan artefak ringkasan pencarian.
 
 Sesuai `PROJECT_CONTEXT.md` §10 poin 6: **"Jangan memilih angka ketika dua sumber bertentangan tanpa mencatat konflik."** Tidak satu pun konflik di bawah diselesaikan secara sepihak.
@@ -190,3 +190,11 @@ Seluruhnya diklasifikasikan `TEMPORAL_OR_VIEW_VARIANCE` dan dicatat di **`resear
 1. **Nol `TRUE_CONFLICT` terkonfirmasi.** Setelah dua pass audit, tidak satu pun "konflik" terbukti sebagai dua sumber kredibel yang benar-benar bertentangan pada metrik, scope, dan tahun yang sama. Yang ada: perbedaan metrik (CF-002, CF-004, CF-006), perbedaan scope, dan artefak ringkasan pencarian.
 2. **External verification mengurangi konflik, bukan menambah.** CF-002 dikonfirmasi bukan konflik; CF-004 sebagian terselesaikan. Satu konflik baru (CF-006) muncul justru karena verifikasi eksternal memberi **tanggal yang lebih presisi** (30 Desember 2021) — ini pertanda kualitas riset naik, bukan turun.
 3. **Yang masih benar-benar terbuka dan material: CF-001** (kapasitas) **dan CF-006** (tahun operasi). Keduanya menyangkut PLTS eksisting, dan keduanya berakibat sama: **field tersebut `NULL` sampai terverifikasi.**
+
+## Keputusan akuisisi Prompt 3 — 2026-09-14
+
+CF-001 tetap UNRESOLVED: capacity_kwp NULL pada ketiga PLTS; tidak memilih 150/250, tidak menerima 100 tanpa bukti per-field. CF-006 tetap UNRESOLVED untuk commissioning_year: seluruhnya NULL; tanggal serah terima 2021-12-30 mengikuti EV-P3-PLTS/handoff Prompt 3, terpisah dari commissioning dan publication_date. BUMDes adalah pengelola yang disebut/direncanakan per 2021, bukan status terkini.
+
+CF-002 tetap DIFFERENT_METRIC; kebijakan akuisisi kini hazard sebagai prioritas, risk hanya fallback terdokumentasi dan seri terpisah. Ini keputusan akuisisi, bukan formula scoring final. CF-003 dan CF-005 tetap unresolved di luar input MVP; CF-004 satuan NASA masih terbuka, supporting-only dan tidak digunakan dalam dataset ini. Nol TRUE_CONFLICT terkonfirmasi.
+
+VAR-001..004 tetap TEMPORAL_OR_VIEW_VARIANCE; VAR-004 belum direkonsiliasi, canonical EDU-004 NULL. Freeze beneficiary tidak dibuka. Perbedaan ejaan WINATA/WIRATA HLT-002 dipertahankan. Tiga pasangan potential duplicate HF/HLT tidak di-merge.

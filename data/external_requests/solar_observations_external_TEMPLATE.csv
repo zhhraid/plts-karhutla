@@ -1,0 +1,1 @@
+solar_observation_id,record_id,facility_name,latitude,longitude,ghi_value,ghi_unit,source_name,source_url,source_dataset,source_authority,spatial_resolution,temporal_coverage,data_year_or_period,extraction_method,retrieved_at,verification_method,verification_status,license,attribution_required,notes,why_null

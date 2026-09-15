@@ -1,8 +1,10 @@
 # SOURCES.md — Registry Sumber Riset SURYA-SIAGA
 
+> **Status aktif Prompt 3 (2026-09-14):** lihat registry tambahan di akhir dokumen dan PROMPT_3_SOURCE_ACCESS_AUDIT.md. Lisensi GSA CC BY 4.0 terverifikasi melalui handoff eksternal. Metadata InaRISK kini sebagian terbaca oleh web tool; nilai titik belum diperoleh. Tabel “Akses Sesi Ini” dan hitungan Prompt 2/2.5/2.6 di bawah adalah riwayat pass tersebut, bukan hasil akses saat ini.
+
 **Sifat dokumen:** Katalog seluruh sumber yang teridentifikasi selama riset Prompt 2. Ini adalah bibliografi/registry, bukan bukti berstruktur (lihat `EVIDENCE_LEDGER.md` untuk klaim per-fakta).
 
-**Revisi:** Prompt 2.5 (Evidence Verification &amp; Research Repair), 2026-09-12.
+**Revisi aktif:** Prompt 3 final acquisition audit, 2026-09-15. Riwayat Prompt 2.5/2.6 dipertahankan di bawah.
 
 ## Hasil Uji Ulang Akses (Prompt 2.5)
 
@@ -151,3 +153,19 @@ Sejumlah sumber kritis telah diverifikasi **di luar environment agent ini**, men
 ## Ringkasan Status Akses
 
 Dari 43 sumber di atas, **hanya 1 (B-19, GitHub)** yang berhasil diakses penuh (WebFetch berhasil) di sesi ini. Sisanya (42 sumber) berstatus snippet-only — teridentifikasi via WebSearch tapi halaman aslinya belum dibuka/dikonfirmasi. Ini bukan indikasi sumber tidak valid — ini keterbatasan akses jaringan sesi riset ini (lihat `RESEARCH_FINDINGS.md` §Critical Risks).
+
+## Registry aktif Prompt 3 — 2026-09-14
+
+| ID | Sumber / URL | Bukti dan status |
+|---|---|---|
+| B-25 | [Global Solar Atlas FAQ](https://globalsolaratlas.info/support/faq); [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | EV-P3-GSA: lisensi Creative Commons Attribution 4.0 International / CC BY 4.0, authority B, verified_secondary, external_manual_verification dari handoff pengguna. Bukan verifikasi lisensi melalui web agent. |
+| A-29 | [InaRISK ArcGIS directory](https://gis.bnpb.go.id/server/rest/services/inarisk) | EV-P3-INA: capability handoff, authority A, verified_primary, external_manual_verification. Hazard: INDEKS_BAHAYA_KARHUTLA; INDEKS_BAHAYA_KEKERINGAN; layer_bahaya_kebakaran_hutan_dan_lahan; layer_bahaya_kekeringan. Risk: layer_risiko_kebakaran_hutan_dan_lahan; layer_risiko_kekeringan. Ini nama kandidat service/layer, bukan nilai site. |
+| A-30 | [Dinkes — Kondisi Bangunan dan Fasilitas Puskesmas 2021](https://satudata.kuburayakab.go.id/dataset/d9e46c4e-3b72-4ced-8b0d-54936f5b823d/resource/1143815d-f777-4a6a-b41b-a3f5f1ea14fb/download/kondisi-bangunan-dan-fasilitas-puskesmas.pdf) | EV-P3-FAC: koordinat HLT-001/002/003, data 2021, external_manual_verification, verified_primary. URL profil identitas tetap terpisah di CSV. |
+| A-31 | Kemendikdasmen — tabel wilayah bertanggal dan profil NPSN; URL persis setiap observasi di beneficiary_observations.csv dan education_facilities.csv | EV-P3-BEN / EV-P3-FAC; authority A; external_manual_verification; empat canonical dated snapshot, enam documented NULL; freeze dipertahankan. |
+| A-20 (update) | [BPK Kalbar — hibah tiga desa](https://kalbar.bpk.go.id/tiga-desa-terjauh-di-kubu-raya-terima-hibah-plts/) | EV-F / EV-P3-PLTS: verified_primary historical, external_manual_verification. Serah terima 2021-12-30 sesuai handoff Prompt 3; BUMDes disebut/direncanakan 2021. HTTP 403 pada web open terbaru; tidak ada verifikasi operasi terkini. |
+
+Atribusi wajib pada derived GHI: **Global Solar Atlas 2.0; World Bank Group; ESMAP; Solargis**, beserta CC BY 4.0 dan link sumber. **Jangan commit raster GSA.**
+
+EV-P3-ACCESS adalah bukti akses agent yang terpisah dari capability handoff: direktori dan metadata kedua INDEKS_BAHAYA terbaca, tetapi identify gagal. Tahun/legend/nilai per-site tetap menunggu ekstraksi. Riwayat blokir egress sebelumnya tidak dihapus atau diklaim sebagai hasil baru.
+
+Tidak ada asumsi semua kandidat jatuh di satu sel NASA POWER tanpa pemeriksaan grid. Kebijakan supporting-only tetap berlaku karena resolusi terlalu kasar untuk pembeda spasial utama MVP.

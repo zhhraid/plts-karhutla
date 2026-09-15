@@ -88,4 +88,4 @@ Sesuai `research/SOURCE_CONFLICTS.md`, `TRUE_CONFLICT` hanya berlaku bila metrik
 
 Ketiga variance yang dapat diukur berada di rentang **0,13%–0,91%** — kecil, satu arah tidak konsisten (view detail lebih tinggi pada EDU-001, lebih rendah pada EDU-002), dan sesuai dengan sistem yang diperbarui terus-menerus. **Tidak ada indikasi kesalahan sistematis pada salah satu view.**
 
-Implikasi untuk metodologi berikutnya: karena `student_count` akan dinormalisasi sebelum masuk skor, selisih sub-1% ini kemungkinan besar **tidak mengubah ranking**. Namun tetap dicatat agar setiap angka dapat ditelusuri ke snapshot bertanggal — itulah inti fitur Data Confidence &amp; Traceability (§13 `PROJECT_CONTEXT.md`).
+Implikasi Prompt 4: dampak variance terhadap metodologi atau peringkat **belum dinilai**. Tidak ada normalisasi, scoring, atau asumsi bahwa selisih kecil pasti tidak mengubah hasil. Canonical tetap snapshot bertanggal; VAR-004 belum direkonsiliasi.
