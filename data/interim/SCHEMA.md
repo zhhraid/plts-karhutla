@@ -164,3 +164,41 @@ Ciri identity-only record:
 > ⚠️ **Larangan spesifik:** nama seperti "Puskesmas Batu Ampar" **tidak boleh** dipakai untuk mengisi `district = Batu Ampar`. Kemiripan nama fasilitas dengan nama kecamatan adalah petunjuk penelusuran, **bukan data**.
 
 Identity-only record **tidak dihitung** sebagai kandidat yang memenuhi gate — gate mensyaratkan `coordinate_quality ∈ {official_exact, derived_confirmed}`.
+
+# I. Kontrak akuisisi Prompt 3 — 2026-09-14
+
+**NULL CSV = empty cell**, bukan angka 0. Literal NULL dari paket baru hanya boleh dipetakan ke empty cell di interim dengan log. Raw tidak disentuh. Tidak ada skor/normalisasi pada kontrak ini.
+
+## Facility
+
+Candidate allowlist: EDU-001..007 dan HLT-001..003. HF-001..020 adalah identity-only audit, bukan kandidat. ID unik lintas file; npsn sekolah unik. coordinate_source direpresentasikan oleh coordinate_source_name / coordinate_source_url / coordinate_source_type / coordinate_method. verification_status ringkasan hanya identity + district + coordinate, bukan status semua field. verification_method=external_manual_verification; seluruh *_vstatus tetap berlaku. Education facility_type_vstatus mengikuti tipe/jenjang resmi dalam raw. Field derived-only boleh kosong untuk official_exact. Source year/last_update yang tidak diberikan tetap NULL, tidak dipaksa menjadi tahun retrieval.
+
+## Beneficiary
+
+14 observation IDs unik: 10 canonical, 2 cross_check, 2 secondary. Hanya observation_role=canonical untuk konsumsi calon metodologi; empat nilai/date sesuai frozen snapshot. Enam canonical NULL wajib punya why_null. Cross_check dan secondary tanpa reference date tidak menggantikan canonical. Semua is_proxy=false; district population tidak menjadi facility beneficiary. NULL tidak dihukum sebagai nol; NULL kesehatan tidak menurunkan criticality. Criticality puskesmas dapat dirancang sebagai kriteria terpisah pada tahap berikutnya, belum diberi skor.
+
+## Solar
+
+Minimum: solar_observation_id, record_id, facility_name, latitude, longitude, ghi_value, ghi_unit, source_name, source_url, source_dataset, source_authority, spatial_resolution, temporal_coverage, data_year_or_period, extraction_method, retrieved_at, verification_method, verification_status, license, attribution_required, notes, why_null.
+
+Tambahan: source_role, point_in_polygon_status, attribution_text, license_verification_method, license_verification_status, source_url_role, request_created_at. attribution_required boolean true. license CC BY 4.0 (nama lengkap pada CSV). Lisensi diverifikasi terpisah dari nilai. Placeholder tidak memiliki retrieved_at / verification_method nilai; request_created_at mencatat tanggal permintaan. URL portal placeholder dengan source_url_role=requested_source_portal bukan provenance nilai yang telah diperoleh. ghi_unit/resolusi/periode NULL sampai sumber ekstraksi ditentukan; tidak memakai default periode.
+
+## Hazard
+
+Minimum: hazard_observation_id, record_id, facility_name, latitude, longitude, hazard_type, metric_type, raw_value, raw_class, unit_or_scale, source_name, source_url, source_authority, dataset_year, extraction_method, retrieved_at, verification_method, verification_status, notes, why_null.
+
+Tambahan: geometry_or_raster_type, point_in_polygon_status, source_url_role, request_created_at. hazard_type ∈ {karhutla,kekeringan}; metric_type ∈ {hazard,risk}. Placeholder hazard sebagai **target request**, bukan nilai terverifikasi. Nilai/kelas NULL, verification_status=requires_external_acquisition; metode/tanggal ekstraksi NULL; source_url_role=requested_layer. Identitas seri = (record_id,hazard_type,metric_type,dataset/year); hazard dan risk tidak ditumpuk menjadi satu seri. Kategori tidak dikonversi ke angka. Tahun data dari metadata, bukan tanggal query.
+
+Validasi paket numerik, sumber, nodata, format dan fallback mengikuti EXTERNAL_SOLAR_HAZARD_REQUESTS.md. Placeholder tidak dihitung coverage.
+
+## Existing energy assets
+
+Satu baris per desa historis, primary key asset_id. record_id NULL karena relasi suplai belum diverifikasi; latitude/longitude NULL karena koordinat aset belum ada. existing_plts enum `verified historical`, existing_plts_vstatus=verified_primary. asset_handover_date tanggal peristiwa ISO; asset_manager_temporal_scope=reported_or_planned_at_handover_2021. Setiap field penting memiliki *_vstatus. data_year=2021; retrieved_at NULL bila tanggal akses asli tidak diberikan; handoff_received_at mencatat penerimaan instruksi. why_null menjelaskan capacity, commissioning, battery, operasi dan grid.
+
+## Acquisition quality matrix
+
+10 baris allowlist, satu per record_id. Field groups: identity, facility_type, district, coordinate, beneficiary, solar_ghi, karhutla, kekeringan, existing_energy_context, source_provenance. Enum deskriptif: available / missing / null_documented / secondary_only / historical_only / requires_external_acquisition / not_applicable. **Bukan skor.**
+
+beneficiary=secondary_only berarti canonical NULL, ditegaskan canonical_beneficiary_status=null_documented. source_provenance=available berarti fakta terisi memiliki jejak dan missingness memiliki audit, bukan semua nilai target sudah ada. quality_flags dipisahkan `;`: VALID, PROXY_PRESENT, HISTORICAL_ONLY, MISSING_NONCRITICAL, MISSING_CRITICAL, SOURCE_CONFLICT, COORDINATE_ISSUE, REQUIRES_VERIFICATION, REQUIRES_EXTERNAL_ACQUISITION, SECONDARY_ONLY. VALID hanya bila tidak ada gap relevan; MISSING_CRITICAL saat solar/hazard belum tersedia, MISSING_NONCRITICAL untuk documented beneficiary NULL yang tidak memblokir gate. Tidak ada PROXY_PRESENT pada dataset ini.
+
+existing_energy_context_scope: facility_profile / district / village / unknown. Lima site Batu Ampar historical_only untuk konteks administratif EV-F; HLT-002 cocok desa resmi Sungai Kerawang, bukan kemiripan nama fasilitas. context_asset_ids **bukan relasi suplai**. Tiga sekolah lain memiliki electricity_source sebagai konteks profil; EDU-004 dan HLT-003 null_documented. facility_existing_plts tetap NULL pada semua site. SOURCE_CONFLICT di lima site Batu Ampar merujuk konteks kapasitas/commissioning aset, bukan koordinat atau beneficiary. facility_energy_profile_status menjaga profil listrik terpisah dari konteks desa/district.

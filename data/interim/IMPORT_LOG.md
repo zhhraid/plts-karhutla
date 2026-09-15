@@ -4,6 +4,30 @@ Log transformasi dari **raw immutable** ke **interim canonical**. Raw tidak pern
 
 ---
 
+## 2026-09-15 — Prompt 3 final acquisition and readiness audit
+
+| Item | Result |
+|---|---|
+| Candidate allowlist | EDU-001..007, HLT-001..003 (10) |
+| Facility revalidation | PASS: IDs/NPSNs unique; 10/10 required target fields and `official_exact` coordinates valid |
+| Identity-only rows | 20 retained in health dataset; excluded from candidate pool; no automatic merge |
+| Beneficiary | Revalidated only; frozen CSV unchanged; 4 dated canonical + 6 documented NULL |
+| Solar/hazard raw package | Not present; no import attempted |
+| Solar interim | 10 NULL rows retained; license/provenance/request metadata added |
+| Hazard interim | 20 NULL rows retained; requested hazard layer URLs and request metadata added |
+| Existing PLTS | 3 historical village-level records created from EV-F + Prompt 3 handoff; unverified/current fields NULL |
+| Quality matrix | 10 descriptive rows created; no score |
+| License | GSA updated to CC BY 4.0 via `external_manual_verification`; raster storage remains prohibited by MVP policy |
+| Raw immutability | Existing SHA-256 manifests rechecked against Git blobs: PASS. Windows worktree CRLF hashes differ bytewise as expected; LF-normalized content and Git blobs match manifests. No raw file edited. |
+
+Transform notes: summary `verification_status` / `verification_method` fields were appended to facility CSVs for the mandatory minimum target schema. They summarize verified identity, district, and coordinate provenance and do not override field-level `*_vstatus`. `facility_type_vstatus` was added for education based on the already-preserved official raw facility type/level; no web re-verification was claimed.
+
+`solar_observations.csv` and `hazard_observations.csv` distinguish request metadata from acquired-value metadata. Placeholder `retrieved_at`, value `verification_method`, units, periods, extraction methods, and values remain empty. `request_created_at` records the request date. Hazard `metric_type=hazard` denotes the requested primary metric while raw value/class remain NULL; a future risk fallback must use a separate risk series.
+
+No normalization, AHP, MCDA, Priority Score, final Data Confidence, final ranking, or application code was produced.
+
+---
+
 ## 2026-09-14 — Beneficiary reconciliation (Prompt 3B.2)
 
 | Item | Nilai |

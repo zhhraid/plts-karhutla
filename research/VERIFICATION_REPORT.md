@@ -1,5 +1,7 @@
 # VERIFICATION_REPORT.md — Laporan Verifikasi Evidence SURYA-SIAGA
 
+> **Pembaruan aktif Prompt 3 — 2026-09-14:** bagian lama berikut adalah riwayat riset. Keputusan MVP ada di [laporan final](PROMPT_3_FINAL_DATA_ACQUISITION_REPORT.md) dan [readiness](PROMPT_4_READINESS.md). Pool 10 official_exact dikunci; beneficiary FROZEN FOR MVP (4 canonical, 6 NULL). Request student_count/population proxy lama tidak aktif. Lisensi GSA CC BY 4.0 verified via external_manual_verification; gate lisensi tidak perlu dibuka ulang. [Permintaan nilai aktif](EXTERNAL_SOLAR_HAZARD_REQUESTS.md). Pernyataan lama “koordinat belum tersedia”, “lisensi belum verified”, atau “proxy boleh menjadi beneficiary” tidak berlaku untuk 10 kandidat MVP.
+
 **Pass terakhir:** Prompt 2.6 — External Evidence Handoff & Research Gate Update
 **Tanggal:** 2026-09-12
 **Status keseluruhan:** ✅ **READY FOR PROMPT 3 — CONDITIONAL DATA ACQUISITION**

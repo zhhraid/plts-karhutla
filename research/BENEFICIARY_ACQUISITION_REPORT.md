@@ -137,3 +137,9 @@ Tidak ada riset beneficiary lanjutan kecuali muncul **critical methodological bl
 Tahap Solar + Hazard bergantung pada **koordinat**, bukan beneficiary — dan kesepuluh fasilitas memiliki `coordinate_quality = official_exact`. Beneficiary yang tidak lengkap **tidak memblokir** ekstraksi GHI maupun hazard; ia hanya membatasi dimensi dampak sosial pada tahap scoring nanti.
 
 Yang dibawa sebagai catatan: **point-in-polygon masih `pending`** (REQ-GEO-01 belum terpenuhi), dan tiga koordinat puskesmas berumur **2021** — keduanya relevan untuk akurasi ekstraksi spasial, bukan untuk beneficiary.
+
+## Revalidasi Prompt 3 — 2026-09-14
+
+**PASS WITH DOCUMENTED LIMITATION; FROZEN FOR MVP.** Empat nilai/date canonical sesuai instruksi; enam NULL beralasan tetap NULL. 14 observasi terjaga, tidak ada pencarian student_count atau perubahan CSV. Secondary EDU-003/007 dan cross-check EDU-001/002 tetap di luar canonical. Nol population proxy.
+
+Koreksi interpretasi laporan lama: coverage 40% adalah deskripsi kelengkapan, **bukan penetapan Data Confidence rendah**; Data Confidence final belum dihitung. NULL tidak boleh dihukum nol dan kesehatan NULL tidak berarti criticality rendah. Puskesmas boleh dibahas sebagai criticality terpisah pada Prompt 4. Rujukan prinsip NULL dalam PROJECT_CONTEXT adalah §10, bukan §6. Hasil audit: PROMPT_3_VALIDATION.json.

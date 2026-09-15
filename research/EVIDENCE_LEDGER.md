@@ -1,6 +1,8 @@
 # EVIDENCE_LEDGER.md — Registry Fakta Berstruktur SURYA-SIAGA
 
-**Revisi:** Prompt 2.5 (Evidence Verification &amp; Research Repair), 2026-09-12.
+> **Status aktif Prompt 3 (2026-09-14):** EV-P3-* di akhir dokumen dan pembaruan EV-021 berlaku untuk handoff MVP. Bagian lama adalah audit historis. GSA license sekarang verified via external_manual_verification; metadata InaRISK sebagian terbaca, nilai titik tetap NULL. Keberadaan layanan tidak sama dengan coverage nilai.
+
+**Revisi aktif:** Prompt 3 final acquisition audit, 2026-09-15. Riwayat Prompt 2.5/2.6 dipertahankan di bawah.
 
 > ⚠️ **HASIL VERIFICATION PASS PROMPT 2.5:** Verifikasi ulang diupayakan dengan menguji WebFetch terhadap 7 domain prioritas (`power.larc.nasa.gov`, `globalsolaratlas.info`, `www.esdm.go.id`, `inarisk.bnpb.go.id`, `kuburayakab.bps.go.id`, `arxiv.org`, `kalbar.bpk.go.id`). **Ketujuhnya ditolak dengan `EGRESS_BLOCKED`** — penolakan kebijakan egress organisasi, bukan masalah situs tujuan. Karena itu **NOL entri berhasil dinaikkan ke `verified_primary`**; seluruh entri `unverified` tetap `unverified` dan ditandai `MANUAL_VERIFICATION_REQUIRED`. Lihat `VERIFICATION_REPORT.md`.
 >
@@ -76,7 +78,7 @@ Kategori: `policy`, `solar`, `disaster`, `social`, `facility`, `electricity`, `e
 - source_authority: **B** | verification_status: **`verified_secondary`** (authoritative technical) | verification_method: **`external_manual_verification`**
 - proposal_usage_status: **`SAFE_TO_USE`**
 - **KEPUTUSAN:** Global Solar Atlas ditetapkan sebagai **PRIMARY SOLAR SPATIAL SCREENING SOURCE** untuk MVP, sepanjang penggunaan datanya mematuhi ketentuan/lisensi yang berlaku.
-- notes: ⚠️ **Lisensi belum termasuk dalam paket verifikasi eksternal.** Klaim CC BY 4.0 pada EV-021 masih `snippet_only`. **Ketentuan lisensi wajib dikonfirmasi sebelum data diredistribusi atau ditampilkan publik** dalam aplikasi/proposal. Ini terbuka sebagai item verifikasi tersisa.
+- notes: Lisensi tidak tercakup EV-D pada Prompt 2.6; kini CC BY 4.0 terverifikasi melalui handoff Prompt 3, EV-P3-GSA / EV-021, external_manual_verification. Atribusi wajib; raster tetap tidak di-commit.
 
 **EV-E — NASA POWER**
 - claim: NASA POWER menyediakan API; parameter `ALLSKY_SFC_SW_DWN` digunakan untuk radiasi surya; dokumentasi menyebut parameter surya tersedia pada resolusi **sekitar 1° × 1°**; parameter meteorologis memiliki resolusi berbeda.
@@ -177,7 +179,7 @@ Kategori: `policy`, `solar`, `disaster`, `social`, `facility`, `electricity`, `e
 |---|---|
 | EV-001 (program PLTS 100 GWp) | **Digantikan EV-A** — kini `verified_primary` untuk keberadaan/peluncuran/positioning |
 | EV-002, EV-003 (angka investasi &amp; kapasitas) | **Tidak berubah — tetap `DO_NOT_USE`.** Tidak tercakup verifikasi eksternal |
-| EV-020, EV-021, EV-023 (spesifikasi GSA) | **Sebagian digantikan EV-D.** Resolusi/CRS/format kini terverifikasi; **lisensi (EV-021) tetap `snippet_only`** |
+| EV-020, EV-021, EV-023 (spesifikasi GSA) | **Sebagian digantikan EV-D.** Resolusi/CRS/format kini terverifikasi; **lisensi (EV-021) kini verified_secondary via EV-P3-GSA, external_manual_verification (Prompt 3)** |
 | EV-024–EV-027 (NASA POWER) | **Sebagian digantikan EV-E.** Resolusi surya dikoreksi ke ~1°×1°; **satuan tetap belum terverifikasi** |
 | EV-028 (metodologi InaRISK) | **Dikuatkan EV-C** untuk pembedaan bahaya/kerentanan/kapasitas/risiko; sisanya tetap belum terverifikasi |
 | EV-029–EV-031 (skala, kelas, akses InaRISK) | **Tidak berubah** — tetap `MANUAL_VERIFICATION_REQUIRED` |
@@ -435,13 +437,15 @@ Kategori: `policy`, `solar`, `disaster`, `social`, `facility`, `electricity`, `e
 - verification_status: unverified
 - notes: angka resolusi konsisten muncul di 2 sumber independen (World Bank data catalog + energydata.info) — cukup kredibel meski belum dikonfirmasi via metadata resmi.
 
-**EV-021**
-- claim: Lisensi Global Solar Atlas — CC BY 4.0, atribusi wajib "© The World Bank, Source: Global Solar Atlas 2.0, Solar resource data: Solargis".
-- source_url: https://globalsolaratlas.info/download
-- access_date: 2026-09-11
-- source_type: situs teknis resmi (Tier B)
-- geographic_scope: global
-- verification_status: unverified
+**EV-021 — diperbarui Prompt 3**
+- claim: Creative Commons Attribution 4.0 International / CC BY 4.0. Atribusi MVP menyebut Global Solar Atlas 2.0, World Bank Group, ESMAP, Solargis.
+- source_url: https://globalsolaratlas.info/support/faq ; https://creativecommons.org/licenses/by/4.0/
+- handoff_received_at: 2026-09-14; source_accessed_at: NULL (tidak diberikan)
+- source_authority: B; verification_status: verified_secondary
+- verification_method: external_manual_verification
+- evidence_basis: handoff pengguna Prompt 3, EV-P3-GSA; bukan pembacaan lisensi oleh agent.
+- proposal_usage_status: SAFE_TO_USE (lisensi/atribusi); nilai titik belum diperoleh.
+- notes: Menggantikan status snippet_only 2026-09-11. Teks atribusi lama hasil snippet bukan kutipan verbatim terverifikasi. MVP hanya derived point values; raster tidak di-commit.
 
 **EV-022**
 - claim: Ketidakpastian tahunan GSA ±4% (GHI)/±9% (DNI) di area validasi baik, bisa naik ±8%/±14% di lintang tinggi/minim stasiun darat; RMSE bulanan rata-rata GHI ~3,8%; validasi memakai 228 stasiun pengukuran darat publik. GSA **secara eksplisit menyatakan bukan untuk "bankable assessment"** — hanya pre-feasibility/screening.
@@ -873,7 +877,7 @@ Sesuai instruksi §F Prompt 2.5: verifikasi tidak lagi diberikan pada level sumb
 | ✅ `location_existence` | **`verified_primary`** (`external_manual_verification`, EV-F) | A | `SAFE_TO_USE` | Disebut eksplisit dalam sumber BPK |
 | ✅ `existing_plts` | **`verified_primary`** (EV-F) | A (BPK Kalbar) | `SAFE_WITH_HISTORICAL_LABEL` | Bagian penyerahan hibah aset **2021** yang sama |
 | `existing_plts_capacity_kwp` | **tidak tersedia** (hanya angka agregat) | — | **`DO_NOT_USE`** | Tidak ada rincian per-desa (NF-03) |
-| `commissioning_year` | `unverified` | A | `SAFE_WITH_HISTORICAL_LABEL` | Diasumsikan sama (2018) — **asumsi, belum dikonfirmasi per desa** |
+| `commissioning_year` | `unverified` | A | `DO_NOT_USE` | NULL; CF-006. Jangan memakai asumsi 2018. |
 | `served_households` | **tidak tersedia** | — | **`DO_NOT_USE`** | Hanya agregat 3 desa |
 | `current_status` | `unverified` | — | **`NEEDS_MANUAL_VERIFICATION`** | Tidak ada sumber |
 | `latitude` / `longitude` | **tidak tersedia** | — | **`DO_NOT_USE`** | — |
@@ -885,13 +889,13 @@ Sesuai instruksi §F Prompt 2.5: verifikasi tidak lagi diberikan pada level sumb
 | ✅ `location_existence` | **`verified_primary`** (`external_manual_verification`, EV-F) | A | `SAFE_TO_USE` | **Nama desa terkonfirmasi benar** dan disebut eksplisit dalam sumber BPK — bukan salah eja "Sungai Kakap" |
 | ✅ `existing_plts` | **`verified_primary`** (EV-F) | A (BPK Kalbar) | `SAFE_WITH_HISTORICAL_LABEL` | Bagian penyerahan hibah aset **2021** yang sama |
 | `existing_plts_capacity_kwp` | **tidak tersedia** | — | **`DO_NOT_USE`** | Tidak ada rincian per-desa |
-| `commissioning_year` | `unverified` | A | `SAFE_WITH_HISTORICAL_LABEL` | Asumsi sama (2018), belum dikonfirmasi |
+| `commissioning_year` | `unverified` | A | `DO_NOT_USE` | NULL; CF-006. Jangan memakai asumsi 2018. |
 | `served_households` | **tidak tersedia** | — | **`DO_NOT_USE`** | — |
 | `population/KK desa` (dataset 2020) | `unverified` + `historical` | A (Satu Data Kalbar) | `NEEDS_MANUAL_VERIFICATION` | Dataset EV-044 ada tapi isinya belum dibaca |
 | `current_status` | `unverified` | — | **`NEEDS_MANUAL_VERIFICATION`** | — |
 | `latitude` / `longitude` | **tidak tersedia** | — | **`DO_NOT_USE`** | — |
 
-**Kesimpulan per-field:** untuk ketiga situs, field yang **paling mungkin selamat** ke tahap acquisition adalah `location_existence`, `existing_plts` (boolean), `commissioning_year`, dan pengelola — semuanya sebagai konteks berlabel. Seluruh field **numerik** (kapasitas, KK terlayani, koordinat) saat ini **DO_NOT_USE**. Ini konsisten dengan §6 `PROJECT_CONTEXT.md`: "NULL lebih baik daripada angka buatan."
+**Kesimpulan per-field (Prompt 3):** existing_plts verified historical, serah terima 2021-12-30 dan BUMDes yang disebut/direncanakan 2021. capacity_kwp, commissioning_year, battery_capacity_kwh, current_operational_status, current_grid_status tetap NULL. Tidak ada hubungan suplai ke fasilitas terverifikasi. Lihat EV-P3-PLTS.
 
 ---
 
@@ -942,7 +946,8 @@ Instruksi Level-1 meminta memprioritaskan edisi **2026** sebagai sumber statisti
 | EV-016 | electricity | A | unverified | `SAFE_AS_CONTEXT_ONLY` — bukan problem statement utama (§3 PROJECT_CONTEXT) |
 | EV-017, EV-018 | electricity | A | unverified | `NEEDS_MANUAL_VERIFICATION` |
 | EV-019 | electricity | A | unverified | **`DO_NOT_USE`** — provinsi lain (Kaltim), bukan Kalbar |
-| EV-020 – EV-023 | solar | B | unverified | `NEEDS_MANUAL_VERIFICATION` — spesifikasi teknis wajib dikonfirmasi sebelum akuisisi |
+| EV-020, EV-022, EV-023 | solar | B | unverified (cakupan EV-D terpisah) | NEEDS_MANUAL_VERIFICATION untuk klaim di luar handoff |
+| EV-021 | solar | B | verified_secondary / external_manual_verification | SAFE_TO_USE; EV-P3-GSA, CC BY 4.0 dan atribusi wajib |
 | EV-024 – EV-027 | solar | B | unverified | `NEEDS_MANUAL_VERIFICATION` |
 | EV-028 – EV-031 | disaster | A | unverified | `NEEDS_MANUAL_VERIFICATION` |
 | EV-032 | disaster | A | unverified | `SAFE_AS_CONTEXT_ONLY` (konteks kabupaten) / **`DO_NOT_USE`** sebagai input skoring situs (CF-003) |
@@ -1003,3 +1008,50 @@ Instruksi Level-1 meminta memprioritaskan edisi **2026** sebagai sumber statisti
 Fondasi sumber untuk seluruh komponen utama MVP kini memiliki jalur terverifikasi: kebijakan (EV-A), sosial (EV-B), bencana (EV-C), surya (EV-D primary, EV-E supporting), PLTS eksisting historis (EV-F), fasilitas pendidikan (EV-G) dan kesehatan (EV-H).
 
 Namun **daftar `DO_NOT_USE` tidak berkurang sama sekali** — dan ini disengaja. Seluruh **angka numerik** tentang Kubu Raya (kapasitas PLTS, KK terlayani, skor IRBI, angka investasi program nasional, nilai GHI) **tetap tidak boleh dikutip**. Yang dinaikkan oleh Prompt 2.6 adalah **keberadaan sumber dan jalur datanya**, bukan isi angkanya. Pembedaan ini adalah inti dari gate "CONDITIONAL" pada Prompt 3.
+
+## Evidence aktif Prompt 3 — 2026-09-14
+
+### EV-P3-GSA — license handoff
+
+- claim: Creative Commons Attribution 4.0 International / CC BY 4.0; atribusi wajib Global Solar Atlas 2.0, World Bank Group, ESMAP, Solargis.
+- source_url: https://globalsolaratlas.info/support/faq ; https://creativecommons.org/licenses/by/4.0/
+- source_authority: B; verification_status: verified_secondary; verification_method: external_manual_verification.
+- basis: instruksi pengguna Prompt 3 bagian D1; handoff_received_at 2026-09-14; source_accessed_at NULL. Rincian di PROMPT_3_SOURCE_ACCESS_AUDIT.md.
+- scope: lisensi dan atribusi, bukan nilai GHI; derived point values saja, tidak commit raster. Menggantikan status license not verified.
+
+### EV-P3-INA — InaRISK source capability handoff
+
+- claim: hazard candidates INDEKS_BAHAYA_KARHUTLA, INDEKS_BAHAYA_KEKERINGAN, layer_bahaya_kebakaran_hutan_dan_lahan, layer_bahaya_kekeringan; risk candidates layer_risiko_kebakaran_hutan_dan_lahan, layer_risiko_kekeringan.
+- source_url: https://inarisk.bnpb.go.id/ ; https://gis.bnpb.go.id/server/rest/services/inarisk
+- source_authority: A; verification_status: verified_primary; verification_method: external_manual_verification.
+- basis: instruksi pengguna Prompt 3 bagian E1; handoff_received_at 2026-09-14; source_accessed_at NULL.
+- scope: kapabilitas sumber. Belum ada nilai karhutla/kekeringan, tahun dataset, atau kelas per-site. Prioritas hazard; risk hanya fallback terdokumentasi dan seri terpisah.
+
+### EV-P3-ACCESS — akses agent terbatas pada metadata
+
+- verification_method: agent_verified untuk pembacaan direktori/metadata melalui web tool; access_date 2026-09-14.
+- claim: direktori layanan InaRISK dan metadata dua ImageServer INDEKS_BAHAYA terbaca; permintaan identify gagal. BPK mengembalikan 403; GSA FAQ tanpa teks terbaca.
+- exact URLs, parameter dan hasil: PROMPT_3_SOURCE_ACCESS_AUDIT.md.
+- scope: bukti akses metadata, tidak menaikkan status nilai solar/hazard; tidak menggantikan external_manual_verification pada license handoff.
+
+### EV-P3-FAC — validasi ulang fasilitas
+
+- claim: candidate pool EDU-001..007, HLT-001..003 = 10; semuanya official_exact. Total file 30 baris, termasuk 20 HF identity-only yang dikecualikan. NPSN unik, ID unik; provenance dan status per-field dipertahankan.
+- source: data/raw/external_manual/2026-09-12/; source_url persis per-record di CSV interim, registry A-30 dan profil Kemendikdasmen.
+- source_authority: A; verification_method: external_manual_verification untuk fakta sumber. Audit lokal adalah structural_validation, bukan membuka ulang sumber fasilitas.
+- health_coordinate_data_year: 2021; point_in_polygon: pending. facility_type_vstatus sekolah ditambahkan berdasarkan tipe/jenjang raw; summary verification_status hanya identity/district/coordinate, bukan seluruh field.
+
+### EV-P3-BEN — frozen canonical snapshot
+
+- claim: EDU-001=994@2026-09-10; EDU-002=778@2026-09-05; EDU-005=46@2026-08-30; EDU-006=330@2026-08-30. Enam canonical lain NULL.
+- source: beneficiary_observations.csv, IMPORT_LOG.md, BENEFICIARY_ACQUISITION_REPORT.md; URL persis pada empat observasi canonical.
+- source_authority: A untuk empat nilai; verification_status: verified_primary; verification_method: external_manual_verification. Pass ini hanya revalidasi lokal, tanpa pencarian student_count.
+- scope: 4/10 canonical available, 6/10 documented NULL; EDU-003=272 dan EDU-007=158 hanya secondary tanpa reference date. TEMPORAL_OR_VIEW_VARIANCE bukan TRUE_CONFLICT. Tidak ada proxy kecamatan.
+
+### EV-P3-PLTS — historical asset records
+
+- claim: Sumber Agung, Sungai Kerawang, Muara Tiga (Batu Ampar) memiliki evidence historis penyerahan PLTS; asset_handover_date=2021-12-30; asset_manager=BUMDes yang disebut/direncanakan pada 2021.
+- source_url: https://kalbar.bpk.go.id/tiga-desa-terjauh-di-kubu-raya-terima-hibah-plts/
+- source_authority: A; verification_status: verified_primary; verification_method: external_manual_verification; data_year: 2021.
+- basis: EV-F + handoff pengguna Prompt 3 bagian F. EV-F sebelumnya menyebut tahun peristiwa 2021 dan publication_date 2021-12-30; tanggal peristiwa lengkap mengikuti handoff eksplisit, bukan inferensi tanggal terbit. original retrieved_at NULL; handoff_received_at 2026-09-14.
+- scope: 3 village records, **0 confirmed facility-to-asset supply links**. BUMDes bukan klaim current manager. capacity_kwp NULL (CF-001); commissioning_year NULL (CF-006); battery/current operation/current grid NULL. Tidak ada kapasitas 100/150/250 yang diterima.

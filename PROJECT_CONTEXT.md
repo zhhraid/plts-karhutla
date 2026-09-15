@@ -180,7 +180,7 @@ Pilot awal: **Kabupaten Kubu Raya**, Kalimantan Barat.
   - ±5 sekolah/fasilitas publik.
 - Prinsip: **lebih baik 10 lokasi dengan data kuat daripada 500 lokasi dengan data lemah.**
 
-Status saat ini: kandidat fasilitas dan dataset pilot **BELUM final** (lihat §18 Status Proyek).
+Status Prompt 3 (2026-09-14): candidate pool MVP dikunci menjadi **10 fasilitas** (EDU-001..007, HLT-001..003), semua official_exact. Nilai solar/hazard belum lengkap; lihat §21 dan research/PROMPT_4_READINESS.md. Komposisi ideal di atas bukan kuota wajib pilot ini.
 
 ---
 
@@ -444,7 +444,7 @@ Namun, **perubahan product direction yang material** (mis. mengubah problem stat
 
 Item-item berikut **belum final** — jangan berasumsi sudah ditentukan:
 
-- Kandidat fasilitas (daftar lokasi pilot);
+- Nilai solar/hazard kandidat (candidate pool telah dikunci pada Prompt 3);
 - Dataset pilot (nilai-nilai aktual per fasilitas);
 - Final weights (bobot AHP/scoring);
 - Formula Priority Score;
@@ -462,7 +462,7 @@ Daftar keputusan yang masih terbuka. Ketika sebuah keputusan dibuat secara resmi
 ### Open
 
 - [ ] Evidence untuk pemilihan Kubu Raya sebagai wilayah pilot (data karhutla/elektrifikasi/GHI yang menjustifikasi lokasi — lihat `docs/PROPOSAL_STRENGTHENING.md` §4).
-- [ ] Dataset kandidat pilot final (10–15 lokasi nyata beserta sumber data per field).
+- [ ] Kelengkapan solar/hazard per-site untuk pool 10 fasilitas yang dikunci; menunggu external package (Prompt 3).
 - [ ] Factual comparison dengan existing tools (Global Solar Atlas, InaRISK, dashboard PLTS umum, solar calculator) — verifikasi langsung terhadap fitur real tool tersebut, bukan hanya analisis konseptual (lihat `docs/PRODUCT_AUDIT.md` §4).
 - [ ] Final criteria — daftar akhir kriteria yang masuk ke Solar Suitability Score dan Resilience Need Score.
 - [ ] Normalization — metode normalisasi nilai kriteria yang heterogen (kuantitatif/kualitatif, satuan berbeda) sebelum digabung menjadi skor.
@@ -480,6 +480,8 @@ Daftar keputusan yang masih terbuka. Ketika sebuah keputusan dibuat secara resmi
 - [ ] Definisi kuantitatif "wildfire_risk" dan "drought_risk" (skala, sumber, metodologi — kemungkinan dari InaRISK atau sumber Tier 1 lain).
 
 ### Resolved
+
+- [x] **Pool dan kebijakan akuisisi MVP Prompt 3 (2026-09-14)** — 10 kandidat resmi, beneficiary frozen, GSA primary dengan CC BY 4.0 tanpa raster, InaRISK hazard prioritas, tiga PLTS sebagai konteks historis. Rujukan: instruksi pengguna Prompt 3, §21, research/PROMPT_3_FINAL_DATA_ACQUISITION_REPORT.md. Kelengkapan nilai dan metodologi tetap open.
 
 - [x] **Primary user** — perencana daerah/analis pemerintah (persona: Bappeda/bidang energi pemda/unit perencanaan infrastruktur), dengan secondary user (pemerintah desa/BUMDes, pengelola fasilitas publik) dan supporting/evaluator user (peneliti, evaluator, juri kompetisi). Lihat §5. *(Amandemen PROMPT 1.5 — instansi yang disebut adalah target persona, bukan existing partner.)*
 - [x] **Partnership status** — SURYA-SIAGA adalah prototype independen berbasis data publik pada tahap kompetisi; tidak ada klaim kerja sama/endorsement/validasi institusional/implementasi resmi dengan pihak mana pun kecuali bukti nyata diberikan kemudian. Lihat §5.4. *(Amandemen PROMPT 1.5.)*
@@ -500,3 +502,17 @@ Daftar keputusan yang masih terbuka. Ketika sebuah keputusan dibuat secara resmi
 ---
 
 *Dokumen ini adalah living document. Setiap perubahan pada positioning, model data, metode scoring, atau status proyek WAJIB direfleksikan di sini sebelum agent lain melanjutkan pekerjaan.*
+
+## 21. Keputusan resmi Prompt 3 — 2026-09-14
+
+Instruksi pengguna Prompt 3 mengunci pool EDU-001..007 dan HLT-001..003. Semua official_exact; 20 HF identity-only tetap audit, tanpa merge/scoring. Facility gate PASS. Koordinat HLT bersumber 2021; point-in-polygon pending.
+
+Beneficiary PASS WITH DOCUMENTED LIMITATION dan FROZEN FOR MVP: EDU-001=994@2026-09-10, EDU-002=778@2026-09-05, EDU-005=46@2026-08-30, EDU-006=330@2026-08-30. Enam canonical lain NULL. Secondary bukan canonical; tidak memakai district population proxy. NULL bukan nol atau hukuman criticality kesehatan.
+
+GSA primary solar spatial screening; CC BY 4.0 verified via external_manual_verification. Atribusi Global Solar Atlas 2.0 / World Bank Group / ESMAP / Solargis wajib. Tidak commit raster. NASA POWER supporting time-series / rough cross-check saja.
+
+InaRISK hazard karhutla/kekeringan prioritas akuisisi; risk hanya fallback berlabel terpisah. IRBI kabupaten dan hotspot harian bukan discriminator site. Ini kebijakan akuisisi; kriteria/bobot/metode scoring final belum diputuskan.
+
+Konteks PLTS diperluas menjadi Sumber Agung, Sungai Kerawang, Muara Tiga, Batu Ampar: historical existence dan serah terima 2021-12-30 (EV-F + handoff Prompt 3); BUMDes disebut/direncanakan 2021. Angka tentatif §11 tidak masuk canonical: capacity_kwp/commissioning_year/battery/current operation/current grid NULL; CF-001/CF-006 unresolved. Tidak ada hubungan suplai ke kandidat terverifikasi.
+
+Status akhir **READY_WITH_LIMITATIONS**, alasan **WAITING_FOR_EXTERNAL_SOLAR_HAZARD_PACKAGE**. Prompt 4 boleh merancang metodologi dengan caveat; belum siap scoring/ranking berbasis nilai lengkap. Tidak ada normalisasi, AHP, MCDA final, Priority Score, Data Confidence atau coding aplikasi pada Prompt 3. Laporan: research/PROMPT_3_FINAL_DATA_ACQUISITION_REPORT.md.

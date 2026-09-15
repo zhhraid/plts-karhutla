@@ -1,0 +1,56 @@
+{
+  "audit": "PROMPT_3_COMPLETE_DATA_ACQUISITION_AND_READINESS",
+  "acquisition_snapshot_date": "2026-09-14",
+  "validation_date": "2026-09-15",
+  "status": "PASS",
+  "issues": [],
+  "candidate_allowlist": [
+    "EDU-001", "EDU-002", "EDU-003", "EDU-004", "EDU-005",
+    "EDU-006", "EDU-007", "HLT-001", "HLT-002", "HLT-003"
+  ],
+  "counts": {
+    "facility_rows_total": 30,
+    "candidate_targets": 10,
+    "identity_only_audit_rows": 20,
+    "record_ids_unique_across_facility_files": 30,
+    "education_npsn_unique": 7,
+    "coordinate_valid_official_exact": 10,
+    "beneficiary_observations_total": 14,
+    "beneficiary_canonical_rows": 10,
+    "beneficiary_canonical_available": 4,
+    "beneficiary_canonical_null_documented": 6,
+    "beneficiary_secondary_rows": 2,
+    "beneficiary_cross_check_rows": 2,
+    "solar_rows": 10,
+    "solar_value_coverage": 0,
+    "karhutla_rows": 10,
+    "karhutla_value_coverage": 0,
+    "kekeringan_rows": 10,
+    "kekeringan_value_coverage": 0,
+    "historical_energy_asset_rows": 3,
+    "confirmed_facility_to_asset_links": 0,
+    "quality_matrix_rows": 10
+  },
+  "checks": {
+    "facility_required_fields_present_for_all_targets": true,
+    "coordinates_numeric_and_world_range_valid": true,
+    "coordinate_source_present_for_all_targets": true,
+    "field_level_verification_status_present": true,
+    "identity_only_rows_excluded_from_candidate_pool": true,
+    "canonical_beneficiary_snapshot_matches_frozen_policy": true,
+    "beneficiary_nulls_are_not_zero": true,
+    "district_population_proxy_used": false,
+    "solar_placeholders_are_null_with_reason": true,
+    "hazard_placeholders_are_null_with_reason": true,
+    "hazard_and_risk_merged": false,
+    "energy_asset_unverified_fields_remain_null": true,
+    "global_solar_atlas_raster_stored": false,
+    "scoring_or_normalization_performed": false
+  },
+  "readiness": {
+    "status": "READY_WITH_LIMITATIONS",
+    "reason": "WAITING_FOR_EXTERNAL_SOLAR_HAZARD_PACKAGE",
+    "sites_meeting_full_seven_group_threshold": 0,
+    "minimum_sites_required_for_ready_for_prompt_4": 8
+  }
+}

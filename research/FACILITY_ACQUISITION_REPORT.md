@@ -152,3 +152,9 @@ Prompt 3B **tidak dijalankan otomatis** pada task ini.
 4. **20 record `missing`** tidak boleh masuk ekstraksi spasial apa pun.
 5. **4 kecamatan belum tercakup** — komposisi kandidat final belum ditentukan, dan kuota kategori tetap tidak dipaksakan.
 6. **`electricity_source` tidak boleh menjadi input skoring** tanpa keputusan metodologi eksplisit.
+
+## Revalidasi Prompt 3 — 2026-09-14
+
+**PASS**: 10 target official_exact; 30 record_id unik lintas file, 7 NPSN unik, 10 nama/district/koordinat/source URL/provenance wajib terisi dan sesuai raw. Status per-field tidak hilang. Penambahan verification_status/method hanya ringkasan identity/district/coordinate; facility_type_vstatus sekolah mengikuti tipe dan jenjang raw. 20 HF dipertahankan, tiga pasangan duplikat tidak di-merge atau dihitung.
+
+Health coordinate_source_data_year tetap 2021; point-in-polygon pending. Rentang/bounding box bukan validasi batas administratif. Candidate pool MVP kini **dikunci pengguna menjadi 10 target**; status komposisi belum final pada bagian lama digantikan keputusan ini. Hasil pemeriksaan: PROMPT_3_VALIDATION.json; keputusan berikutnya: PROMPT_4_READINESS.md. Tidak ada scoring.
