@@ -17,6 +17,8 @@ import type {
   ScoreBreakdown,
   ScoreStatus,
   Site,
+  SourceLayer,
+  SourceReference,
   SiteDataset,
   ValueScope,
 } from "@/types";
@@ -64,6 +66,19 @@ interface RawSite {
   existing_asset_village: string;
   existing_asset_link_established: boolean;
   confidence_points: number;
+  sources: RawSource[];
+}
+
+interface RawSource {
+  layer: string;
+  label: string;
+  source_name: string;
+  source_url: string;
+  reference: string;
+  reference_year: string;
+  verification_status: string;
+  scope: string;
+  scoring_eligibility: string;
 }
 
 interface RawDataset {
@@ -200,6 +215,66 @@ function buildBreakdown(
   });
 }
 
+const SOURCE_LAYERS: readonly SourceLayer[] = [
+  "facility",
+  "coordinate",
+  "beneficiary",
+  "solar",
+  "karhutla",
+  "kekeringan",
+];
+
+/**
+ * Builds the provenance rows shown on a site page.
+ *
+ * Three badges, each from an explicit condition rather than a judgement call:
+ *
+ * - Historical: the source's stated reference year is earlier than the newest
+ *   data year this site has. It describes a past state, so a reader must not
+ *   take it as current. A source with no stated year is never guessed at.
+ * - Provisional proxy: the value does not describe this site — it is a
+ *   district or regency figure standing in for one, or is flagged provisional
+ *   by the pipeline.
+ * - Awaiting verification: the source layer itself says the value is not yet
+ *   verified.
+ */
+function buildSources(
+  rows: readonly RawSource[] | undefined,
+  latestDataYear: string | null,
+): readonly SourceReference[] {
+  if (rows === undefined) return [];
+  return rows.flatMap((row) => {
+    const layer = SOURCE_LAYERS.find((candidate) => candidate === row.layer);
+    if (layer === undefined) return [];
+
+    const year = emptyToNull(row.reference_year);
+    const status = row.verification_status ?? "";
+    const scope = readScope(row.scope);
+
+    return [
+      {
+        layer,
+        label: row.label,
+        sourceName: row.source_name,
+        sourceUrl: emptyToNull(row.source_url),
+        reference: emptyToNull(row.reference),
+        referenceYear: year,
+        verificationStatus: status,
+        scope,
+        scopeText: emptyToNull(row.scope),
+        isHistorical:
+          year !== null && latestDataYear !== null && year < latestDataYear,
+        isProvisionalProxy:
+          scope === "kecamatan_proxy" ||
+          scope === "kabupaten_context_only" ||
+          (row.scoring_eligibility ?? "").startsWith("provisional"),
+        awaitingVerification:
+          status.includes("requires") || status.startsWith("secondary_copy"),
+      },
+    ];
+  });
+}
+
 function toSite(raw: RawSite, baselineWeights: Record<string, number>): Site {
   const missingData = splitList(raw.missing_data).filter(
     (entry): entry is DecisionDimension =>
@@ -303,6 +378,7 @@ function toSite(raw: RawSite, baselineWeights: Record<string, number>): Site {
       existingAssetLinkEstablished: raw.existing_asset_link_established,
     },
 
+    sources: buildSources(raw.sources, emptyToNull(raw.latest_data_year)),
     sourceCount: raw.source_count,
     latestDataYear: emptyToNull(raw.latest_data_year),
   };

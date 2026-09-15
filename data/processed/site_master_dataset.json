@@ -50,7 +50,7 @@
       "top_positive_factors": "kecamatan berkelas bahaya karhutla Tinggi; jumlah peserta didik relatif besar (994)",
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor",
       "missing_data": "solar",
-      "source_count": 4,
+      "source_count": 6,
       "latest_data_year": "2026",
       "coordinate_quality": "official_exact",
       "coordinate_source_data_year": "",
@@ -60,7 +60,75 @@
       "existing_asset_linked": false,
       "existing_asset_village": "",
       "existing_asset_link_established": false,
-      "confidence_points": 5
+      "confidence_points": 5,
+      "sources": [
+        {
+          "layer": "facility",
+          "label": "Identitas fasilitas",
+          "source_name": "Kemendikdasmen - Referensi Data Pendidikan",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/30101104",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "verified_primary",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "coordinate",
+          "label": "Koordinat",
+          "source_name": "Kemendikdasmen - Referensi Data Pendidikan",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/30101104",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "official_exact",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "beneficiary",
+          "label": "Penerima manfaat",
+          "source_name": "Kemendikdasmen - Residu Data Induk Pendidikan (tabel wilayah)",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/residu/pesertadidik/wilayah/131310/3?jenjang=Dikmen",
+          "reference": "2026-09-10",
+          "reference_year": "2026",
+          "verification_status": "verified_primary",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "solar",
+          "label": "Iradiasi surya (GHI)",
+          "source_name": "Global Solar Atlas 2.0",
+          "source_url": "https://energydata.info/dataset/world-global-horizontal-irradiation-ghi-gis-data-global-solar-atlas",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "requires_point_extraction",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "karhutla",
+          "label": "Bahaya karhutla",
+          "source_name": "Wijaya, Akbar & Romiyanto (2024) - Tabel 10 Kelas Bahaya Bencana Karhutla",
+          "source_url": "https://journal.ummat.ac.id/index.php/geography/article/download/20988/pdf",
+          "reference": "Hasil pengolahan data 2023; published 2024",
+          "reference_year": "2023",
+          "verification_status": "verified_secondary",
+          "scope": "kecamatan (district-level structural proxy)",
+          "scoring_eligibility": "provisional_district_proxy"
+        },
+        {
+          "layer": "kekeringan",
+          "label": "Bahaya kekeringan",
+          "source_name": "Dokumen Kajian Risiko Bencana Kabupaten Kubu Raya 2026-2030 (secondary copy)",
+          "source_url": "https://id.scribd.com/document/965327954/Survey-IKM-Kab-Kubu-Raya-Tahun-2025-2029",
+          "reference": "2026-2030",
+          "reference_year": "2026",
+          "verification_status": "secondary_copy_requires_official_confirmation",
+          "scope": "Kabupaten Kubu Raya (regency context only)",
+          "scoring_eligibility": "context_only_not_site_scoring"
+        }
+      ]
     },
     {
       "record_id": "EDU-002",
@@ -93,7 +161,7 @@
       "top_positive_factors": "jumlah peserta didik relatif besar (778)",
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor",
       "missing_data": "solar",
-      "source_count": 4,
+      "source_count": 6,
       "latest_data_year": "2026",
       "coordinate_quality": "official_exact",
       "coordinate_source_data_year": "",
@@ -103,7 +171,75 @@
       "existing_asset_linked": false,
       "existing_asset_village": "",
       "existing_asset_link_established": false,
-      "confidence_points": 5
+      "confidence_points": 5,
+      "sources": [
+        {
+          "layer": "facility",
+          "label": "Identitas fasilitas",
+          "source_name": "Kemendikdasmen - Referensi Data Pendidikan",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/30101107",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "verified_primary",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "coordinate",
+          "label": "Koordinat",
+          "source_name": "Kemendikdasmen - Referensi Data Pendidikan",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/30101107",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "official_exact",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "beneficiary",
+          "label": "Penerima manfaat",
+          "source_name": "Kemendikdasmen - Residu Data Induk Pendidikan (tabel wilayah)",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/residu/pesertadidik/wilayah/131305/3",
+          "reference": "2026-09-05",
+          "reference_year": "2026",
+          "verification_status": "verified_primary",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "solar",
+          "label": "Iradiasi surya (GHI)",
+          "source_name": "Global Solar Atlas 2.0",
+          "source_url": "https://energydata.info/dataset/world-global-horizontal-irradiation-ghi-gis-data-global-solar-atlas",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "requires_point_extraction",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "karhutla",
+          "label": "Bahaya karhutla",
+          "source_name": "Wijaya, Akbar & Romiyanto (2024) - Tabel 10 Kelas Bahaya Bencana Karhutla",
+          "source_url": "https://journal.ummat.ac.id/index.php/geography/article/download/20988/pdf",
+          "reference": "Hasil pengolahan data 2023; published 2024",
+          "reference_year": "2023",
+          "verification_status": "verified_secondary",
+          "scope": "kecamatan (district-level structural proxy)",
+          "scoring_eligibility": "provisional_district_proxy"
+        },
+        {
+          "layer": "kekeringan",
+          "label": "Bahaya kekeringan",
+          "source_name": "Dokumen Kajian Risiko Bencana Kabupaten Kubu Raya 2026-2030 (secondary copy)",
+          "source_url": "https://id.scribd.com/document/965327954/Survey-IKM-Kab-Kubu-Raya-Tahun-2025-2029",
+          "reference": "2026-2030",
+          "reference_year": "2026",
+          "verification_status": "secondary_copy_requires_official_confirmation",
+          "scope": "Kabupaten Kubu Raya (regency context only)",
+          "scoring_eligibility": "context_only_not_site_scoring"
+        }
+      ]
     },
     {
       "record_id": "EDU-003",
@@ -136,7 +272,7 @@
       "top_positive_factors": "",
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor",
       "missing_data": "solar; social",
-      "source_count": 4,
+      "source_count": 6,
       "latest_data_year": "2023",
       "coordinate_quality": "official_exact",
       "coordinate_source_data_year": "",
@@ -146,7 +282,75 @@
       "existing_asset_linked": false,
       "existing_asset_village": "",
       "existing_asset_link_established": false,
-      "confidence_points": 4
+      "confidence_points": 4,
+      "sources": [
+        {
+          "layer": "facility",
+          "label": "Identitas fasilitas",
+          "source_name": "Kemendikdasmen - Referensi Data Pendidikan",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/30100908",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "verified_primary",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "coordinate",
+          "label": "Koordinat",
+          "source_name": "Kemendikdasmen - Referensi Data Pendidikan",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/30100908",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "official_exact",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "beneficiary",
+          "label": "Penerima manfaat",
+          "source_name": "Kemendikdasmen",
+          "source_url": "",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "requires_verification",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "solar",
+          "label": "Iradiasi surya (GHI)",
+          "source_name": "Global Solar Atlas 2.0",
+          "source_url": "https://energydata.info/dataset/world-global-horizontal-irradiation-ghi-gis-data-global-solar-atlas",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "requires_point_extraction",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "karhutla",
+          "label": "Bahaya karhutla",
+          "source_name": "Wijaya, Akbar & Romiyanto (2024) - Tabel 10 Kelas Bahaya Bencana Karhutla",
+          "source_url": "https://journal.ummat.ac.id/index.php/geography/article/download/20988/pdf",
+          "reference": "Hasil pengolahan data 2023; published 2024",
+          "reference_year": "2023",
+          "verification_status": "verified_secondary",
+          "scope": "kecamatan (district-level structural proxy)",
+          "scoring_eligibility": "provisional_district_proxy"
+        },
+        {
+          "layer": "kekeringan",
+          "label": "Bahaya kekeringan",
+          "source_name": "Dokumen Kajian Risiko Bencana Kabupaten Kubu Raya 2026-2030 (secondary copy)",
+          "source_url": "https://id.scribd.com/document/965327954/Survey-IKM-Kab-Kubu-Raya-Tahun-2025-2029",
+          "reference": "2026-2030",
+          "reference_year": "2026",
+          "verification_status": "secondary_copy_requires_official_confirmation",
+          "scope": "Kabupaten Kubu Raya (regency context only)",
+          "scoring_eligibility": "context_only_not_site_scoring"
+        }
+      ]
     },
     {
       "record_id": "EDU-004",
@@ -179,7 +383,7 @@
       "top_positive_factors": "",
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor",
       "missing_data": "solar; social",
-      "source_count": 4,
+      "source_count": 6,
       "latest_data_year": "2023",
       "coordinate_quality": "official_exact",
       "coordinate_source_data_year": "",
@@ -189,7 +393,75 @@
       "existing_asset_linked": false,
       "existing_asset_village": "",
       "existing_asset_link_established": false,
-      "confidence_points": 3
+      "confidence_points": 3,
+      "sources": [
+        {
+          "layer": "facility",
+          "label": "Identitas fasilitas",
+          "source_name": "Kemendikdasmen - Referensi Data Pendidikan",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/30101121",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "verified_primary",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "coordinate",
+          "label": "Koordinat",
+          "source_name": "Kemendikdasmen - Referensi Data Pendidikan",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/30101121",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "official_exact",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "beneficiary",
+          "label": "Penerima manfaat",
+          "source_name": "Kemendikdasmen",
+          "source_url": "",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "requires_verification",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "solar",
+          "label": "Iradiasi surya (GHI)",
+          "source_name": "Global Solar Atlas 2.0",
+          "source_url": "https://energydata.info/dataset/world-global-horizontal-irradiation-ghi-gis-data-global-solar-atlas",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "requires_point_extraction",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "karhutla",
+          "label": "Bahaya karhutla",
+          "source_name": "Wijaya, Akbar & Romiyanto (2024) - Tabel 10 Kelas Bahaya Bencana Karhutla",
+          "source_url": "https://journal.ummat.ac.id/index.php/geography/article/download/20988/pdf",
+          "reference": "Hasil pengolahan data 2023; published 2024",
+          "reference_year": "2023",
+          "verification_status": "verified_secondary",
+          "scope": "kecamatan (district-level structural proxy)",
+          "scoring_eligibility": "provisional_district_proxy"
+        },
+        {
+          "layer": "kekeringan",
+          "label": "Bahaya kekeringan",
+          "source_name": "Dokumen Kajian Risiko Bencana Kabupaten Kubu Raya 2026-2030 (secondary copy)",
+          "source_url": "https://id.scribd.com/document/965327954/Survey-IKM-Kab-Kubu-Raya-Tahun-2025-2029",
+          "reference": "2026-2030",
+          "reference_year": "2026",
+          "verification_status": "secondary_copy_requires_official_confirmation",
+          "scope": "Kabupaten Kubu Raya (regency context only)",
+          "scoring_eligibility": "context_only_not_site_scoring"
+        }
+      ]
     },
     {
       "record_id": "EDU-005",
@@ -222,7 +494,7 @@
       "top_positive_factors": "",
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor",
       "missing_data": "solar",
-      "source_count": 4,
+      "source_count": 6,
       "latest_data_year": "2026",
       "coordinate_quality": "official_exact",
       "coordinate_source_data_year": "",
@@ -232,7 +504,75 @@
       "existing_asset_linked": false,
       "existing_asset_village": "",
       "existing_asset_link_established": false,
-      "confidence_points": 6
+      "confidence_points": 6,
+      "sources": [
+        {
+          "layer": "facility",
+          "label": "Identitas fasilitas",
+          "source_name": "Kemendikdasmen - Referensi Data Pendidikan",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/30108035",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "verified_primary",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "coordinate",
+          "label": "Koordinat",
+          "source_name": "Kemendikdasmen - Referensi Data Pendidikan",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/30108035",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "official_exact",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "beneficiary",
+          "label": "Penerima manfaat",
+          "source_name": "Kemendikdasmen - Residu Data Induk Pendidikan (tabel wilayah)",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/residu/pesertadidik/wilayah/131311/3?jenjang=Dikdas",
+          "reference": "2026-08-30",
+          "reference_year": "2026",
+          "verification_status": "verified_primary",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "solar",
+          "label": "Iradiasi surya (GHI)",
+          "source_name": "Global Solar Atlas 2.0",
+          "source_url": "https://energydata.info/dataset/world-global-horizontal-irradiation-ghi-gis-data-global-solar-atlas",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "requires_point_extraction",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "karhutla",
+          "label": "Bahaya karhutla",
+          "source_name": "Wijaya, Akbar & Romiyanto (2024) - Tabel 10 Kelas Bahaya Bencana Karhutla",
+          "source_url": "https://journal.ummat.ac.id/index.php/geography/article/download/20988/pdf",
+          "reference": "Hasil pengolahan data 2023; published 2024",
+          "reference_year": "2023",
+          "verification_status": "verified_secondary",
+          "scope": "kecamatan (district-level structural proxy)",
+          "scoring_eligibility": "provisional_district_proxy"
+        },
+        {
+          "layer": "kekeringan",
+          "label": "Bahaya kekeringan",
+          "source_name": "Dokumen Kajian Risiko Bencana Kabupaten Kubu Raya 2026-2030 (secondary copy)",
+          "source_url": "https://id.scribd.com/document/965327954/Survey-IKM-Kab-Kubu-Raya-Tahun-2025-2029",
+          "reference": "2026-2030",
+          "reference_year": "2026",
+          "verification_status": "secondary_copy_requires_official_confirmation",
+          "scope": "Kabupaten Kubu Raya (regency context only)",
+          "scoring_eligibility": "context_only_not_site_scoring"
+        }
+      ]
     },
     {
       "record_id": "EDU-006",
@@ -265,7 +605,7 @@
       "top_positive_factors": "jumlah peserta didik relatif besar (330)",
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor",
       "missing_data": "solar",
-      "source_count": 4,
+      "source_count": 6,
       "latest_data_year": "2026",
       "coordinate_quality": "official_exact",
       "coordinate_source_data_year": "",
@@ -275,7 +615,75 @@
       "existing_asset_linked": false,
       "existing_asset_village": "",
       "existing_asset_link_established": false,
-      "confidence_points": 5
+      "confidence_points": 5,
+      "sources": [
+        {
+          "layer": "facility",
+          "label": "Identitas fasilitas",
+          "source_name": "Kemendikdasmen - Referensi Data Pendidikan",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/30101619",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "verified_primary",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "coordinate",
+          "label": "Koordinat",
+          "source_name": "Kemendikdasmen - Referensi Data Pendidikan",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/30101619",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "official_exact",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "beneficiary",
+          "label": "Penerima manfaat",
+          "source_name": "Kemendikdasmen - Residu Data Induk Pendidikan (tabel wilayah)",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/residu/pesertadidik/wilayah/131311/3?jenjang=Dikdas",
+          "reference": "2026-08-30",
+          "reference_year": "2026",
+          "verification_status": "verified_primary",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "solar",
+          "label": "Iradiasi surya (GHI)",
+          "source_name": "Global Solar Atlas 2.0",
+          "source_url": "https://energydata.info/dataset/world-global-horizontal-irradiation-ghi-gis-data-global-solar-atlas",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "requires_point_extraction",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "karhutla",
+          "label": "Bahaya karhutla",
+          "source_name": "Wijaya, Akbar & Romiyanto (2024) - Tabel 10 Kelas Bahaya Bencana Karhutla",
+          "source_url": "https://journal.ummat.ac.id/index.php/geography/article/download/20988/pdf",
+          "reference": "Hasil pengolahan data 2023; published 2024",
+          "reference_year": "2023",
+          "verification_status": "verified_secondary",
+          "scope": "kecamatan (district-level structural proxy)",
+          "scoring_eligibility": "provisional_district_proxy"
+        },
+        {
+          "layer": "kekeringan",
+          "label": "Bahaya kekeringan",
+          "source_name": "Dokumen Kajian Risiko Bencana Kabupaten Kubu Raya 2026-2030 (secondary copy)",
+          "source_url": "https://id.scribd.com/document/965327954/Survey-IKM-Kab-Kubu-Raya-Tahun-2025-2029",
+          "reference": "2026-2030",
+          "reference_year": "2026",
+          "verification_status": "secondary_copy_requires_official_confirmation",
+          "scope": "Kabupaten Kubu Raya (regency context only)",
+          "scoring_eligibility": "context_only_not_site_scoring"
+        }
+      ]
     },
     {
       "record_id": "EDU-007",
@@ -308,7 +716,7 @@
       "top_positive_factors": "",
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor",
       "missing_data": "solar; social",
-      "source_count": 4,
+      "source_count": 6,
       "latest_data_year": "2023",
       "coordinate_quality": "official_exact",
       "coordinate_source_data_year": "",
@@ -318,7 +726,75 @@
       "existing_asset_linked": false,
       "existing_asset_village": "",
       "existing_asset_link_established": false,
-      "confidence_points": 4
+      "confidence_points": 4,
+      "sources": [
+        {
+          "layer": "facility",
+          "label": "Identitas fasilitas",
+          "source_name": "Kemendikdasmen - Referensi Data Pendidikan",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/30109720",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "verified_primary",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "coordinate",
+          "label": "Koordinat",
+          "source_name": "Kemendikdasmen - Referensi Data Pendidikan",
+          "source_url": "https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/30109720",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "official_exact",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "beneficiary",
+          "label": "Penerima manfaat",
+          "source_name": "Kemendikdasmen",
+          "source_url": "",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "requires_verification",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "solar",
+          "label": "Iradiasi surya (GHI)",
+          "source_name": "Global Solar Atlas 2.0",
+          "source_url": "https://energydata.info/dataset/world-global-horizontal-irradiation-ghi-gis-data-global-solar-atlas",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "requires_point_extraction",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "karhutla",
+          "label": "Bahaya karhutla",
+          "source_name": "Wijaya, Akbar & Romiyanto (2024) - Tabel 10 Kelas Bahaya Bencana Karhutla",
+          "source_url": "https://journal.ummat.ac.id/index.php/geography/article/download/20988/pdf",
+          "reference": "Hasil pengolahan data 2023; published 2024",
+          "reference_year": "2023",
+          "verification_status": "verified_secondary",
+          "scope": "kecamatan (district-level structural proxy)",
+          "scoring_eligibility": "provisional_district_proxy"
+        },
+        {
+          "layer": "kekeringan",
+          "label": "Bahaya kekeringan",
+          "source_name": "Dokumen Kajian Risiko Bencana Kabupaten Kubu Raya 2026-2030 (secondary copy)",
+          "source_url": "https://id.scribd.com/document/965327954/Survey-IKM-Kab-Kubu-Raya-Tahun-2025-2029",
+          "reference": "2026-2030",
+          "reference_year": "2026",
+          "verification_status": "secondary_copy_requires_official_confirmation",
+          "scope": "Kabupaten Kubu Raya (regency context only)",
+          "scoring_eligibility": "context_only_not_site_scoring"
+        }
+      ]
     },
     {
       "record_id": "HLT-001",
@@ -351,7 +827,7 @@
       "top_positive_factors": "fasilitas layanan kesehatan dengan criticality baseline tertinggi",
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor; koordinat berasal dari dataset 2021",
       "missing_data": "solar; social",
-      "source_count": 4,
+      "source_count": 5,
       "latest_data_year": "2023",
       "coordinate_quality": "official_exact",
       "coordinate_source_data_year": "2021",
@@ -361,7 +837,64 @@
       "existing_asset_linked": false,
       "existing_asset_village": "",
       "existing_asset_link_established": false,
-      "confidence_points": 3
+      "confidence_points": 3,
+      "sources": [
+        {
+          "layer": "facility",
+          "label": "Identitas fasilitas",
+          "source_name": "Portal Resmi UPTD Puskesmas Padang Tikar",
+          "source_url": "https://pkm-padangtikar.kuburayakab.go.id/",
+          "reference": "2021",
+          "reference_year": "2021",
+          "verification_status": "verified_primary",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "coordinate",
+          "label": "Koordinat",
+          "source_name": "Dinas Kesehatan Kabupaten Kubu Raya",
+          "source_url": "https://satudata.kuburayakab.go.id/dataset/d9e46c4e-3b72-4ced-8b0d-54936f5b823d/resource/1143815d-f777-4a6a-b41b-a3f5f1ea14fb/download/kondisi-bangunan-dan-fasilitas-puskesmas.pdf",
+          "reference": "2021",
+          "reference_year": "2021",
+          "verification_status": "official_exact",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "solar",
+          "label": "Iradiasi surya (GHI)",
+          "source_name": "Global Solar Atlas 2.0",
+          "source_url": "https://energydata.info/dataset/world-global-horizontal-irradiation-ghi-gis-data-global-solar-atlas",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "requires_point_extraction",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "karhutla",
+          "label": "Bahaya karhutla",
+          "source_name": "Wijaya, Akbar & Romiyanto (2024) - Tabel 10 Kelas Bahaya Bencana Karhutla",
+          "source_url": "https://journal.ummat.ac.id/index.php/geography/article/download/20988/pdf",
+          "reference": "Hasil pengolahan data 2023; published 2024",
+          "reference_year": "2023",
+          "verification_status": "verified_secondary",
+          "scope": "kecamatan (district-level structural proxy)",
+          "scoring_eligibility": "provisional_district_proxy"
+        },
+        {
+          "layer": "kekeringan",
+          "label": "Bahaya kekeringan",
+          "source_name": "Dokumen Kajian Risiko Bencana Kabupaten Kubu Raya 2026-2030 (secondary copy)",
+          "source_url": "https://id.scribd.com/document/965327954/Survey-IKM-Kab-Kubu-Raya-Tahun-2025-2029",
+          "reference": "2026-2030",
+          "reference_year": "2026",
+          "verification_status": "secondary_copy_requires_official_confirmation",
+          "scope": "Kabupaten Kubu Raya (regency context only)",
+          "scoring_eligibility": "context_only_not_site_scoring"
+        }
+      ]
     },
     {
       "record_id": "HLT-002",
@@ -404,7 +937,64 @@
       "existing_asset_linked": true,
       "existing_asset_village": "Sungai Kerawang",
       "existing_asset_link_established": false,
-      "confidence_points": 3
+      "confidence_points": 3,
+      "sources": [
+        {
+          "layer": "facility",
+          "label": "Identitas fasilitas",
+          "source_name": "Portal Resmi UPTD Puskesmas Sungai Kerawang",
+          "source_url": "https://pkm-sungaikerawang.kuburayakab.go.id/",
+          "reference": "2021",
+          "reference_year": "2021",
+          "verification_status": "verified_primary",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "coordinate",
+          "label": "Koordinat",
+          "source_name": "Dinas Kesehatan Kabupaten Kubu Raya",
+          "source_url": "https://satudata.kuburayakab.go.id/dataset/d9e46c4e-3b72-4ced-8b0d-54936f5b823d/resource/1143815d-f777-4a6a-b41b-a3f5f1ea14fb/download/kondisi-bangunan-dan-fasilitas-puskesmas.pdf",
+          "reference": "2021",
+          "reference_year": "2021",
+          "verification_status": "official_exact",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "solar",
+          "label": "Iradiasi surya (GHI)",
+          "source_name": "Global Solar Atlas 2.0",
+          "source_url": "https://energydata.info/dataset/world-global-horizontal-irradiation-ghi-gis-data-global-solar-atlas",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "requires_point_extraction",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "karhutla",
+          "label": "Bahaya karhutla",
+          "source_name": "Wijaya, Akbar & Romiyanto (2024) - Tabel 10 Kelas Bahaya Bencana Karhutla",
+          "source_url": "https://journal.ummat.ac.id/index.php/geography/article/download/20988/pdf",
+          "reference": "Hasil pengolahan data 2023; published 2024",
+          "reference_year": "2023",
+          "verification_status": "verified_secondary",
+          "scope": "kecamatan (district-level structural proxy)",
+          "scoring_eligibility": "provisional_district_proxy"
+        },
+        {
+          "layer": "kekeringan",
+          "label": "Bahaya kekeringan",
+          "source_name": "Dokumen Kajian Risiko Bencana Kabupaten Kubu Raya 2026-2030 (secondary copy)",
+          "source_url": "https://id.scribd.com/document/965327954/Survey-IKM-Kab-Kubu-Raya-Tahun-2025-2029",
+          "reference": "2026-2030",
+          "reference_year": "2026",
+          "verification_status": "secondary_copy_requires_official_confirmation",
+          "scope": "Kabupaten Kubu Raya (regency context only)",
+          "scoring_eligibility": "context_only_not_site_scoring"
+        }
+      ]
     },
     {
       "record_id": "HLT-003",
@@ -437,7 +1027,7 @@
       "top_positive_factors": "fasilitas layanan kesehatan dengan criticality baseline tertinggi",
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor; koordinat berasal dari dataset 2021",
       "missing_data": "solar; social",
-      "source_count": 4,
+      "source_count": 5,
       "latest_data_year": "2023",
       "coordinate_quality": "official_exact",
       "coordinate_source_data_year": "2021",
@@ -447,7 +1037,64 @@
       "existing_asset_linked": false,
       "existing_asset_village": "",
       "existing_asset_link_established": false,
-      "confidence_points": 3
+      "confidence_points": 3,
+      "sources": [
+        {
+          "layer": "facility",
+          "label": "Identitas fasilitas",
+          "source_name": "Portal Resmi UPTD Puskesmas Kubu",
+          "source_url": "https://pkm-kubu.kuburayakab.go.id/",
+          "reference": "2021",
+          "reference_year": "2021",
+          "verification_status": "verified_primary",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "coordinate",
+          "label": "Koordinat",
+          "source_name": "Dinas Kesehatan Kabupaten Kubu Raya",
+          "source_url": "https://satudata.kuburayakab.go.id/dataset/d9e46c4e-3b72-4ced-8b0d-54936f5b823d/resource/1143815d-f777-4a6a-b41b-a3f5f1ea14fb/download/kondisi-bangunan-dan-fasilitas-puskesmas.pdf",
+          "reference": "2021",
+          "reference_year": "2021",
+          "verification_status": "official_exact",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "solar",
+          "label": "Iradiasi surya (GHI)",
+          "source_name": "Global Solar Atlas 2.0",
+          "source_url": "https://energydata.info/dataset/world-global-horizontal-irradiation-ghi-gis-data-global-solar-atlas",
+          "reference": "",
+          "reference_year": "",
+          "verification_status": "requires_point_extraction",
+          "scope": "site_point",
+          "scoring_eligibility": ""
+        },
+        {
+          "layer": "karhutla",
+          "label": "Bahaya karhutla",
+          "source_name": "Wijaya, Akbar & Romiyanto (2024) - Tabel 10 Kelas Bahaya Bencana Karhutla",
+          "source_url": "https://journal.ummat.ac.id/index.php/geography/article/download/20988/pdf",
+          "reference": "Hasil pengolahan data 2023; published 2024",
+          "reference_year": "2023",
+          "verification_status": "verified_secondary",
+          "scope": "kecamatan (district-level structural proxy)",
+          "scoring_eligibility": "provisional_district_proxy"
+        },
+        {
+          "layer": "kekeringan",
+          "label": "Bahaya kekeringan",
+          "source_name": "Dokumen Kajian Risiko Bencana Kabupaten Kubu Raya 2026-2030 (secondary copy)",
+          "source_url": "https://id.scribd.com/document/965327954/Survey-IKM-Kab-Kubu-Raya-Tahun-2025-2029",
+          "reference": "2026-2030",
+          "reference_year": "2026",
+          "verification_status": "secondary_copy_requires_official_confirmation",
+          "scope": "Kabupaten Kubu Raya (regency context only)",
+          "scoring_eligibility": "context_only_not_site_scoring"
+        }
+      ]
     }
   ]
 }

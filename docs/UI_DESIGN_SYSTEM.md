@@ -117,6 +117,31 @@ terlihat berbeda dari ketidaktahuan.
 
 ---
 
+## 6.1 Encoding peta — warna bukan satu-satunya pembawa makna
+
+Penanda peta memakai **dua kanal visual yang saling bebas**:
+
+| Kanal | Membawa | Nilai |
+|---|---|---|
+| Bentuk penanda | Tipe fasilitas | bulat = Sekolah · kotak = Puskesmas |
+| Simbol di dalam penanda | Pita prioritas | ▲ Tinggi · ● Menengah · ▬ Rendah · ? Belum dapat diperingkat |
+| Warna | penguat, bukan pembawa | mengikuti token `priority` |
+
+Peta tetap terbaca benar tanpa membedakan warna sama sekali. Setiap penanda
+juga merupakan `<button>` sungguhan dengan `aria-label` yang menyebutkan nama
+fasilitas, tipe, dan pita prioritas dalam kata — peta yang satu-satunya cara
+pakainya adalah klik tetikus pada titik berwarna tidak dapat digunakan oleh
+sebagian audiens.
+
+## 6.2 Komponen tahap UI (Prompt 7)
+
+| Komponen | Berkas | Peran |
+|---|---|---|
+| `StatCard` | `components/ui/StatCard.tsx` | satu angka utama; `value` bertipe string sehingga komponen ini tidak pernah memformat angka dan tidak dapat mengubah nilai hilang menjadi 0 |
+| `DistributionBar` | `components/ui/DistributionBar.tsx` | distribusi hitungan; setiap baris menuliskan angkanya sendiri, bar bukan satu-satunya cara membacanya |
+| `EmptyState` | `components/ui/EmptyState.tsx` | selalu menyebut sebab kosong dan apa yang mengubahnya |
+| `StatusBadges` | `components/ui/StatusBadges.tsx` | chip prioritas, keyakinan, status skor, rekomendasi, tipe fasilitas |
+
 ## 7. Layout dan responsivitas
 
 - Lebar konten maksimum `max-w-6xl`, padding sisi `px-4` pada seluruh lebar
@@ -125,3 +150,11 @@ terlihat berbeda dari ketidaktahuan.
 - Breakpoint tambahan `xs: 480px` tersedia di konfigurasi Tailwind.
 - Body memakai `flex min-h-screen flex-col` sehingga footer selalu berada di
   bawah, termasuk pada halaman berkonten pendek.
+
+Diverifikasi pada 390px (ponsel), 834px (tablet), dan 1440px (desktop):
+`scrollWidth - clientWidth = 0` pada seluruh halaman, tanpa error JavaScript.
+Tangkapan layar di `docs/screenshots/`.
+
+Kartu popup peta berlabuh ke bawah pada layar sempit dan ke kanan-atas pada
+layar lebar. Balon yang ditambatkan ke titik akan menutupi peta atau jatuh ke
+luar layar pada ponsel; kartu berlabuh tidak.

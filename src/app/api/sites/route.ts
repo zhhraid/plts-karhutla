@@ -22,8 +22,12 @@ import type {
  * An unrecognised filter value is rejected with 400 rather than silently
  * ignored: quietly dropping a filter returns a larger set than the caller
  * asked for, which they would have no way to detect.
+ *
+ * Rendered per request, not prerendered: a statically generated route is built
+ * once with no query string, so every filter here would be read as absent and
+ * the endpoint would answer every request with the unfiltered set.
  */
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 const FACILITY_TYPES: readonly FacilityType[] = ["Sekolah", "Puskesmas"];
 const PRIORITY_BANDS: readonly PriorityBand[] = [

@@ -83,6 +83,11 @@ def load_sites():
                 "coordinate_quality": r["coordinate_quality"],
                 "coordinate_source_data_year": r.get("coordinate_source_data_year", ""),
                 "electricity_source": r.get("electricity_source", ""),
+                "coordinate_source_name": r.get("coordinate_source_name", ""),
+                "coordinate_source_url": r.get("coordinate_source_url", ""),
+                "identity_source_name": r.get("source_name", ""),
+                "identity_source_url": r.get("source_url", ""),
+                "identity_verification_status": r.get("verification_status", ""),
             }
     return sites
 
@@ -151,6 +156,31 @@ def confidence(site, ben_obs, missing, karhutla_scope):
     return cat, pts, "; ".join(reasons)
 
 
+def source_row(layer, label, rec, name_key, url_key, ref_key, vstatus_key, scope, eligibility=""):
+    """One traceability row, copied verbatim from an interim observation.
+
+    Never fabricates a source: a layer with no interim record, or one with no
+    stated source name, yields no row at all rather than a row with blank
+    provenance that would read as though a source existed.
+    """
+    if not rec:
+        return None
+    name = (rec.get(name_key) or "").strip()
+    if not name:
+        return None
+    return {
+        "layer": layer,
+        "label": label,
+        "source_name": name,
+        "source_url": (rec.get(url_key) or "").strip(),
+        "reference": (rec.get(ref_key) or "").strip(),
+        "reference_year": first_year(rec.get(ref_key, "")),
+        "verification_status": (rec.get(vstatus_key) or "").strip(),
+        "scope": scope,
+        "scoring_eligibility": eligibility,
+    }
+
+
 def build():
     sites = load_sites()
 
@@ -177,6 +207,7 @@ def build():
     soc = social_scores(ben_canon)
     out = []
     for rid, s in sorted(sites.items()):
+        s_src = dict(s, identity_source_year=s["coordinate_source_data_year"])
         kar = haz.get(rid, {}).get("karhutla", {})
         drt = haz.get(rid, {}).get("kekeringan", {})
         ghi = num(solar.get(rid, {}).get("ghi_value", ""))
@@ -245,6 +276,25 @@ def build():
                              first_year((ben_raw.get(rid) or {}).get("data_reference_date", "")),
                              first_year(s["coordinate_source_data_year"])] if y]
 
+        sources = [row for row in [
+            source_row("facility", "Identitas fasilitas", s_src, "identity_source_name",
+                       "identity_source_url", "identity_source_year",
+                       "identity_verification_status", "site_point"),
+            source_row("coordinate", "Koordinat", s_src, "coordinate_source_name",
+                       "coordinate_source_url", "coordinate_source_data_year",
+                       "coordinate_quality", "site_point"),
+            source_row("beneficiary", "Penerima manfaat", ben_raw.get(rid), "source_name",
+                       "source_url", "data_reference_date", "verification_status", "site_point"),
+            source_row("solar", "Iradiasi surya (GHI)", solar.get(rid), "source_name",
+                       "source_url", "dataset_year", "verification_status", "site_point"),
+            source_row("karhutla", "Bahaya karhutla", kar, "source_name", "source_url",
+                       "dataset_year", "verification_status", kar.get("value_scope", ""),
+                       kar.get("scoring_eligibility", "")),
+            source_row("kekeringan", "Bahaya kekeringan", drt, "source_name", "source_url",
+                       "dataset_year", "verification_status", drt.get("value_scope", ""),
+                       drt.get("scoring_eligibility", "")),
+        ] if row]
+
         out.append({
             "record_id": rid, "facility_name": s["facility_name"], "facility_type": s["facility_type"],
             "district": s["district"], "latitude": s["latitude"], "longitude": s["longitude"],
@@ -265,7 +315,9 @@ def build():
             "recommendation_type": rec, "recommendation_reason": rec_reason,
             "top_positive_factors": "; ".join(pos), "limitations": "; ".join(lim),
             "missing_data": "; ".join(missing),
-            "source_count": sum(1 for x in [ben_raw.get(rid), kar, drt, solar.get(rid), asset] if x),
+            # Counts the rows actually published in "sources", so the summary
+            # figure on a site page can never disagree with the list beside it.
+            "source_count": len(sources),
             "latest_data_year": max(years) if years else "",
             # --- confidence inputs, surfaced verbatim -------------------------
             # Emitted so the TypeScript engine can recompute confidence from the
@@ -280,6 +332,7 @@ def build():
             "existing_asset_village": (asset or {}).get("village", ""),
             "existing_asset_link_established": bool(asset) and link_established,
             "confidence_points": conf_pts,
+            "sources": sources,
         })
     return out
 

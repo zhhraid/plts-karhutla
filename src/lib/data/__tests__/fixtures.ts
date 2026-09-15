@@ -63,6 +63,7 @@ export function makeSite(overrides: Partial<Site> = {}): Site {
       existingAssetVillage: null,
       existingAssetLinkEstablished: false,
     },
+    sources: [],
     sourceCount: 4,
     latestDataYear: "2023",
   };

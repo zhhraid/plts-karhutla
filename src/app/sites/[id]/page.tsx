@@ -1,25 +1,26 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { ArrowLeft, MapPin } from "lucide-react";
 
-import { PageHeader } from "@/components/layout/PageHeader";
-import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
-import { MissingValue } from "@/components/ui/MissingValue";
-import { Placeholder } from "@/components/ui/Placeholder";
-import { getSiteById, getSites } from "@/lib/data";
-import { formatPercent, formatScore, SCOPE_LABEL } from "@/lib/formatting";
-import {
-  CONFIDENCE_LABEL,
-  RECOMMENDATION_LABEL,
-  SCORE_STATUS_LABEL,
-} from "@/lib/scoring/interpret";
+import { FacilityTypeBadge } from "@/components/ui/StatusBadges";
+import { DataSourcesPanel } from "@/features/site/DataSourcesPanel";
+import { Disclaimer } from "@/features/site/Disclaimer";
+import { HeroMetrics } from "@/features/site/HeroMetrics";
+import { ObservationsPanel } from "@/features/site/ObservationsPanel";
+import { ScoreBreakdownPanel } from "@/features/site/ScoreBreakdown";
+import { WhyPanel } from "@/features/site/WhyPanel";
+import { getAllSites, getSiteById } from "@/lib/data";
+import { formatCoordinate, formatYear } from "@/lib/formatting";
+import type { DecisionDimension } from "@/types";
 
 interface Params {
   readonly params: Promise<{ readonly id: string }>;
 }
 
 export async function generateStaticParams() {
-  const sites = await getSites();
+  const sites = await getAllSites();
   return sites.map((site) => ({ id: site.recordId }));
 }
 
@@ -28,97 +29,87 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return { title: site?.facilityName ?? "Situs tidak ditemukan" };
 }
 
+/**
+ * A dimension with no data says which kind of absence it is.
+ *
+ * "Pending verification" and "Data belum tersedia" are different states: one
+ * means the value exists but has not been confirmed, the other that it has not
+ * been obtained at all.
+ */
+function missingLabel(dimension: DecisionDimension): string {
+  return dimension === "solar" ? "Pending verification" : "Data belum tersedia";
+}
+
 export default async function SiteDetailPage({ params }: Params) {
   const site = await getSiteById((await params).id);
   if (site === null) notFound();
 
   return (
     <>
-      <PageHeader
-        title={site.facilityName}
-        description={`${site.facilityType} · Kecamatan ${site.district} · ${site.recordId}`}
-      />
+      <Link
+        href="/map"
+        className="inline-flex items-center gap-1.5 rounded-md text-sm font-medium text-muted-fg hover:text-slate-900"
+      >
+        <ArrowLeft aria-hidden className="h-4 w-4" />
+        Kembali ke peta
+      </Link>
 
-      <div className="flex flex-wrap gap-2">
-        <Badge tone="info">{SCORE_STATUS_LABEL[site.scoreStatus]}</Badge>
-        <Badge tone={site.dataConfidence.level === "NEEDS_VERIFICATION" ? "unverified" : "warning"}>
-          {CONFIDENCE_LABEL[site.dataConfidence.level]}
-        </Badge>
-        <Badge tone="neutral">
-          {RECOMMENDATION_LABEL[site.recommendation.type]}
-        </Badge>
-      </div>
+      <header className="space-y-2">
+        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+          {site.facilityName}
+        </h1>
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-muted-fg">
+          <FacilityTypeBadge type={site.facilityType} />
+          <span>Kecamatan {site.district}</span>
+          <span className="inline-flex items-center gap-1">
+            <MapPin aria-hidden className="h-3.5 w-3.5" />
+            {formatCoordinate(site.latitude)}, {formatCoordinate(site.longitude)}
+          </span>
+          <span>· {site.recordId}</span>
+        </div>
+      </header>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card title="Skor prioritas">
-          <p className="text-4xl font-semibold tabular-nums">
-            {site.priorityScore === null ? (
-              <MissingValue why="cakupan dimensi minimum tidak terpenuhi" />
-            ) : (
-              formatScore(site.priorityScore)
-            )}
-          </p>
-          <p className="mt-2 text-xs text-muted-fg">
-            Dihitung atas {formatPercent(site.availableWeightFraction)} dari total
-            bobot baseline. Skor dengan cakupan bobot berbeda tidak sepenuhnya
-            sebanding.
-          </p>
-        </Card>
+      <Disclaimer />
 
-        <Card title="Kontribusi per dimensi">
-          <ul className="space-y-2 text-sm">
-            {site.breakdown.map((row) => (
-              <li key={row.dimension} className="flex items-baseline justify-between gap-3">
-                <span>{row.label}</span>
-                <span className="tabular-nums">
-                  {row.available ? (
-                    <>
-                      {formatScore(row.score)}
-                      <span className="ml-2 text-xs text-muted-fg">
-                        bobot efektif {formatPercent((row.effectiveWeight ?? 0) / 100)}
-                      </span>
-                    </>
-                  ) : (
-                    <MissingValue why="dikeluarkan dari pembilang dan penyebut" />
-                  )}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      </div>
+      <HeroMetrics site={site} />
 
-      <Card title="Dasar keyakinan data">
-        <p className="text-sm">{site.dataConfidence.reason}</p>
-      </Card>
+      <ScoreBreakdownPanel rows={site.breakdown} missingLabel={missingLabel} />
 
-      <Card title="Cakupan spasial nilai bahaya">
-        <dl className="space-y-2 text-sm">
-          <div>
-            <dt className="font-medium">Karhutla — {site.karhutla.rawClass ?? "kelas tidak tersedia"}</dt>
-            <dd className="text-muted-fg">{SCOPE_LABEL[site.karhutla.scope]}</dd>
-          </div>
-          <div>
-            <dt className="font-medium">Kekeringan — {site.drought.rawClass ?? "kelas tidak tersedia"}</dt>
-            <dd className="text-muted-fg">{SCOPE_LABEL[site.drought.scope]}</dd>
-          </div>
-        </dl>
-      </Card>
+      <WhyPanel site={site} />
 
-      {site.limitations.length === 0 ? null : (
-        <Card title="Keterbatasan">
-          <ul className="list-disc space-y-1 pl-5 text-sm">
-            {site.limitations.map((limitation) => (
-              <li key={limitation}>{limitation}</li>
-            ))}
-          </ul>
+      <ObservationsPanel site={site} />
+
+      {site.existingPltsContext === null ? null : (
+        <Card title="Konteks PLTS eksisting">
+          <p className="text-sm">{site.existingPltsContext}</p>
+          {site.evidenceInputs.existingAssetLinkEstablished ? null : (
+            <p className="mt-2 text-xs leading-snug text-muted-fg">
+              Keterkaitan fisik/operasional antara fasilitas ini dan aset
+              tersebut belum ditetapkan. Kesamaan nama desa bukan bukti
+              keterkaitan aset.
+            </p>
+          )}
         </Card>
       )}
 
-      <Placeholder>
-        Panel bukti per sumber, grafik kontribusi dimensi, dan mini-map situs
-        dibangun pada tahap UI.
-      </Placeholder>
+      <DataSourcesPanel sources={site.sources} />
+
+      <Card title="Ringkasan keterlacakan">
+        <dl className="grid gap-3 text-sm sm:grid-cols-3">
+          <div>
+            <dt className="text-xs uppercase tracking-wide text-muted-fg">Jumlah lapis sumber</dt>
+            <dd className="tabular-nums">{site.sourceCount}</dd>
+          </div>
+          <div>
+            <dt className="text-xs uppercase tracking-wide text-muted-fg">Tahun data terbaru</dt>
+            <dd className="tabular-nums">{formatYear(site.latestDataYear)}</dd>
+          </div>
+          <div>
+            <dt className="text-xs uppercase tracking-wide text-muted-fg">Kualitas koordinat</dt>
+            <dd>{site.evidenceInputs.coordinateQuality}</dd>
+          </div>
+        </dl>
+      </Card>
     </>
   );
 }

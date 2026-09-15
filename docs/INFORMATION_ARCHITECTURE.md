@@ -22,9 +22,9 @@ tampak demikian.
 
 | Rute | Nama navigasi | Pertanyaan yang dijawab | Status |
 |---|---|---|---|
-| `/` | Ringkasan | Kandidat mana yang teratas, dan seberapa kuat buktinya? | Scaffold fungsional — peringkat nyata dari dataset |
-| `/map` | Peta | Di mana kandidat berada secara geografis? | Placeholder + daftar koordinat |
-| `/sites/[id]` | — | Mengapa situs ini mendapat skor tersebut? | Scaffold fungsional — breakdown dimensi nyata |
+| `/` | Ringkasan | Kandidat mana yang teratas, dan seberapa kuat buktinya? | **Selesai** — hero, 5 kartu ringkas, 3 distribusi, peringkat |
+| `/map` | Peta | Di mana kandidat berada secara geografis? | **Selesai** — MapLibre, 5 filter + reset, popup, legenda |
+| `/sites/[id]` | — | Mengapa situs ini mendapat skor tersebut? | **Selesai** — hero metric, breakdown, why, observasi, sumber |
 | `/compare` | Bandingkan | Bagaimana dua kandidat berbeda? | Placeholder + peringatan komparabilitas |
 | `/methodology` | Metodologi | Bagaimana skor dihitung, dan apa statusnya? | Scaffold fungsional — bobot dibaca dari dataset |
 | `/data-sources` | Sumber Data | Dari mana angka ini berasal? | Scaffold fungsional — cakupan sumber per situs |
@@ -110,6 +110,40 @@ Kelas bahaya karhutla pada dataset ini seluruhnya `kecamatan_proxy`. Tanpa
 pernyataan ini, pembaca akan membaca "Tinggi" sebagai pengukuran di fasilitas.
 
 ---
+
+## 5.1 Keterlacakan per lapis data (Prompt 7)
+
+Halaman situs memuat satu baris provenance untuk **setiap lapis data** yang
+benar-benar memiliki sumber: identitas fasilitas, koordinat, penerima manfaat,
+GHI, bahaya karhutla, bahaya kekeringan. Lapis tanpa catatan interim tidak
+menghasilkan baris sama sekali — baris kosong akan terbaca seolah-olah ada
+sumber. HLT-002, misalnya, tidak memiliki baris penerima manfaat.
+
+Setiap baris menyebut nama sumber (tertaut bila ada URL), tahun/rujukan,
+status verifikasi, dan cakupan spasial. Tiga badge, masing-masing dari kondisi
+eksplisit, bukan penilaian subjektif:
+
+| Badge | Kondisi |
+|---|---|
+| **Historical Data** | tahun rujukan sumber lebih lama dari tahun data terbaru situs ini |
+| **Provisional Proxy** | cakupan bukan tingkat situs (kecamatan/kabupaten), atau observasi ditandai provisional |
+| **Menunggu verifikasi** | lapis sumber sendiri menyatakan nilainya belum terverifikasi |
+
+Angka "jumlah lapis sumber" pada ringkasan keterlacakan dihitung dari baris
+yang benar-benar ditampilkan, sehingga tidak dapat berbeda dari daftar di
+sebelahnya.
+
+## 5.2 Dua jenis ketiadaan data dibedakan
+
+Pada score breakdown, dimensi tanpa nilai memakai salah satu dari dua label:
+
+- **Pending verification** — nilainya ada tetapi belum dikonfirmasi (Solar/GHI
+  menunggu ekstraksi per titik);
+- **Data belum tersedia** — nilainya belum diperoleh sama sekali.
+
+Keduanya keadaan berbeda dan tidak boleh disamakan. Tidak satu pun dirender
+sebagai 0, dan barisnya tetap ditampilkan lengkap dengan bobot baseline yang
+tidak ikut dihitung.
 
 ## 6. Disclosure permanen
 

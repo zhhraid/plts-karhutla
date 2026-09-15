@@ -46,6 +46,7 @@ function makeRaw(overrides: Partial<RawSite> = {}): RawSite {
     existing_asset_village: "",
     existing_asset_link_established: false,
     confidence_points: 5,
+    sources: [],
     ...overrides,
   };
 }

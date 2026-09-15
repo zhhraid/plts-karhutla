@@ -53,16 +53,38 @@ export type VerificationMethod =
   | "external_web_research"
   | "snippet_only";
 
+/** Which data layer a source row provides. */
+export type SourceLayer =
+  | "facility"
+  | "coordinate"
+  | "beneficiary"
+  | "solar"
+  | "karhutla"
+  | "kekeringan";
+
+/**
+ * One row of provenance, copied verbatim from the interim observation layer.
+ *
+ * A layer with no interim record produces no row at all. An empty source row
+ * would look like provenance while carrying none.
+ */
 export interface SourceReference {
+  readonly layer: SourceLayer;
+  readonly label: string;
   readonly sourceName: string;
   readonly sourceUrl: string | null;
-  /** A = primary official, B = authoritative technical, C = credible contextual. */
-  readonly authority: "A" | "B" | "C";
-  readonly dataYear: string | null;
-  readonly retrievedAt: string | null;
-  readonly verificationMethod: VerificationMethod | null;
-  readonly licence: string | null;
-  readonly attributionText: string | null;
+  /** The reference string exactly as the source states it. */
+  readonly reference: string | null;
+  readonly referenceYear: string | null;
+  readonly verificationStatus: string;
+  readonly scope: ValueScope;
+  readonly scopeText: string | null;
+  /** Describes a past state rather than the current one. */
+  readonly isHistorical: boolean;
+  /** Stands in for a site-level value it is not. */
+  readonly isProvisionalProxy: boolean;
+  /** Carries an explicit "not yet verified" status from the source layer. */
+  readonly awaitingVerification: boolean;
 }
 
 export interface ScoreBreakdown {
@@ -168,6 +190,7 @@ export interface Site {
 
   readonly evidenceInputs: EvidenceInputs;
 
+  readonly sources: readonly SourceReference[];
   readonly sourceCount: number;
   readonly latestDataYear: string | null;
 }
