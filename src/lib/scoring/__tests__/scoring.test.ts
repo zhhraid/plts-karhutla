@@ -200,3 +200,75 @@ describe("priority band", () => {
     expect(bandFor(0)).toBe("LOW");
   });
 });
+
+describe("coverage-scoped ranking", () => {
+  it("issues ranks inside a cohort, never across differing coverage", async () => {
+    const { rankSitesByCoverage } = await import("@/lib/scoring/interpret");
+    const { makeSite } = await import("@/lib/data/__tests__/fixtures");
+
+    const cohorts = rankSitesByCoverage([
+      makeSite({ recordId: "A", priorityScore: 91.43 }),
+      makeSite({ recordId: "B", priorityScore: 77.08 }),
+      makeSite({
+        recordId: "C",
+        priorityScore: 81.67,
+        coverageProfile: "criticality+resilience",
+        availableDimensionCount: 2,
+        availableWeightFraction: 0.45,
+      }),
+    ]);
+
+    expect(cohorts).toHaveLength(2);
+    // Strongest evidence base first.
+    expect(cohorts[0]?.availableWeightFraction).toBe(0.7);
+    expect(cohorts[0]?.ranked.map((entry) => entry.site.recordId)).toEqual(["A", "B"]);
+    expect(cohorts[0]?.ranked.map((entry) => entry.rank)).toEqual([1, 2]);
+    // C scores higher than B but is in its own cohort, so it is also rank 1 —
+    // the two ranks are not comparable, and neither claims to be.
+    expect(cohorts[1]?.ranked[0]?.rank).toBe(1);
+    expect(cohorts[1]?.ranked[0]?.globalRank).toBe(false);
+  });
+
+  it("marks a rank global only with one profile at full coverage", async () => {
+    const { rankSitesByCoverage, isGloballyRankable } = await import(
+      "@/lib/scoring/interpret"
+    );
+    const { makeSite } = await import("@/lib/data/__tests__/fixtures");
+
+    const partial = [makeSite({ recordId: "A" }), makeSite({ recordId: "B" })];
+    expect(isGloballyRankable(partial)).toBe(false);
+    expect(rankSitesByCoverage(partial)[0]?.ranked[0]?.globalRank).toBe(false);
+
+    const full = ["A", "B"].map((recordId) =>
+      makeSite({
+        recordId,
+        globalRankEligible: true,
+        availableWeightFraction: 1,
+        availableDimensionCount: 4,
+        coverageProfile: "criticality+resilience+social+solar",
+        missingData: [],
+      }),
+    );
+    expect(isGloballyRankable(full)).toBe(true);
+    expect(rankSitesByCoverage(full)[0]?.ranked[0]?.globalRank).toBe(true);
+  });
+
+  it("shares a rank between exactly tied scores", async () => {
+    const { rankSitesByCoverage } = await import("@/lib/scoring/interpret");
+    const { makeSite } = await import("@/lib/data/__tests__/fixtures");
+    const cohorts = rankSitesByCoverage([
+      makeSite({ recordId: "A", priorityScore: 81.67 }),
+      makeSite({ recordId: "B", priorityScore: 81.67 }),
+      makeSite({ recordId: "C", priorityScore: 70 }),
+    ]);
+    const ranked = cohorts[0]?.ranked ?? [];
+    expect(ranked.map((entry) => entry.rank)).toEqual([1, 1, 2]);
+    expect(ranked[0]?.tied).toBe(true);
+    expect(ranked[2]?.tied).toBe(false);
+  });
+
+  it("reports an empty set as not globally rankable", async () => {
+    const { isGloballyRankable } = await import("@/lib/scoring/interpret");
+    expect(isGloballyRankable([])).toBe(false);
+  });
+});

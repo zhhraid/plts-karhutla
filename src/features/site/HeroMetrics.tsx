@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/Card";
+import { InfoTip } from "@/components/ui/InfoTip";
 import { MissingValue } from "@/components/ui/MissingValue";
 import {
   ConfidenceBadge,
@@ -20,6 +21,10 @@ export function HeroMetrics({ site }: { readonly site: Site }) {
   return (
     <div className="grid items-start gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
       <Card title="Priority score">
+        <p className="-mt-2 mb-2 text-xs text-muted-fg">
+          Indikasi prioritas awal
+          <InfoTip term="priorityScore" />
+        </p>
         <p className="text-5xl font-semibold tabular-nums">
           {site.priorityScore === null ? (
             <span className="text-xl font-normal">
@@ -34,8 +39,10 @@ export function HeroMetrics({ site }: { readonly site: Site }) {
         </div>
         <p className="mt-3 text-xs leading-snug text-muted-fg">
           Dihitung atas {formatPercent(site.availableWeightFraction)} dari total
-          bobot baseline. Skor dengan cakupan bobot berbeda tidak sepenuhnya
-          sebanding antar-situs.
+          bobot baseline ({site.availableDimensionCount} dari 4 dimensi
+          tersedia)
+          <InfoTip term="availableWeight" />. Skor dengan cakupan bobot berbeda
+          tidak sepenuhnya sebanding antar-situs.
         </p>
       </Card>
 
@@ -45,6 +52,10 @@ export function HeroMetrics({ site }: { readonly site: Site }) {
         </Card>
 
         <Card title="Data confidence">
+          <p className="-mt-2 mb-2 text-xs text-muted-fg">
+            Kekuatan bukti, dinilai terpisah dari skor
+            <InfoTip term="dataConfidence" />
+          </p>
           <ConfidenceBadge level={site.dataConfidence.level} />
           <p className="mt-2 text-xs leading-snug text-muted-fg">
             {site.dataConfidence.reason}

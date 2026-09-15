@@ -157,6 +157,21 @@ export interface SolarObservation {
   readonly scope: ValueScope;
 }
 
+/**
+ * Area-weighted district hazard proxy, on 0-100.
+ *
+ * A DISTRICT-LEVEL STRUCTURAL PROXY. Not a fire probability, not a
+ * site-specific risk, not a prediction, not a live hotspot score. Published
+ * for transparency; it is not what the Resilience dimension currently scores.
+ */
+export interface KarhutlaStructuralProxy {
+  readonly value: number | null;
+  readonly lowAreaHa: number | null;
+  readonly mediumAreaHa: number | null;
+  readonly highAreaHa: number | null;
+  readonly totalAreaHa: number | null;
+}
+
 export interface Site {
   readonly recordId: string;
   readonly facilityName: string;
@@ -189,6 +204,16 @@ export interface Site {
   readonly missingData: readonly DecisionDimension[];
 
   readonly evidenceInputs: EvidenceInputs;
+
+  /** Names the set of dimensions this score rests on. Two sites are directly
+   *  comparable only when their profiles match. */
+  readonly coverageProfile: string;
+  readonly availableDimensionCount: number;
+  /** A global ranking is only defensible when every site is scored on the full
+   *  baseline. False while any dimension is missing. */
+  readonly globalRankEligible: boolean;
+
+  readonly karhutlaProxy: KarhutlaStructuralProxy;
 
   readonly sources: readonly SourceReference[];
   readonly sourceCount: number;

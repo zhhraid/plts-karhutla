@@ -3,6 +3,10 @@ import { ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { NOT_AVAILABLE, SCOPE_LABEL } from "@/lib/formatting";
+import {
+  TRANSPARENCY_BADGES,
+  badgeForVerificationStatus,
+} from "@/lib/transparency";
 import type { SourceReference } from "@/types";
 
 /**
@@ -30,7 +34,9 @@ export function DataSourcesPanel({
   return (
     <Card title="Data sources">
       <ul className="divide-y divide-border">
-        {sources.map((source) => (
+        {sources.map((source) => {
+          const verification = badgeForVerificationStatus(source.verificationStatus);
+          return (
           <li key={source.layer} className="py-3 first:pt-0 last:pb-0">
             <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
               <span className="text-xs font-semibold uppercase tracking-wide text-muted-fg">
@@ -38,14 +44,18 @@ export function DataSourcesPanel({
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {source.isHistorical ? (
-                  <Badge tone="warning">Historical Data</Badge>
+                  <Badge tone={TRANSPARENCY_BADGES.historical.tone}>
+                    {TRANSPARENCY_BADGES.historical.label}
+                  </Badge>
                 ) : null}
                 {source.isProvisionalProxy ? (
-                  <Badge tone="unverified">Provisional Proxy</Badge>
+                  <Badge tone={TRANSPARENCY_BADGES.provisional_proxy.tone}>
+                    {TRANSPARENCY_BADGES.provisional_proxy.label}
+                  </Badge>
                 ) : null}
-                {source.awaitingVerification ? (
-                  <Badge tone="neutral">Menunggu verifikasi</Badge>
-                ) : null}
+                {verification === null ? null : (
+                  <Badge tone={verification.tone}>{verification.label}</Badge>
+                )}
               </div>
             </div>
 
@@ -80,7 +90,8 @@ export function DataSourcesPanel({
               </div>
             </dl>
           </li>
-        ))}
+          );
+        })}
       </ul>
 
       <p className="mt-3 border-t border-border pt-3 text-xs leading-snug text-muted-fg">

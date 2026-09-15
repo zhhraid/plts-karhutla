@@ -61,6 +61,14 @@
       "existing_asset_village": "",
       "existing_asset_link_established": false,
       "confidence_points": 5,
+      "available_dimension_count": 3,
+      "coverage_profile": "criticality+resilience+social",
+      "global_rank_eligible": false,
+      "karhutla_structural_proxy": 73.21,
+      "karhutla_low_area_ha": 7652.88,
+      "karhutla_medium_area_ha": 47596.14,
+      "karhutla_high_area_ha": 62135.37,
+      "karhutla_total_area_ha": 117384.39,
       "sources": [
         {
           "layer": "facility",
@@ -172,6 +180,14 @@
       "existing_asset_village": "",
       "existing_asset_link_established": false,
       "confidence_points": 5,
+      "available_dimension_count": 3,
+      "coverage_profile": "criticality+resilience+social",
+      "global_rank_eligible": false,
+      "karhutla_structural_proxy": 58.5,
+      "karhutla_low_area_ha": 666.81,
+      "karhutla_medium_area_ha": 47700.9,
+      "karhutla_high_area_ha": 10704.78,
+      "karhutla_total_area_ha": 59072.49,
       "sources": [
         {
           "layer": "facility",
@@ -283,6 +299,14 @@
       "existing_asset_village": "",
       "existing_asset_link_established": false,
       "confidence_points": 4,
+      "available_dimension_count": 2,
+      "coverage_profile": "criticality+resilience",
+      "global_rank_eligible": false,
+      "karhutla_structural_proxy": 59.68,
+      "karhutla_low_area_ha": 4699.98,
+      "karhutla_medium_area_ha": 59683.14,
+      "karhutla_high_area_ha": 21280.86,
+      "karhutla_total_area_ha": 85663.98,
       "sources": [
         {
           "layer": "facility",
@@ -394,6 +418,14 @@
       "existing_asset_village": "",
       "existing_asset_link_established": false,
       "confidence_points": 3,
+      "available_dimension_count": 2,
+      "coverage_profile": "criticality+resilience",
+      "global_rank_eligible": false,
+      "karhutla_structural_proxy": 72.37,
+      "karhutla_low_area_ha": 4616.73,
+      "karhutla_medium_area_ha": 80613.0,
+      "karhutla_high_area_ha": 77338.26,
+      "karhutla_total_area_ha": 162567.99,
       "sources": [
         {
           "layer": "facility",
@@ -505,6 +537,14 @@
       "existing_asset_village": "",
       "existing_asset_link_established": false,
       "confidence_points": 6,
+      "available_dimension_count": 3,
+      "coverage_profile": "criticality+resilience+social",
+      "global_rank_eligible": false,
+      "karhutla_structural_proxy": 62.56,
+      "karhutla_low_area_ha": 22247.91,
+      "karhutla_medium_area_ha": 120107.7,
+      "karhutla_high_area_ha": 77456.97,
+      "karhutla_total_area_ha": 219812.58,
       "sources": [
         {
           "layer": "facility",
@@ -616,6 +656,14 @@
       "existing_asset_village": "",
       "existing_asset_link_established": false,
       "confidence_points": 5,
+      "available_dimension_count": 3,
+      "coverage_profile": "criticality+resilience+social",
+      "global_rank_eligible": false,
+      "karhutla_structural_proxy": 62.56,
+      "karhutla_low_area_ha": 22247.91,
+      "karhutla_medium_area_ha": 120107.7,
+      "karhutla_high_area_ha": 77456.97,
+      "karhutla_total_area_ha": 219812.58,
       "sources": [
         {
           "layer": "facility",
@@ -727,6 +775,14 @@
       "existing_asset_village": "",
       "existing_asset_link_established": false,
       "confidence_points": 4,
+      "available_dimension_count": 2,
+      "coverage_profile": "criticality+resilience",
+      "global_rank_eligible": false,
+      "karhutla_structural_proxy": 62.56,
+      "karhutla_low_area_ha": 22247.91,
+      "karhutla_medium_area_ha": 120107.7,
+      "karhutla_high_area_ha": 77456.97,
+      "karhutla_total_area_ha": 219812.58,
       "sources": [
         {
           "layer": "facility",
@@ -838,6 +894,14 @@
       "existing_asset_village": "",
       "existing_asset_link_established": false,
       "confidence_points": 3,
+      "available_dimension_count": 2,
+      "coverage_profile": "criticality+resilience",
+      "global_rank_eligible": false,
+      "karhutla_structural_proxy": 62.56,
+      "karhutla_low_area_ha": 22247.91,
+      "karhutla_medium_area_ha": 120107.7,
+      "karhutla_high_area_ha": 77456.97,
+      "karhutla_total_area_ha": 219812.58,
       "sources": [
         {
           "layer": "facility",
@@ -938,6 +1002,14 @@
       "existing_asset_village": "Sungai Kerawang",
       "existing_asset_link_established": false,
       "confidence_points": 3,
+      "available_dimension_count": 2,
+      "coverage_profile": "criticality+resilience",
+      "global_rank_eligible": false,
+      "karhutla_structural_proxy": 62.56,
+      "karhutla_low_area_ha": 22247.91,
+      "karhutla_medium_area_ha": 120107.7,
+      "karhutla_high_area_ha": 77456.97,
+      "karhutla_total_area_ha": 219812.58,
       "sources": [
         {
           "layer": "facility",
@@ -1038,6 +1110,14 @@
       "existing_asset_village": "",
       "existing_asset_link_established": false,
       "confidence_points": 3,
+      "available_dimension_count": 2,
+      "coverage_profile": "criticality+resilience",
+      "global_rank_eligible": false,
+      "karhutla_structural_proxy": 72.37,
+      "karhutla_low_area_ha": 4616.73,
+      "karhutla_medium_area_ha": 80613.0,
+      "karhutla_high_area_ha": 77338.26,
+      "karhutla_total_area_ha": 162567.99,
       "sources": [
         {
           "layer": "facility",

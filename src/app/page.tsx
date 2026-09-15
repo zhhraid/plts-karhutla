@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Map as MapIcon } from "lucide-react";
+import { Columns3, Map as MapIcon } from "lucide-react";
 
 import { Card } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -10,14 +10,14 @@ import { SummaryCards } from "@/features/dashboard/SummaryCards";
 import {
   getAllSites,
   getConfidenceSummary,
+  getCoverageCohorts,
   getPrioritySummary,
-  getRankedSites,
 } from "@/lib/data";
 
 export default async function DashboardPage() {
-  const [sites, ranked, priority, confidence] = await Promise.all([
+  const [sites, cohorts, priority, confidence] = await Promise.all([
     getAllSites(),
-    getRankedSites(),
+    getCoverageCohorts(),
     getPrioritySummary(),
     getConfidenceSummary(),
   ]);
@@ -40,14 +40,21 @@ export default async function DashboardPage() {
       <SummaryCards sites={sites} />
       <Distributions sites={sites} priority={priority} confidence={confidence} />
 
-      <Card title={`Peringkat kandidat (${ranked.length})`}>
-        <RankingList ranked={ranked} />
+      <Card title={`Peringkat kandidat (${sites.length})`}>
+        <RankingList cohorts={cohorts} />
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
           <p className="text-xs leading-snug text-muted-fg">
-            {priority.provisional === ranked.length
+            {priority.provisional === sites.length
               ? "Seluruh skor masih provisional — tidak satu pun boleh dibaca sebagai hasil akhir."
-              : `${priority.provisional} dari ${ranked.length} skor masih provisional.`}
+              : `${priority.provisional} dari ${sites.length} skor masih provisional.`}
           </p>
+          <Link
+            href="/compare"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-medium hover:bg-surface-muted"
+          >
+            <Columns3 aria-hidden className="h-4 w-4" />
+            Bandingkan situs
+          </Link>
           <Link
             href="/map"
             className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-medium hover:bg-surface-muted"

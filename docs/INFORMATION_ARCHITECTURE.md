@@ -25,9 +25,9 @@ tampak demikian.
 | `/` | Ringkasan | Kandidat mana yang teratas, dan seberapa kuat buktinya? | **Selesai** — hero, 5 kartu ringkas, 3 distribusi, peringkat |
 | `/map` | Peta | Di mana kandidat berada secara geografis? | **Selesai** — MapLibre, 5 filter + reset, popup, legenda |
 | `/sites/[id]` | — | Mengapa situs ini mendapat skor tersebut? | **Selesai** — hero metric, breakdown, why, observasi, sumber |
-| `/compare` | Bandingkan | Bagaimana dua kandidat berbeda? | Placeholder + peringatan komparabilitas |
-| `/methodology` | Metodologi | Bagaimana skor dihitung, dan apa statusnya? | Scaffold fungsional — bobot dibaca dari dataset |
-| `/data-sources` | Sumber Data | Dari mana angka ini berasal? | Scaffold fungsional — cakupan sumber per situs |
+| `/compare` | Bandingkan | Bagaimana 2–4 kandidat berbeda? | **Selesai** — selektor, matriks, coverage, catatan deterministik |
+| `/methodology` | Metodologi | Bagaimana skor dihitung, dan apa statusnya? | **Selesai** — 10 langkah, formula, batasan |
+| `/data-sources` | Sumber Data | Dari mana angka ini berasal? | **Selesai** — katalog sumber, lisensi, atribusi |
 | `/about` | Tentang | Apa yang sistem ini lakukan dan tidak lakukan? | Selesai |
 
 Navigasi global berisi enam tautan. `/sites/[id]` tidak muncul di navigasi; ia
@@ -144,6 +144,48 @@ Pada score breakdown, dimensi tanpa nilai memakai salah satu dari dua label:
 Keduanya keadaan berbeda dan tidak boleh disamakan. Tidak satu pun dirender
 sebagai 0, dan barisnya tetap ditampilkan lengkap dengan bobot baseline yang
 tidak ikut dihitung.
+
+## 5.3 Aturan kesetaraan perbandingan (Prompt 8)
+
+> **Tidak ada peringkat global yang diterbitkan selama situs dinilai atas
+> himpunan dimensi yang berbeda.**
+
+Dataset memuat tiga bidang yang menegakkan aturan ini:
+
+| Bidang | Isi |
+|---|---|
+| `coverage_profile` | himpunan dimensi yang menyusun skor, mis. `criticality+resilience+social` |
+| `available_dimension_count` | 2, 3, atau 4 |
+| `global_rank_eligible` | benar hanya bila keempat dimensi tersedia |
+
+Saat ini terdapat **dua profil cakupan** (4 situs pada 3/4 dimensi, 6 situs pada
+2/4) dan **0 situs** yang `global_rank_eligible`.
+
+Konsekuensinya terhadap UI:
+
+- **Ringkasan** mengelompokkan peringkat per profil cakupan. Peringkat `#1`
+  hanya berlaku di dalam kelompoknya; dua situs dapat sama-sama `#1` pada
+  kelompok berbeda, dan keduanya tidak saling mengklaim lebih tinggi.
+- **Bandingkan** menampilkan peringatan *"Nilai tidak sepenuhnya sebanding
+  karena kelengkapan dimensinya berbeda"* ketika profil berbeda, dan
+  **menahan** catatan "skor provisional lebih tinggi" sepenuhnya dalam kasus
+  itu.
+- Tidak ada layar yang menampilkan "situs terbaik", "pemenang", atau "paling
+  direkomendasikan". Diuji oleh audit bahasa di
+  `src/lib/__tests__/no-overclaim.test.ts`.
+
+## 5.4 Catatan perbandingan bersifat deterministik
+
+Catatan pada halaman Bandingkan diturunkan dengan aturan tetap dari nilai yang
+benar-benar ada (`src/lib/compare/insights.ts`). **Tidak ada model bahasa yang
+berjalan saat halaman dibuka.** Dua aturan mengikat seluruh modul:
+
+1. Tidak ada pernyataan yang dibuat dari nilai kosong. Nilai yang hilang
+   menghasilkan pengamatan "belum tersedia" secara eksplisit, atau tidak
+   menghasilkan pernyataan sama sekali — tidak pernah nilai rendah yang
+   tersirat.
+2. Tidak ada pernyataan yang menyebut pemenang atau situs terbaik, dan tidak
+   ada perbandingan skor yang dibuat ketika basis buktinya berbeda.
 
 ## 6. Disclosure permanen
 

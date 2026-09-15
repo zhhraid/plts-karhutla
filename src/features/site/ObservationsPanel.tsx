@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/Card";
 import { MissingValue } from "@/components/ui/MissingValue";
-import { formatNumber, SCOPE_LABEL } from "@/lib/formatting";
+import { InfoTip } from "@/components/ui/InfoTip";
+import { formatNumber, formatScore, SCOPE_LABEL } from "@/lib/formatting";
 import type { Site } from "@/types";
 
 /**
@@ -60,6 +61,27 @@ export function ObservationsPanel({ site }: { readonly site: Site }) {
             )}
           </dd>
           <dd className="text-xs text-muted-fg">{SCOPE_LABEL[site.karhutla.scope]}</dd>
+        </div>
+
+        <div>
+          <dt className="text-sm font-medium">
+            Karhutla structural proxy
+            <InfoTip term="karhutlaProxy" />
+          </dt>
+          <dd className="text-sm">
+            {site.karhutlaProxy.value === null ? (
+              <MissingValue why="rincian luas area kelas bahaya tidak tersedia" />
+            ) : (
+              <>
+                {formatScore(site.karhutlaProxy.value)}
+                <span className="ml-1 text-xs text-muted-fg">/ 100</span>
+              </>
+            )}
+          </dd>
+          <dd className="text-xs text-muted-fg">
+            Proksi struktural tingkat kecamatan — bukan probabilitas kebakaran,
+            bukan risiko site-specific, dan tidak dipakai dalam skor.
+          </dd>
         </div>
 
         <div>

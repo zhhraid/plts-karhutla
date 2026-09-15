@@ -19,7 +19,7 @@ import {
   type SiteFilters,
   type SortKey,
 } from "@/lib/data/query";
-import { rankSites } from "@/lib/scoring/interpret";
+import { isGloballyRankable, rankSitesByCoverage } from "@/lib/scoring/interpret";
 import type { FacilityType, Site, SiteDataset } from "@/types";
 
 const source: SiteDataSource = staticFileSource;
@@ -78,8 +78,18 @@ export async function getDistricts(): Promise<readonly string[]> {
   return listDistricts(await getAllSites());
 }
 
-export async function getRankedSites() {
-  return rankSites(await getAllSites());
+/**
+ * Sites grouped into coverage cohorts and ranked inside each.
+ *
+ * Never returns one flat ordinal over the whole set: see
+ * `rankSitesByCoverage` for why that would overstate what the data supports.
+ */
+export async function getCoverageCohorts(filters: SiteFilters = {}) {
+  return rankSitesByCoverage(filterSites(await getAllSites(), filters));
+}
+
+export async function isGlobalRankingDefensible(): Promise<boolean> {
+  return isGloballyRankable(await getAllSites());
 }
 
 export { source as activeDataSource };

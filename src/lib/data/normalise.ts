@@ -66,6 +66,14 @@ interface RawSite {
   existing_asset_village: string;
   existing_asset_link_established: boolean;
   confidence_points: number;
+  available_dimension_count: number;
+  coverage_profile: string;
+  global_rank_eligible: boolean;
+  karhutla_structural_proxy: number | null;
+  karhutla_low_area_ha: number | null;
+  karhutla_medium_area_ha: number | null;
+  karhutla_high_area_ha: number | null;
+  karhutla_total_area_ha: number | null;
   sources: RawSource[];
 }
 
@@ -376,6 +384,18 @@ function toSite(raw: RawSite, baselineWeights: Record<string, number>): Site {
       existingAssetLinked: raw.existing_asset_linked,
       existingAssetVillage: emptyToNull(raw.existing_asset_village),
       existingAssetLinkEstablished: raw.existing_asset_link_established,
+    },
+
+    coverageProfile: raw.coverage_profile,
+    availableDimensionCount: raw.available_dimension_count,
+    globalRankEligible: raw.global_rank_eligible,
+
+    karhutlaProxy: {
+      value: raw.karhutla_structural_proxy,
+      lowAreaHa: raw.karhutla_low_area_ha,
+      mediumAreaHa: raw.karhutla_medium_area_ha,
+      highAreaHa: raw.karhutla_high_area_ha,
+      totalAreaHa: raw.karhutla_total_area_ha,
     },
 
     sources: buildSources(raw.sources, emptyToNull(raw.latest_data_year)),

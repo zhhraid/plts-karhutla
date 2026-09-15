@@ -1,40 +1,29 @@
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/components/layout/PageHeader";
-import { Card } from "@/components/ui/Card";
-import { Placeholder } from "@/components/ui/Placeholder";
-import { getPrioritySummary } from "@/lib/data";
-import { formatPercent } from "@/lib/formatting";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { CompareExplorer } from "@/features/compare/CompareExplorer";
+import { getAllSites } from "@/lib/data";
 
 export const metadata: Metadata = { title: "Bandingkan" };
 
 export default async function ComparePage() {
-  const summary = await getPrioritySummary();
+  const sites = await getAllSites();
 
   return (
     <>
       <PageHeader
         title="Bandingkan Situs"
-        description="Perbandingan berdampingan antar kandidat. Perbandingan hanya sahih bila kedua situs dinilai atas cakupan bobot yang sama."
+        description="Perbandingan berdampingan 2 sampai 4 situs kandidat. Perbandingan hanya sahih antar-situs yang dinilai atas himpunan dimensi yang sama — halaman ini menyatakan kapan syarat itu tidak terpenuhi."
       />
-
-      {summary.fullyComparable ? null : (
-        <Card title="Peringatan komparabilitas">
-          <p className="text-sm">
-            Situs pada dataset ini dinilai atas cakupan bobot yang berbeda (
-            {summary.coverageFractions
-              .map((coverage) => formatPercent(coverage))
-              .join(", ")}
-            ). Skor yang direnormalisasi atas himpunan dimensi yang berbeda
-            bertumpu pada basis bukti yang berbeda dan tidak sepenuhnya sebanding.
-          </p>
-        </Card>
+      {sites.length === 0 ? (
+        <EmptyState
+          title="Belum ada situs untuk dibandingkan"
+          description="Dataset yang dimuat tidak berisi situs kandidat."
+        />
+      ) : (
+        <CompareExplorer sites={sites} />
       )}
-
-      <Placeholder>
-        Pemilih situs, tabel perbandingan per dimensi, dan penanda selisih
-        dibangun pada tahap UI.
-      </Placeholder>
     </>
   );
 }

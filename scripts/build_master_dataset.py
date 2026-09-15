@@ -38,6 +38,16 @@ SOCIAL_FLOOR = 10.0
 # implemented but unreachable until a human verifies a link and records it.
 LINK_ESTABLISHED_MARKER = "hubungan_terverifikasi"
 
+# Karhutla structural proxy: area-weighted share of a district's area in each
+# hazard class, on 0-100. This is a DISTRICT-LEVEL STRUCTURAL PROXY, not a fire
+# probability, not a site-specific risk, not a prediction, and not a live
+# hotspot score. It is published for transparency and comparison; the
+# Resilience dimension still scores the ordinal raw class, because adopting the
+# proxy as the scoring input changes rankings substantially
+# (research/SCORING_SENSITIVITY_ANALYSIS.md) and that is a methodology change
+# requiring human approval under PROJECT_CONTEXT.md 17.1.
+KARHUTLA_PROXY_CLASS_WEIGHTS = {"low": 0.0, "medium": 0.5, "high": 1.0}
+
 # Minimum coverage before a numeric Priority Score may be emitted.
 MIN_DIMENSIONS = 2
 REQUIRED_DIMENSION = "criticality"
@@ -103,6 +113,20 @@ def social_scores(beneficiary):
     if span == 0:
         return {k: 100.0 for k in vals}
     return {k: SOCIAL_FLOOR + (lg - lo) / span * (100.0 - SOCIAL_FLOOR) for k, lg in logs.items()}
+
+
+def karhutla_structural_proxy(kar):
+    """Area-weighted district hazard proxy on 0-100, or None when areas are absent.
+
+    Returns None rather than 0 when any component is missing: a district with
+    no area breakdown is unknown, not hazard-free.
+    """
+    areas = {k: num(kar.get(f"{k}_area_ha", "")) for k in KARHUTLA_PROXY_CLASS_WEIGHTS}
+    total = num(kar.get("total_area_ha", ""))
+    if total is None or total <= 0 or any(v is None for v in areas.values()):
+        return None
+    weighted = sum(KARHUTLA_PROXY_CLASS_WEIGHTS[k] * areas[k] for k in areas)
+    return round(weighted / total * 100, 2)
 
 
 def priority(dim_scores, weights):
@@ -332,6 +356,21 @@ def build():
             "existing_asset_village": (asset or {}).get("village", ""),
             "existing_asset_link_established": bool(asset) and link_established,
             "confidence_points": conf_pts,
+            # --- comparability -----------------------------------------------
+            # Two sites are directly comparable only when their scores rest on
+            # the same set of dimensions. `coverage_profile` names that set, so
+            # a reader can see at a glance which comparisons are like-for-like.
+            "available_dimension_count": len(present),
+            "coverage_profile": "+".join(sorted(present)) if present else "none",
+            # A single global ranking across the whole set is only defensible
+            # when every site is scored on the full baseline. Nothing here is
+            # rank-eligible while any dimension is missing.
+            "global_rank_eligible": round(cov, 6) >= 1.0,
+            "karhutla_structural_proxy": karhutla_structural_proxy(kar),
+            "karhutla_low_area_ha": num(kar.get("low_area_ha", "")),
+            "karhutla_medium_area_ha": num(kar.get("medium_area_ha", "")),
+            "karhutla_high_area_ha": num(kar.get("high_area_ha", "")),
+            "karhutla_total_area_ha": num(kar.get("total_area_ha", "")),
             "sources": sources,
         })
     return out

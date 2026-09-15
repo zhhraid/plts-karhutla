@@ -43,7 +43,14 @@ export function makeSite(overrides: Partial<Site> = {}): Site {
       eligibleForScoring: false,
     },
     existingPltsContext: null,
-    breakdown: [],
+    // A realistic default: solar missing, the other three scored. Tests that
+    // care about a different shape override it.
+    breakdown: [
+      { dimension: "solar", label: "Solar Suitability", score: null, baselineWeight: 30, effectiveWeight: null, available: false },
+      { dimension: "social", label: "Social Benefit", score: 60, baselineWeight: 25, effectiveWeight: 35.71, available: true },
+      { dimension: "criticality", label: "Service Criticality", score: 70, baselineWeight: 20, effectiveWeight: 28.57, available: true },
+      { dimension: "resilience", label: "Resilience Need", score: 67, baselineWeight: 25, effectiveWeight: 35.71, available: true },
+    ],
     priorityScore: 70,
     priorityBand: "MEDIUM",
     scoreStatus: "PROVISIONAL_MISSING_SOLAR",
@@ -62,6 +69,16 @@ export function makeSite(overrides: Partial<Site> = {}): Site {
       existingAssetLinked: false,
       existingAssetVillage: null,
       existingAssetLinkEstablished: false,
+    },
+    coverageProfile: "criticality+resilience+social",
+    availableDimensionCount: 3,
+    globalRankEligible: false,
+    karhutlaProxy: {
+      value: 62.56,
+      lowAreaHa: 22247.91,
+      mediumAreaHa: 120107.7,
+      highAreaHa: 77456.97,
+      totalAreaHa: 219812.58,
     },
     sources: [],
     sourceCount: 4,
