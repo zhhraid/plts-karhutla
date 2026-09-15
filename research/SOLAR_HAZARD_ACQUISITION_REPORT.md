@@ -51,3 +51,9 @@ The gate remains limited because 0 of 10 sites currently has the complete GHI + 
 - Raster redistribution is outside the MVP repository policy even though the license is verified.
 
 Validation details are recorded in `research/PROMPT_3_VALIDATION.json` and source-access evidence in `research/PROMPT_3_SOURCE_ACCESS_AUDIT.md`.
+
+## Prompt 3.1 — extraction bundle
+
+Status 2026-09-15: **extraction bundle siap** di `data/external_requests/`. Bundle berisi allowlist 10 target `official_exact`, template solar header-only, template hazard header-only, serta petunjuk pengisian dan penyerahan paket. Tidak ada nilai dummy dan Prompt 3.2 belum dijalankan.
+
+External package masih dibutuhkan. Setelah external researcher mengisi `solar_observations_external.csv` dan `hazard_observations_external.csv` serta menyertakan catatan ekstraksi dan checksum, repository siap menjalankan draft `research/PROMPT_3_2_IMPORT_SOLAR_HAZARD_PACKAGE_DRAFT.md` untuk validasi dan import.

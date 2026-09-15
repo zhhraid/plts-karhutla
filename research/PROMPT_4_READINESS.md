@@ -30,3 +30,9 @@ Prompt 4 may design methodology, criteria definitions, treatment of documented N
 ## Condition to upgrade
 
 Import and audit an external package that supplies GSA GHI plus InaRISK karhutla and kekeringan for at least 8 matching candidate sites, with exact record IDs/coordinates, original units/classes, dataset period/year, extraction method, retrieval date, source URLs, and verification metadata. Re-run the quality matrix and this readiness decision after import.
+
+## Prompt 3.1 handoff status
+
+The external extraction bundle is ready in `data/external_requests/`: 10 validated target sites, a solar template, a hazard template, and researcher instructions. External values are still required, so readiness remains `READY_WITH_LIMITATIONS` with the same reason code.
+
+Once `solar_observations_external.csv` and `hazard_observations_external.csv` are completed and returned with extraction notes and checksums, the repository is ready to run the Prompt 3.2 import draft. Preparing this bundle does not increase GHI or hazard coverage and does not authorize scoring or normalization.

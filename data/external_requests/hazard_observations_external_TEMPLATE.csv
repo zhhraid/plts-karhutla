@@ -1,0 +1,1 @@
+hazard_observation_id,record_id,facility_name,latitude,longitude,hazard_type,metric_type,raw_value,raw_class,unit_or_scale,source_name,source_url,source_authority,dataset_year,extraction_method,retrieved_at,verification_method,verification_status,notes,why_null
