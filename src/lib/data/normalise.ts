@@ -5,16 +5,14 @@
  * site_master_dataset.json. Nothing here invents, defaults or repairs a value:
  * an absent measurement stays `null` all the way to the screen.
  */
-import {
-  BASELINE_LABELS,
-  DIMENSION_ORDER,
-} from "@/lib/scoring/dimensions";
+import { assertDatasetIntegrity } from "@/lib/data/integrity";
+import { BASELINE_LABELS, DIMENSION_ORDER } from "@/lib/scoring/dimensions";
+import { bandFor } from "@/lib/scoring/engine";
 import type {
   CoordinateQuality,
   DataConfidenceLevel,
   DecisionDimension,
   FacilityType,
-  PriorityBand,
   RecommendationType,
   ScoreBreakdown,
   ScoreStatus,
@@ -57,6 +55,15 @@ interface RawSite {
   missing_data: string;
   source_count: number;
   latest_data_year: string;
+  coordinate_quality: string;
+  coordinate_source_data_year: string;
+  beneficiary_verification_status: string;
+  beneficiary_variance_recorded: boolean;
+  karhutla_scoring_eligibility: string;
+  existing_asset_linked: boolean;
+  existing_asset_village: string;
+  existing_asset_link_established: boolean;
+  confidence_points: number;
 }
 
 interface RawDataset {
@@ -98,6 +105,19 @@ function readScope(scope: string | null): ValueScope {
   }
   if (text.includes("site") || text.includes("titik")) return "site_point";
   return "unknown";
+}
+
+const COORDINATE_QUALITIES: readonly CoordinateQuality[] = [
+  "official_exact",
+  "derived_confirmed",
+  "approximate",
+  "missing",
+];
+
+function readCoordinateQuality(value: string): CoordinateQuality {
+  return (
+    COORDINATE_QUALITIES.find((candidate) => candidate === value) ?? "missing"
+  );
 }
 
 function readFacilityType(value: string): FacilityType {
@@ -143,20 +163,6 @@ function readEnum<T extends string>(
     );
   }
   return match;
-}
-
-/**
- * Display band for a Priority Score.
- *
- * Bands are a reading aid over one number, not a fifth criterion. A site whose
- * score could not be computed is never shown as LOW — absence of a score is not
- * a low score.
- */
-export function bandFor(score: number | null): PriorityBand {
-  if (score === null) return "NEEDS_VERIFICATION";
-  if (score >= 75) return "HIGH";
-  if (score >= 50) return "MEDIUM";
-  return "LOW";
 }
 
 function buildBreakdown(
@@ -269,7 +275,7 @@ function toSite(raw: RawSite, baselineWeights: Record<string, number>): Site {
         raw.record_id,
       ),
       reason: raw.data_confidence_reason,
-      internalPoints: null,
+      internalPoints: raw.confidence_points,
     },
 
     recommendation: {
@@ -286,12 +292,27 @@ function toSite(raw: RawSite, baselineWeights: Record<string, number>): Site {
     limitations: splitList(raw.limitations),
     missingData,
 
+    evidenceInputs: {
+      coordinateQuality: readCoordinateQuality(raw.coordinate_quality),
+      coordinateSourceDataYear: raw.coordinate_source_data_year,
+      beneficiaryVerificationStatus: raw.beneficiary_verification_status,
+      beneficiaryVarianceRecorded: raw.beneficiary_variance_recorded,
+      karhutlaScoringEligibility: raw.karhutla_scoring_eligibility,
+      existingAssetLinked: raw.existing_asset_linked,
+      existingAssetVillage: emptyToNull(raw.existing_asset_village),
+      existingAssetLinkEstablished: raw.existing_asset_link_established,
+    },
+
     sourceCount: raw.source_count,
     latestDataYear: emptyToNull(raw.latest_data_year),
   };
 }
 
 export function normaliseDataset(raw: RawDataset): SiteDataset {
+  // Structural check before anything is mapped. A malformed dataset is
+  // withheld entirely rather than partly rendered with plausible-looking
+  // wrong values.
+  assertDatasetIntegrity(raw.sites);
   const baselineWeights = raw.baseline_weights;
   return {
     meta: {

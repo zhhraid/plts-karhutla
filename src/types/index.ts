@@ -96,6 +96,27 @@ export interface BeneficiaryObservation {
   readonly referenceDate: string | null;
 }
 
+/**
+ * The raw facts the Data Confidence rubric is evaluated over.
+ *
+ * Carried on every site so the application can recompute and explain the
+ * confidence level from the same inputs the pipeline used, instead of having
+ * to trust an opaque category.
+ */
+export interface EvidenceInputs {
+  readonly coordinateQuality: CoordinateQuality;
+  readonly coordinateSourceDataYear: string;
+  readonly beneficiaryVerificationStatus: string;
+  readonly beneficiaryVarianceRecorded: boolean;
+  readonly karhutlaScoringEligibility: string;
+  /** A linked existing PLTS asset row — linkage itself may be unverified. */
+  readonly existingAssetLinked: boolean;
+  readonly existingAssetVillage: string | null;
+  /** True only where the data positively states the link is verified. A shared
+   *  village name never sets this. */
+  readonly existingAssetLinkEstablished: boolean;
+}
+
 export interface HazardObservation {
   readonly hazardType: "karhutla" | "kekeringan";
   /** hazard ≠ risk. Never merge the two into one comparison series. */
@@ -144,6 +165,8 @@ export interface Site {
   readonly topPositiveFactors: readonly string[];
   readonly limitations: readonly string[];
   readonly missingData: readonly DecisionDimension[];
+
+  readonly evidenceInputs: EvidenceInputs;
 
   readonly sourceCount: number;
   readonly latestDataYear: string | null;

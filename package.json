@@ -2,14 +2,17 @@
   "name": "surya-siaga",
   "version": "0.1.0",
   "private": true,
-  "description": "SURYA-SIAGA — Decision Support System untuk pre-screening prioritas pengembangan PLTS",
+  "description": "SURYA-SIAGA \u2014 Decision Support System untuk pre-screening prioritas pengembangan PLTS",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "data:build": "python3 scripts/build_master_dataset.py && python3 scripts/validate_master_dataset.py && node scripts/sync-app-data.mjs"
+    "data:build": "python3 scripts/build_master_dataset.py && python3 scripts/validate_master_dataset.py && node scripts/sync-app-data.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run build"
   },
   "dependencies": {
     "lucide-react": "^0.460.0",
@@ -24,8 +27,11 @@
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
     "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^15.5.25",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.16",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.9"
   }
 }

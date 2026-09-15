@@ -51,7 +51,16 @@
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor",
       "missing_data": "solar",
       "source_count": 4,
-      "latest_data_year": "2026"
+      "latest_data_year": "2026",
+      "coordinate_quality": "official_exact",
+      "coordinate_source_data_year": "",
+      "beneficiary_verification_status": "verified_primary",
+      "beneficiary_variance_recorded": true,
+      "karhutla_scoring_eligibility": "provisional_district_proxy",
+      "existing_asset_linked": false,
+      "existing_asset_village": "",
+      "existing_asset_link_established": false,
+      "confidence_points": 5
     },
     {
       "record_id": "EDU-002",
@@ -85,7 +94,16 @@
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor",
       "missing_data": "solar",
       "source_count": 4,
-      "latest_data_year": "2026"
+      "latest_data_year": "2026",
+      "coordinate_quality": "official_exact",
+      "coordinate_source_data_year": "",
+      "beneficiary_verification_status": "verified_primary",
+      "beneficiary_variance_recorded": true,
+      "karhutla_scoring_eligibility": "provisional_district_proxy",
+      "existing_asset_linked": false,
+      "existing_asset_village": "",
+      "existing_asset_link_established": false,
+      "confidence_points": 5
     },
     {
       "record_id": "EDU-003",
@@ -119,7 +137,16 @@
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor",
       "missing_data": "solar; social",
       "source_count": 4,
-      "latest_data_year": "2023"
+      "latest_data_year": "2023",
+      "coordinate_quality": "official_exact",
+      "coordinate_source_data_year": "",
+      "beneficiary_verification_status": "requires_verification",
+      "beneficiary_variance_recorded": false,
+      "karhutla_scoring_eligibility": "provisional_district_proxy",
+      "existing_asset_linked": false,
+      "existing_asset_village": "",
+      "existing_asset_link_established": false,
+      "confidence_points": 4
     },
     {
       "record_id": "EDU-004",
@@ -153,7 +180,16 @@
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor",
       "missing_data": "solar; social",
       "source_count": 4,
-      "latest_data_year": "2023"
+      "latest_data_year": "2023",
+      "coordinate_quality": "official_exact",
+      "coordinate_source_data_year": "",
+      "beneficiary_verification_status": "requires_verification",
+      "beneficiary_variance_recorded": true,
+      "karhutla_scoring_eligibility": "provisional_district_proxy",
+      "existing_asset_linked": false,
+      "existing_asset_village": "",
+      "existing_asset_link_established": false,
+      "confidence_points": 3
     },
     {
       "record_id": "EDU-005",
@@ -187,7 +223,16 @@
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor",
       "missing_data": "solar",
       "source_count": 4,
-      "latest_data_year": "2026"
+      "latest_data_year": "2026",
+      "coordinate_quality": "official_exact",
+      "coordinate_source_data_year": "",
+      "beneficiary_verification_status": "verified_primary",
+      "beneficiary_variance_recorded": false,
+      "karhutla_scoring_eligibility": "provisional_district_proxy",
+      "existing_asset_linked": false,
+      "existing_asset_village": "",
+      "existing_asset_link_established": false,
+      "confidence_points": 6
     },
     {
       "record_id": "EDU-006",
@@ -221,7 +266,16 @@
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor",
       "missing_data": "solar",
       "source_count": 4,
-      "latest_data_year": "2026"
+      "latest_data_year": "2026",
+      "coordinate_quality": "official_exact",
+      "coordinate_source_data_year": "",
+      "beneficiary_verification_status": "verified_primary",
+      "beneficiary_variance_recorded": true,
+      "karhutla_scoring_eligibility": "provisional_district_proxy",
+      "existing_asset_linked": false,
+      "existing_asset_village": "",
+      "existing_asset_link_established": false,
+      "confidence_points": 5
     },
     {
       "record_id": "EDU-007",
@@ -255,7 +309,16 @@
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor",
       "missing_data": "solar; social",
       "source_count": 4,
-      "latest_data_year": "2023"
+      "latest_data_year": "2023",
+      "coordinate_quality": "official_exact",
+      "coordinate_source_data_year": "",
+      "beneficiary_verification_status": "requires_verification",
+      "beneficiary_variance_recorded": false,
+      "karhutla_scoring_eligibility": "provisional_district_proxy",
+      "existing_asset_linked": false,
+      "existing_asset_village": "",
+      "existing_asset_link_established": false,
+      "confidence_points": 4
     },
     {
       "record_id": "HLT-001",
@@ -289,7 +352,16 @@
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor; koordinat berasal dari dataset 2021",
       "missing_data": "solar; social",
       "source_count": 4,
-      "latest_data_year": "2023"
+      "latest_data_year": "2023",
+      "coordinate_quality": "official_exact",
+      "coordinate_source_data_year": "2021",
+      "beneficiary_verification_status": "not_available",
+      "beneficiary_variance_recorded": false,
+      "karhutla_scoring_eligibility": "provisional_district_proxy",
+      "existing_asset_linked": false,
+      "existing_asset_village": "",
+      "existing_asset_link_established": false,
+      "confidence_points": 3
     },
     {
       "record_id": "HLT-002",
@@ -323,7 +395,16 @@
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor; koordinat berasal dari dataset 2021",
       "missing_data": "solar; social",
       "source_count": 5,
-      "latest_data_year": "2023"
+      "latest_data_year": "2023",
+      "coordinate_quality": "official_exact",
+      "coordinate_source_data_year": "2021",
+      "beneficiary_verification_status": "not_available",
+      "beneficiary_variance_recorded": false,
+      "karhutla_scoring_eligibility": "provisional_district_proxy",
+      "existing_asset_linked": true,
+      "existing_asset_village": "Sungai Kerawang",
+      "existing_asset_link_established": false,
+      "confidence_points": 3
     },
     {
       "record_id": "HLT-003",
@@ -357,7 +438,16 @@
       "limitations": "bahaya karhutla hanya proksi kecamatan, bukan nilai piksel situs; kekeringan hanya konteks kabupaten sehingga dikeluarkan dari skor; koordinat berasal dari dataset 2021",
       "missing_data": "solar; social",
       "source_count": 4,
-      "latest_data_year": "2023"
+      "latest_data_year": "2023",
+      "coordinate_quality": "official_exact",
+      "coordinate_source_data_year": "2021",
+      "beneficiary_verification_status": "not_available",
+      "beneficiary_variance_recorded": false,
+      "karhutla_scoring_eligibility": "provisional_district_proxy",
+      "existing_asset_linked": false,
+      "existing_asset_village": "",
+      "existing_asset_link_established": false,
+      "confidence_points": 3
     }
   ]
 }

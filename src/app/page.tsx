@@ -5,26 +5,19 @@ import { Card } from "@/components/ui/Card";
 import { MissingValue } from "@/components/ui/MissingValue";
 import { Placeholder } from "@/components/ui/Placeholder";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { getDataset, getRankedSites } from "@/lib/data";
+import { getConfidenceSummary, getDataset, getRankedSites } from "@/lib/data";
 import { formatScore } from "@/lib/formatting";
 import {
   CONFIDENCE_LABEL,
   PRIORITY_BAND_LABEL,
 } from "@/lib/scoring/interpret";
-import type { DataConfidenceLevel } from "@/types";
 
 export default async function OverviewPage() {
-  const [dataset, ranked] = await Promise.all([getDataset(), getRankedSites()]);
-
-  const confidenceCounts = dataset.sites.reduce<
-    Record<DataConfidenceLevel, number>
-  >(
-    (counts, site) => {
-      counts[site.dataConfidence.level] += 1;
-      return counts;
-    },
-    { HIGH: 0, MEDIUM: 0, NEEDS_VERIFICATION: 0 },
-  );
+  const [dataset, ranked, confidence] = await Promise.all([
+    getDataset(),
+    getRankedSites(),
+    getConfidenceSummary(),
+  ]);
 
   return (
     <>
@@ -44,7 +37,7 @@ export default async function OverviewPage() {
             ).map((level) => (
               <li key={level} className="flex justify-between gap-2">
                 <span>{CONFIDENCE_LABEL[level]}</span>
-                <span className="font-medium">{confidenceCounts[level]}</span>
+                <span className="font-medium">{confidence.byLevel[level]}</span>
               </li>
             ))}
           </ul>

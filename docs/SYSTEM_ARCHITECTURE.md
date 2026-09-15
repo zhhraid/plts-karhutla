@@ -112,12 +112,19 @@ mengetahui bentuk snake_case keluaran build script. Modul ini:
   Memaksakan nilai tak dikenal menjadi label terdekat akan menerbitkan status
   yang salah seolah-olah terverifikasi.
 
-### 3.3 Skor tidak dihitung ulang di aplikasi
+### 3.3 Decision engine (Prompt 6)
 
-`src/lib/scoring/` hanya berisi **interpretasi** atas skor yang sudah ada:
-label, pita tampilan, pengurutan, dan peringkat padat (dense ranking).
-Implementasi kedua dari rumus skor akan menjadi sumber kebenaran kedua, dan
-pada akhirnya keduanya akan berbeda.
+`src/lib/scoring/engine.ts` memuat port TypeScript dari metodologi, agar
+aplikasi dapat menghitung ulang dan menjelaskan skor tanpa memanggil Python.
+Pipeline Python tetap menjadi produsen angka yang diterbitkan; halaman membaca
+skor dari dataset, bukan menghitungnya.
+
+Risiko dua implementasi ditahan oleh uji paritas yang menghitung ulang seluruh
+dataset dan gagal pada perbedaan sekecil apa pun. Rinciannya di
+`docs/DECISION_ENGINE_IMPLEMENTATION.md`.
+
+`src/lib/scoring/interpret.ts` tetap berisi interpretasi murni: label, pita
+tampilan, pengurutan, dan peringkat padat (dense ranking).
 
 `bandFor(null)` mengembalikan `NEEDS_VERIFICATION`, bukan `LOW`. Ketiadaan skor
 bukan skor rendah.

@@ -30,6 +30,14 @@ HAZARD_CLASS_SCORE = {"Rendah": 33.0, "Sedang": 67.0, "Tinggi": 100.0}
 # indistinguishable from "no data" — the very confusion the NULL-never-zero rule exists to prevent.
 SOCIAL_FLOOR = 10.0
 
+# A facility's link to an existing PLTS asset counts as ESTABLISHED only when
+# the interim record states so positively with this marker. The default is "not
+# established": a shared village name is not evidence of a physical or
+# operational link, and the absence of a statement is not a verification.
+# No row carries the marker today, so the EXPANSION_ASSESSMENT branch is
+# implemented but unreachable until a human verifies a link and records it.
+LINK_ESTABLISHED_MARKER = "hubungan_terverifikasi"
+
 # Minimum coverage before a numeric Priority Score may be emitted.
 MIN_DIMENSIONS = 2
 REQUIRED_DIMENSION = "criticality"
@@ -201,7 +209,12 @@ def build():
         # Recommendation. No positive deployment call while the primary solar
         # dimension is unavailable for the site.
         asset = linked.get(rid)
-        if asset:
+        link_established = LINK_ESTABLISHED_MARKER in (asset or {}).get("link_basis", "")
+        if asset and link_established:
+            rec = "EXPANSION_ASSESSMENT"
+            rec_reason = (f"Terdapat PLTS eksisting di desa {asset['village']} yang keterkaitannya dengan fasilitas ini "
+                          "telah ditetapkan. Kajian diarahkan pada penguatan/ekspansi, bukan deployment baru.")
+        elif asset:
             rec = "NEEDS_DATA_VERIFICATION"
             rec_reason = (f"Desa fasilitas ini ({asset['village']}) bernama sama dengan desa penerima hibah PLTS 2021; "
                           "hubungan fisik/operasional belum diverifikasi, sehingga jalur ekspansi maupun deployment "
@@ -254,6 +267,19 @@ def build():
             "missing_data": "; ".join(missing),
             "source_count": sum(1 for x in [ben_raw.get(rid), kar, drt, solar.get(rid), asset] if x),
             "latest_data_year": max(years) if years else "",
+            # --- confidence inputs, surfaced verbatim -------------------------
+            # Emitted so the TypeScript engine can recompute confidence from the
+            # same facts this script used, and a parity test can prove the two
+            # implementations agree. No new values: each is copied from interim.
+            "coordinate_quality": s["coordinate_quality"],
+            "coordinate_source_data_year": s["coordinate_source_data_year"],
+            "beneficiary_verification_status": (ben_raw.get(rid) or {}).get("verification_status", ""),
+            "beneficiary_variance_recorded": bool((ben_raw.get(rid) or {}).get("variance_classification")),
+            "karhutla_scoring_eligibility": kar.get("scoring_eligibility", ""),
+            "existing_asset_linked": asset is not None,
+            "existing_asset_village": (asset or {}).get("village", ""),
+            "existing_asset_link_established": bool(asset) and link_established,
+            "confidence_points": conf_pts,
         })
     return out
 
