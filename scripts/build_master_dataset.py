@@ -9,7 +9,7 @@ assumption, not an expert-validated value.
 Absolute rule enforced throughout: a missing value is NEVER scored as 0. A
 missing criterion is dropped from the weighted sum and from its denominator.
 """
-import csv, json, math
+import csv, json, math, re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -33,6 +33,20 @@ SOCIAL_FLOOR = 10.0
 # Minimum coverage before a numeric Priority Score may be emitted.
 MIN_DIMENSIONS = 2
 REQUIRED_DIMENSION = "criticality"
+
+
+def first_year(text):
+    """Extract the earliest 4-digit year stated in a free-text date field.
+
+    Source date fields are not machine-uniform: karhutla carries
+    "Hasil pengolahan data 2023; published 2024", where the data year is 2023
+    and 2024 is only the publication year. Reading the first four characters
+    turned that into the literal string "Hasi", which then propagated into
+    every published record. Returns "" when no year is stated rather than
+    substituting a default — an unknown year is not the current year.
+    """
+    m = re.search(r"(19|20)\d{2}", text or "")
+    return m.group(0) if m else ""
 
 
 def read(name):
@@ -214,9 +228,9 @@ def build():
         if s["district"] in asset_districts:
             lim.append("kecamatan memiliki PLTS historis 2021, tetapi keterkaitan dengan fasilitas ini tidak ditetapkan")
 
-        years = [y for y in [kar.get("dataset_year", "").split(";")[0].strip()[:4],
-                             (ben_raw.get(rid) or {}).get("data_reference_date", "")[:4],
-                             s["coordinate_source_data_year"][:4] or "2026"] if y]
+        years = [y for y in [first_year(kar.get("dataset_year", "")),
+                             first_year((ben_raw.get(rid) or {}).get("data_reference_date", "")),
+                             first_year(s["coordinate_source_data_year"])] if y]
 
         out.append({
             "record_id": rid, "facility_name": s["facility_name"], "facility_type": s["facility_type"],
